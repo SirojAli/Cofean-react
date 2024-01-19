@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
-// import { TopCafes } from "./TopCafes";
-// import { TrendProducts } from "./TrendProducts";
-// import { Advertisements } from "./advertisements";
-// import { OnSaleProducts } from "./OnSaleProducts";
-// import { Events } from "./events";
-import "../../../css/home.css";
+import { Header } from "./header";
+import { Brands } from "./brands";
+import { Trends } from "./trends";
+import { Video } from "./video";
+import { OnSales } from "./onSales";
+import { Events } from "./events";
 
 export function HomePage() {
   /** INITIALIZATIONS */
 
   return (
-    <div className="homepage">
-      {/* <TopCafes />
-      <TrendProducts />
-      <Advertisements />
-      <OnSaleProducts />
-      <Events /> */}
+    <div>
+      <Header />
+      <Brands />
+      <Trends />
+      <Video />
+      <OnSales />
+      <Events />
     </div>
   );
 }

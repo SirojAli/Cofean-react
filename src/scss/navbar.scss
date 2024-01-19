@@ -1,0 +1,388 @@
+/* NAVBAR STYLE START */
+.navbar {
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  justify-content: center;
+  display: flex;
+
+  .navbar_box {
+    width: 1320px;
+    height: 60px;
+    display: flex;
+    border: 2px solid green;
+    padding: 3px;
+
+    // 1 Navbar Logo part
+    .navbar_left {
+      width: 150px;
+      // border: 2px solid yellow;
+      display: flex;
+      flex-direction: row;
+      .navbar_logo {
+        width: 100%;
+        height: 100%;
+        // img {
+        //   width: 50px;
+        //   height: 50px;
+        // }
+      }
+      .logo_name {
+      }
+    }
+
+    // 2 Navbar Menu part
+    .navbar_middle {
+      width: 870px;
+      height: 60px;
+      // border: 2px solid red;
+      padding: 3px;
+      .navbar_menu {
+        width: 850px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        // border: 2px solid green;
+
+        .navbar_menu_1 {
+          width: 100px;
+          // height: 50px;
+          line-height: 50px;
+          font-family: "Open Sans", sans-serif;
+          font-weight: 600;
+          font-style: normal;
+          visibility: visible;
+        }
+      }
+    }
+
+    // 3 Navbar Icon part
+    .navbar_right {
+      width: 300px;
+      // border: 2px solid yellow;
+      .navbar_icons {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: row;
+        align-items: center;
+        // border: 2px solid black;
+
+        .icon_search {
+          width: 50px;
+          height: 50px;
+          padding: 10px;
+          img {
+            width: 25px;
+            height: 25px;
+            // border: 2px solid red;
+          }
+        }
+        .icon_cart {
+          width: 50px;
+          height: 50px;
+          padding: 10px;
+          img {
+            width: 25px;
+            height: 25px;
+            // border: 2px solid black;
+          }
+        }
+        .icon_user {
+          width: 50px;
+          height: 50px;
+          padding: 10px;
+          img {
+            width: 25px;
+            height: 25px;
+            // border: 2px solid red;
+          }
+        }
+        .navbar_signup {
+          width: 75px;
+          height: 50px;
+          h5 {
+            width: 50px;
+            // height: 24px;
+            // border: 2px solid red;
+            margin-top: 2px;
+            line-height: 50px;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            visibility: visible;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+        .navbar_login {
+          width: 75px;
+          height: 50px;
+          h5 {
+            width: 50px;
+            // height: 24px;
+            // border: 2px solid red;
+            margin-top: 2px;
+            line-height: 50px;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            visibility: visible;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
+/* NAVBAR STYLE END */
+
+/* FOOTER STYLE START */
+.footer {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  justify-content: center;
+  display: flex;
+
+  .footer_box {
+    width: 1320px;
+    height: 512px;
+    display: flex;
+    border: 1px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    // Footer 1
+    .footer1 {
+      width: 1300px;
+      height: 60px;
+      border: 1px solid #e8e8eb;
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      .f1_top {
+        width: 432px;
+        height: 60px;
+        // border: 1px solid red;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .f1_icon {
+          width: 24px;
+          height: 24px;
+        }
+        .f1_text {
+          color: #2e524a;
+          margin-left: 5px;
+
+          /* Body/Normal Text Bold */
+          font-family: Urbanist;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 22.4px; /* 140% */
+        }
+      }
+      .f1_divider {
+        width: 1px;
+        height: 60px;
+        flex-shrink: 0;
+        background: #e8e8eb;
+      }
+    }
+
+    // Footer 2
+    .footer2 {
+      width: 1301px;
+      height: 370px;
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      // box-sizing: border-box;
+
+      // left
+      .f2_left {
+        width: 650px;
+        height: 370px;
+        // border: 1px solid red;
+
+        .f2_left_side {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .f2_left_boxes {
+            width: 216px;
+            height: 100%;
+            // border: 1px solid green;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0px 0px 0px;
+
+            .f2_left_title {
+              width: 78px;
+              height: 26px;
+              color: #2e524a;
+              font-family: Urbanist;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 25.2px; /* 157.5% */
+              text-transform: uppercase;
+              margin-bottom: 30px;
+            }
+            .f2_left_text {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              div {
+                color: rgba(73, 88, 76, 0.8);
+                font-family: Urbanist;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 22.4px; /* 140% */
+                margin-top: 15px;
+              }
+            }
+          }
+        }
+      }
+
+      // divider
+      .f2_divider {
+        width: 2px;
+        height: 300px;
+        background: #e8e8eb;
+      }
+
+      // right
+      .f2_right {
+        width: 650px;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        // border: 2px solid red;
+
+        // contact
+        .f2_contact {
+          width: 100%;
+          height: 250px;
+          // border: 1px solid green;
+          display: flex;
+          flex-direction: column;
+          padding: 40px 0px 0px 0px;
+          align-items: center;
+
+          .f2_right_title {
+            width: 78px;
+            height: 26px;
+            color: #2e524a;
+            font-family: Urbanist;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 25.2px; /* 157.5% */
+            text-transform: uppercase;
+            margin-bottom: 10px;
+          }
+          .f2_right_contact {
+            display: block;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+        }
+
+        // divider
+        .f2_divider2 {
+          width: 411px;
+          height: 1px;
+          flex-shrink: 0;
+          background: #2e524a;
+        }
+
+        // social
+        .f2_social {
+          width: 100%;
+          height: 110px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          a {
+            margin-left: 10px;
+            color: #2e524a;
+            text-align: center;
+            font-family: "Font Awesome 5 Brands";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px; /* 120% */
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+
+    // Footer 3
+    .footer3 {
+      width: 1194px;
+      height: 80px;
+      // border: 1px solid red;
+      display: flex;
+      flex-direction: row;
+      padding: 2px;
+      .f3_left {
+        width: 60%;
+        height: 75px;
+        // border: 1px solid black;
+        // padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-left: 5px;
+        margin-right: 5px;
+        .card {
+          width: 80px;
+          height: 60px;
+        }
+        .card2 {
+          width: 60px;
+          height: 40px;
+          margin-top: 5px;
+        }
+      }
+
+      .f3_right {
+        width: 40%;
+        height: 75px;
+        // border: 1px solid green;
+        // padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        p {
+          color: rgba(46, 82, 74, 0.6);
+          font-family: Urbanist;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 22.4px; /* 140% */
+        }
+      }
+    }
+  }
+}
+
+/* FOOTER STYLE END */

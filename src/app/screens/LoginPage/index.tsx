@@ -1,6 +1,11 @@
-import React from "react";
-import { Container } from "@mui/material";
+import React, { useEffect } from "react";
 
 export function LoginPage() {
-    return <Container>LoginPage</Container>;
+  /** INITIALIZATIONS */
+
+  return (
+    <div className="login_page">
+      <h1>You are in LoginPage</h1>
+    </div>
+  );
 }
