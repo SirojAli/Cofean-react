@@ -14,16 +14,40 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Footer } from "../footer/footer";
 
 export function Navbar() {
+  /*INITIALIZATIONS*/
+  const [scrollPosition, setScrollPosition] = useState(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.pageYOffset;
+      setScrollPosition(position);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Check if scrollPosition is greater than or equal to 100
+  const isScrolled = scrollPosition >= 100;
+  const isTopScroll = scrollPosition >= 300;
+  // const [menu, setMenu] = useState(false);
+  // const onMenu = () => {
+  //   setMenu(!menu);
+  // };
+
   return (
     <>
-      <div className="navbar">
+      <div className={isScrolled ? "navbar active_scroll" : "navbar"}>
         <div className="navbar_box">
           {/* Navbar Logo part */}
           <div className="navbar_left">
             <Box className="navbar_logo">
-              <img src="/images/navbar/logo.png" alt="" />
+              <img src="/images/navbar/logo1.png" alt="" />
+              <p>COFEAN</p>
             </Box>
-            {/* <Box className="logo_name">COFEAN</Box> */}
           </div>
 
           {/* Navbar Menu part */}

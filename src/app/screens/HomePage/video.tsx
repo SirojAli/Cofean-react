@@ -1,6 +1,11 @@
 import React from "react";
-import { Box, Container, Stack } from "@mui/material";
 
 export function Video() {
-  return <div>Video</div>;
+  return (
+    <div className="video_frame">
+      <video className="video" loop autoPlay muted data-video-media>
+        <source src="/video/video.mp4" type="video/mp4" />
+      </video>
+    </div>
+  );
 }

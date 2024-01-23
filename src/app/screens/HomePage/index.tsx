@@ -5,12 +5,13 @@ import { Trends } from "./trends";
 import { Video } from "./video";
 import { OnSales } from "./onSales";
 import { Events } from "./events";
+import "../../../scss/home.scss";
 
 export function HomePage() {
   /** INITIALIZATIONS */
 
   return (
-    <div>
+    <div className="homepage">
       <Header />
       <Brands />
       <Trends />
