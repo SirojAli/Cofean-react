@@ -32,6 +32,7 @@ function App() {
           <Route path="/signup" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cafe" element={<CafePage />} />
+          <Route path="/cafe/cafe_id" element={<CafePage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/members" element={<MembersPage />} />

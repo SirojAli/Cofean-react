@@ -29,6 +29,9 @@ export function Brands() {
         <Box className="top_brand">
           <img src="/images/brands/paiks.png" alt="" />
         </Box>
+        <Box className="top_brand">
+          <img src="/images/brands/compose.png" alt="" />
+        </Box>
       </Stack>
 
       {/* 3. See All Cafes */}

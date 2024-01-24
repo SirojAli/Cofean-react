@@ -1,14 +1,4 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Container,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Stack,
-} from "@mui/material";
+import { Box, Button, Container, IconButton, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Footer } from "../footer/footer";

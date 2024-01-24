@@ -1,0 +1,22 @@
+.cafe_header {
+  height: 400px;
+  width: 100%;
+  background: linear-gradient(to left, #edecf0, #ffffff);
+  display: flex;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  // .header_sort {
+  //   width: 100%;
+  //   height: 50px;
+  //   background: linear-gradient(#ffffffe0, #ffffff54);
+  //   margin-top: 200px;
+  // }
+}
+
+.all_cafes {
+  width: 100%;
+  height: 1000px;
+  border: 1px solid red;
+  background-color: #fff;
+}

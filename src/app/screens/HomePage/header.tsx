@@ -30,9 +30,8 @@ export function Header() {
         <SwiperSlide
           className="swiper_slide"
           style={{
-            backgroundImage: "url(/images/headers/e1.jpg)",
+            backgroundImage: "url(/images/headers/home1.jpg)",
             backgroundSize: "cover",
-            // backgroundRepeat: "no-repeat",
           }}
         >
           <Box className="text_box1">
@@ -50,7 +49,7 @@ export function Header() {
         <SwiperSlide
           className="swiper_slide"
           style={{
-            backgroundImage: "url(/images/headers/a5.jpg)",
+            backgroundImage: "url(/images/headers/home2.jpg)",
             backgroundSize: "cover",
           }}
         >
@@ -69,7 +68,7 @@ export function Header() {
         <SwiperSlide
           className="swiper_slide"
           style={{
-            backgroundImage: "url(/images/headers/w.jpg)",
+            backgroundImage: "url(/images/headers/home3.jpg)",
             backgroundSize: "cover",
           }}
         >

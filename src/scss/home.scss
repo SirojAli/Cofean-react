@@ -202,7 +202,7 @@ $accent-color: #d2691e; // Accent color for titles
   /*BRANDS STYLES START*/
   .home_brands {
     width: 100%;
-    height: 380px;
+    height: 300px; // 400px
     // border: 2px solid black;
     margin-top: 30px;
     display: flex;
@@ -221,15 +221,15 @@ $accent-color: #d2691e; // Accent color for titles
       margin-bottom: 10px;
       h2 {
         width: 500px;
-        height: 50px;
+        height: 60px;
         // border: 2px solid red;
-        color: #d2691e;
+        color: #802d20; //  d2691e
         text-align: center;
         /* Heading/h2 */
         font-family: YoungSerif;
-        font-size: 39.06px;
+        font-size: 39.06px; // 2rem
         font-style: normal;
-        font-weight: 400;
+        font-weight: 600;
         line-height: 48.8px; /* 124.936% */
       }
     }
@@ -237,7 +237,7 @@ $accent-color: #d2691e; // Accent color for titles
     // 2.Cafes
     .brands_box {
       width: 100%;
-      height: 250px;
+      height: 200px; // 250px
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -245,8 +245,8 @@ $accent-color: #d2691e; // Accent color for titles
       // border: 1px solid green;
 
       .top_brand {
-        width: 225px;
-        height: 225px;
+        width: 150px;
+        height: 150px;
         margin-right: 20px;
         cursor: pointer;
         border: 1px solid #fcfceb;
@@ -254,7 +254,7 @@ $accent-color: #d2691e; // Accent color for titles
 
         &:hover {
           transform: scale(1.02);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+          // box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
         }
 
         img {
@@ -308,13 +308,13 @@ $accent-color: #d2691e; // Accent color for titles
 
       h2 {
         width: 500px;
-        height: 50px;
-        color: $accent-color;
+        height: 60px;
+        color: #802d20;
         text-align: center;
-        font-family: $main-font;
-        font-size: 39.06px;
+        font-family: YoungSerif;
+        font-size: 39.06px; // 2rem
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 48.8px;
       }
     }
@@ -475,7 +475,7 @@ $accent-color: #d2691e; // Accent color for titles
   .video_frame {
     width: 100%;
     margin-top: 80px;
-    margin-bottom: 80px;
+    // margin-bottom: 80px;
 
     .video {
       width: 100%;
@@ -488,13 +488,12 @@ $accent-color: #d2691e; // Accent color for titles
   /*ON SALES STYLES START*/
   .home_sales {
     width: 100%;
-    height: 680px; // you may change
+    height: 720px; // 680px
     padding: 20px;
     display: flex;
     justify-content: center;
-    // border: 1px solid black;
-    margin-top: 30px;
     background: #fffff0;
+    // border: 1px solid red;
 
     .home_sale_box {
       width: 1320px;
@@ -504,7 +503,7 @@ $accent-color: #d2691e; // Accent color for titles
 
       .sale_title {
         width: 100%;
-        height: 60px;
+        height: 100px;
         display: flex;
         justify-content: center;
         // border: 2px solid black;
@@ -512,16 +511,14 @@ $accent-color: #d2691e; // Accent color for titles
         margin-bottom: 20px;
         h2 {
           width: 500px;
-          height: 50px;
-          // border: 2px solid red;
-          color: #000;
+          height: 60px;
+          color: #802d20;
           text-align: center;
-          /* Heading/h2 */
           font-family: YoungSerif;
-          font-size: 39.06px;
+          font-size: 39.06px; // 2rem
           font-style: normal;
-          font-weight: 400;
-          line-height: 48.8px; /* 124.936% */
+          font-weight: 600;
+          line-height: 48.8px;
         }
       }
 
@@ -712,6 +709,7 @@ $accent-color: #d2691e; // Accent color for titles
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    // border: 1px solid black;
 
     .event_title {
       width: 100%;
@@ -738,23 +736,20 @@ $accent-color: #d2691e; // Accent color for titles
         color: #802d20;
         text-align: center;
         font-family: YoungSerif;
-        font-size: 2rem;
+        font-size: 39.06px;
         font-style: normal;
         font-weight: 600;
-        line-height: 48.8px; /* 124.936% */
-        // border: 1px solid black;
+        line-height: 48.8px;
         margin-top: 15px;
-        // margin-bottom: 10px;
       }
 
       .sub_title {
         width: 100%;
         max-width: 800px;
         height: 40px;
-        color: #555555;
+        color: #000;
         align-items: center;
         text-align: center;
-        // border: 1px solid red;
 
         font-family: Urbanist;
         font-size: 1rem;
@@ -766,120 +761,128 @@ $accent-color: #d2691e; // Accent color for titles
     }
 
     .event_boxes {
-      width: 1320px;
+      width: 100%;
       height: 550px;
       margin-top: 20px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      .event {
-        width: 413x;
-        height: 490px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border: 1px solid #fcfceb;
-        cursor: pointer;
-        background-color: $event-card-bg;
-        box-shadow: 0 4px 8px $box-shadow-color;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: background-color 0.3s, transform 0.3s;
 
-        &:hover {
-          background-color: $event-card-hover-bg;
-          transform: scale(1.02);
-        }
-        img {
-          width: 414px;
-          height: 250px;
-          margin-bottom: 15px;
-        }
-        .tags {
-          width: 180px;
-          height: 25px;
+      .carts_wrap {
+        width: 100%;
+        height: 100%;
+
+        .event {
+          width: 413px;
+          height: 490px;
           display: flex;
-          flex-direction: row;
-          .first {
-            width: auto;
-            height: auto;
-            // border: 1px solid black;
-            background: #2e524a;
+          flex-direction: column;
+          justify-content: space-between;
+          border: 1px solid #fcfceb;
+          cursor: pointer;
+
+          background-color: $event-card-bg;
+          box-shadow: 0 4px 8px $box-shadow-color;
+          border-radius: 8px;
+          overflow: hidden;
+          transition: background-color 0.3s, transform 0.3s;
+
+          &:hover {
+            background-color: $event-card-hover-bg;
+            transform: scale(1.02);
+          }
+          img {
+            width: 410px;
+            height: 250px;
+            margin-bottom: 15px;
+            object-fit: cover;
+          }
+          .tags {
+            width: 180px;
+            height: 25px;
             display: flex;
-            padding: 3px 10px;
-            align-items: flex-start;
-            gap: 10px;
-            margin-right: 10px;
-            span {
-              color: #fff;
-              font-family: Urbanist;
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 700;
-              line-height: 19.6px; /* 140% */
+            flex-direction: row;
+            .first {
+              width: auto;
+              height: auto;
+              // border: 1px solid black;
+              background: #d2691e;
+              display: flex;
+              padding: 3px 10px;
+              align-items: flex-start;
+              gap: 10px;
+              margin-right: 10px;
+              span {
+                color: #fff;
+                font-family: Urbanist;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 19.6px; /* 140% */
+              }
+            }
+            .second {
+              width: auto;
+              height: auto;
+              // border: 1px solid black;
+              background: #2e524a;
+              display: flex;
+              padding: 3px 10px;
+              align-items: flex-start;
+              gap: 10px;
+              span {
+                color: #fff;
+                font-family: Urbanist;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 19.6px; /* 140% */
+              }
             }
           }
-          .second {
-            width: auto;
-            height: auto;
-            // border: 1px solid black;
-            background: #2e524a;
-            display: flex;
-            padding: 3px 10px;
-            align-items: flex-start;
-            gap: 10px;
+
+          .title {
+            width: 415px;
+            height: 70px;
+            border: 1px black;
+            padding: 2px;
             span {
-              color: #fff;
-              font-family: Urbanist;
-              font-size: 14px;
+              color: #3e2723;
+              font-family: YoungSerif;
+              font-size: 25px;
               font-style: normal;
-              font-weight: 700;
-              line-height: 19.6px; /* 140% */
+              font-weight: 400;
+              line-height: 32px; /* 125% */
             }
           }
-        }
 
-        .title {
-          width: 415px;
-          height: 70px;
-          border: 1px black;
-          padding: 2px;
-          span {
-            color: #2e524a;
-            font-family: YoungSerif;
-            font-size: 25px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 32px; /* 125% */
+          .context {
+            width: 415px;
+            height: 65px;
+            p {
+              color: #3e2723;
+              font-family: Urbanist;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 22.4px; /* 140% */
+            }
           }
-        }
 
-        .context {
-          width: 415px;
-          height: 65px;
-          p {
-            color: #2e524a;
-            font-family: Urbanist;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 22.4px; /* 140% */
-          }
-        }
-
-        .date {
-          width: 181px;
-          height: 23px;
-          display: flex;
-          // margin-left: 5px;
-          margin-top: 20px;
-          span {
-            color: #718876;
-            font-family: Urbanist;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 22.4px; /* 140% */
+          .date {
+            width: 181px;
+            height: 23px;
+            display: flex;
+            // margin-left: 5px;
+            margin-top: 20px;
+            span {
+              color: #718876;
+              font-family: Urbanist;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 22.4px; /* 140% */
+            }
           }
         }
       }

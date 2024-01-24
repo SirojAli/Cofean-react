@@ -31,135 +31,148 @@ export function Footer() {
       <Stack className="footer_box">
         {/* Footer  1 */}
         <Box className="footer1">
-          <Box className="f1_top">
+          <div className="f1_top">
             <Box className="f1_icon">
-              <img src="/icons/money_back.svg" alt="icons" />
+              <img src="/icons/money1.png" alt="icons" />
             </Box>
             <Box className="f1_text">
               <p>100% Money back</p>
             </Box>
-          </Box>
+          </div>
           <div className="f1_divider"></div>
-          <Box className="f1_top">
+          <div className="f1_top">
             <Box className="f1_icon">
-              <img src="/icons/delivery.svg" alt="icons" />
+              <img src="/icons/free.png" alt="icons" />
             </Box>
             <Box className="f1_text">
               <p> Free delivery for order over $50</p>
             </Box>
-          </Box>
+          </div>
           <div className="f1_divider"></div>
-          <Box className="f1_top">
+          <div className="f1_top">
             <Box className="f1_icon">
-              <img src="/icons/quality.svg" alt="icons" />
+              <img src="/icons/call.svg" alt="icons" />
             </Box>
             <Box className="f1_text">
-              <p> Quality Guarantee</p>
+              <p>24/7 Customer Support</p>
             </Box>
-          </Box>
+          </div>
         </Box>
 
-        {/* Footer 2 */}
-        <Box className="footer2">
-          {/* f2 Left */}
-          <Box className="f2_left">
-            <Box className="f2_left_side">
-              <Box className="f2_left_boxes">
-                <Box className="f2_left_title">COMPANY</Box>
-                <Box className="f2_left_text">
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
+        <Box className="footer2_3">
+          {/* Footer 2 */}
+          <Box className="footer2">
+            <div className="f2_box">
+              <Box className="f2_contents">
+                {/* 1-QATOR */}
+                <Box className="content">
+                  <p className="title">COMPANY</p>
+                  <Box className="content_texts">
+                    <p className="text">About us</p>
+                    <p className="text">Blog</p>
+                    <p className="text">Events</p>
+                    <p className="text">Contact Us</p>
+                  </Box>
+                </Box>
+
+                {/* 2-QATOR */}
+                <Box className="content">
+                  <p className="title">COFEAN SHOP</p>
+                  <Box className="content_texts">
+                    <p className="text">All Products</p>
+                    <p className="text">Bestsellers</p>
+                    <p className="text">Sale</p>
+                    <p className="text">Latest Products</p>
+                  </Box>
+                </Box>
+
+                {/* 3-QATOR */}
+                <Box className="content">
+                  <p className="title">HELP</p>
+                  <Box className="content_texts">
+                    <p className="text">My Account</p>
+                    <p className="text">My Orders</p>
+                    <p className="text">Wishlist</p>
+                    <p className="text">Legal & Privacy</p>
+                  </Box>
                 </Box>
               </Box>
-              <Box className="f2_left_boxes">
-                <Box className="f2_left_title">COMPANY</Box>
-                <Box className="f2_left_text">
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
+
+              <Box className="f2_bottom">
+                <Box className="f2_cards">
+                  <img className="icon" src="/icons/visa.svg" />
+                  <img className="icon" src="/icons/master_card.svg" />
+                  <img className="icon_w" src="/icons/western_union.svg" />
+                  <img className="icon_p" src="/icons/paypal.svg" />
+                  <img className="icon" src="/icons/toss.svg" />
+                  <img className="icon" src="/icons/kakao.svg" />
+                  <img className="icon_n" src="/icons/naver3.png" />
+                  <img className="icon_s" src="/icons/samsung1.svg" />
+                </Box>
+
+                <Box className="f2_rights">
+                  <p>Copyright © 2024 Cofean. All Rights Reserved</p>
                 </Box>
               </Box>
-              <Box className="f2_left_boxes">
-                <Box className="f2_left_title">COMPANY</Box>
-                <Box className="f2_left_text">
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
-                  <div>About Us</div>
-                  <div>Cofean</div>
-                </Box>
-              </Box>
-            </Box>
+            </div>
           </Box>
 
-          {/* f2 divider */}
           <div className="f2_divider"></div>
 
-          {/* f2 Right */}
-          <Box className="f2_right">
-            {/* contact */}
-            <Box className="f2_contact">
-              <Box className="f2_right_title">COMPANY</Box>
-              <Box className="f2_right_contact">
-                <Box className="f2_icon">
-                  <p>
-                    <RoomIcon />
-                    Busan, South Korea
-                  </p>
-                  <p>
-                    <PhoneIcon /> + 82 10 0777 2332
-                  </p>
-                  <p>
-                    <EmailIcon />
-                    cofean@gmail.com
-                  </p>
+          {/* Footer 3 */}
+          <Box className="footer3">
+            <div className="f3_box">
+              {/* for logo */}
+              <div className="f3_logo">
+                <img className="logo" src="/images/navbar/logo1.png" />
+              </div>
+
+              {/* for sending email */}
+              <Box className="f3_send_email">
+                <h4>Join Cofean Cafe Club and Get $50 for your visit.</h4>
+                <Box className="email_wrap">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="f3_input"
+                  />
+                  <Button className="f3_btn">
+                    <img className="send_email" src="/icons/email1.svg" />
+                  </Button>
                 </Box>
+                {/* divider */}
+                <div className="f3_divider"></div>
               </Box>
-            </Box>
 
-            {/* divider */}
-            <Box className="f2_divider2"></Box>
+              {/* social media */}
+              <div className="f3_social_media">
+                <Box className="s_icn">
+                  <img className="icon" src="/icons/facebook.png" />
+                </Box>
+                <Box className="s_icn">
+                  <img className="icon" src="/icons/linkedin.png" />
+                </Box>
+                <Box className="s_icn">
+                  <img className="icon" src="/icons/instagram.png" />
+                </Box>
+                <Box className="s_icn">
+                  <img className="icon" src="/icons/twitter.png" />
+                </Box>
+                <Box className="s_icn">
+                  <img className="icon" src="/icons/pinterest.png" />
+                </Box>
+              </div>
 
-            {/* social */}
-            <Box className="f2_social">
-              <a href="https://github.com">
-                <FacebookIcon className="sns_icon" />
-              </a>
-              <a href="https://t.me">
-                <TelegramIcon className="sns_icon" />
-              </a>
-              <a href="https://www.linkedin.com/in">
-                <LinkedInIcon className="sns_icon" />
-              </a>
-              <a href="https://www.instagram.com">
-                <InstagramIcon className="sns_icon" />
-              </a>
-              <a href="https://github.com">
-                <GitHubIcon className="sns_icon" />
-              </a>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Footer 3 */}
-        <Box className="footer3">
-          <Box className="f3_left">
-            <img src="/icons/visa.svg" className="card" />
-            <img src="/icons/master_card.svg" className="card" />
-            <img src="/icons/paypal.svg" className="card" />
-            <img src="/icons/kakao.svg" className="card" />
-            <img src="/icons/toss.svg" className="card" />
-            <img src="/icons/naver.png" className="card2" />
-            <img src="/icons/samsung.png" className="card2" />
-          </Box>
-
-          <Box className="f3_right">
-            <p>Copyright © 2024 Cofean. All Rights Reserved</p>
+              {/* for number & email */}
+              <div className="f3_num_email">
+                <Box className="number">
+                  <p>+82 10-8240-5559</p>
+                </Box>
+                <Box className="email">
+                  <p>cofean@gmail.com</p>
+                </Box>
+              </div>
+            </div>
           </Box>
         </Box>
       </Stack>
