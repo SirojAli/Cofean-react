@@ -28,6 +28,7 @@ export function OnSales() {
                   name="rating"
                   defaultValue={5}
                   precision={0.5}
+                  readOnly
                 />
                 <p className="text">123 Reviews</p>
               </Box>
@@ -57,6 +58,7 @@ export function OnSales() {
                   name="rating"
                   defaultValue={5}
                   precision={0.5}
+                  readOnly
                 />
                 <p className="text">77 Reviews</p>
               </Box>
@@ -83,6 +85,7 @@ export function OnSales() {
                   name="rating"
                   defaultValue={5}
                   precision={0.5}
+                  readOnly
                 />
                 <p className="text">23 Reviews</p>
               </Box>
@@ -109,6 +112,7 @@ export function OnSales() {
                   name="rating"
                   defaultValue={5}
                   precision={0.5}
+                  readOnly
                 />
                 <p className="text">32 Reviews</p>
               </Box>

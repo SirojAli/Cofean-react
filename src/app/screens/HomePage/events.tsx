@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
-import Rating from "@mui/material/Rating";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import "../../../scss/home.scss";
@@ -47,7 +46,6 @@ export function Events() {
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
                 deserunt non, voluptatem vitae saepe molestias soluta dicta
-                reprehenderit quam pariatur quos official.
               </p>
             </Box>
             <Box className="date">
@@ -72,7 +70,6 @@ export function Events() {
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
                 deserunt non, voluptatem vitae saepe molestias soluta dicta
-                reprehenderit quam pariatur quos official.
               </p>
             </Box>
             <Box className="date">
@@ -97,7 +94,6 @@ export function Events() {
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
                 deserunt non, voluptatem vitae saepe molestias soluta dicta
-                reprehenderit quam pariatur quos official.
               </p>
             </Box>
             <Box className="date">
@@ -122,7 +118,6 @@ export function Events() {
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
                 deserunt non, voluptatem vitae saepe molestias soluta dicta
-                reprehenderit quam pariatur quos official.
               </p>
             </Box>
             <Box className="date">
@@ -147,7 +142,6 @@ export function Events() {
               <p>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil
                 deserunt non, voluptatem vitae saepe molestias soluta dicta
-                reprehenderit quam pariatur quos official.
               </p>
             </Box>
             <Box className="date">
