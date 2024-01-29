@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { Header } from "./header";
+import { AllProducts } from "./allProducts";
 
-export function HelpPage() {
+import "../../../scss/products.scss";
+
+export function ProductPage() {
   /** INITIALIZATIONS */
 
   return (
-    <div className="help_page">
+    <div>
       <Header />
+      <AllProducts />
     </div>
   );
 }

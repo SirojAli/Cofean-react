@@ -23,6 +23,8 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 import "../../../scss/navbar.scss";
+import Facebook from "@mui/icons-material/Facebook";
+import Instagram from "@mui/icons-material/Instagram";
 
 export function Footer() {
   const navigate = useNavigate;
@@ -146,21 +148,11 @@ export function Footer() {
 
               {/* social media */}
               <div className="f3_social_media">
-                <Box className="s_icn">
-                  <img className="icon" src="/icons/facebook.png" />
-                </Box>
-                <Box className="s_icn">
-                  <img className="icon" src="/icons/linkedin.png" />
-                </Box>
-                <Box className="s_icn">
-                  <img className="icon" src="/icons/instagram.png" />
-                </Box>
-                <Box className="s_icn">
-                  <img className="icon" src="/icons/twitter.png" />
-                </Box>
-                <Box className="s_icn">
-                  <img className="icon" src="/icons/pinterest.png" />
-                </Box>
+                <Facebook className="icon" />
+                <LinkedInIcon className="icon" />
+                <Instagram className="icon" />
+                <GitHubIcon className="icon" />
+                <TelegramIcon className="icon" />
               </div>
 
               {/* for number & email */}

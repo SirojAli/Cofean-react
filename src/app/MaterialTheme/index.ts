@@ -39,7 +39,7 @@ const light = {
       styleOverrides: {
         html: { height: "100%" },
         body: {
-          background: "#f4f6f8",
+          background: "#fff", // #f4f6f8
           height: "100%",
           minHeight: "100%",
         },

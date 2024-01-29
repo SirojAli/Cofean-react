@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import "../../../scss/home.scss";
+import "../../../scss/cafe.scss";
 
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
@@ -172,14 +172,14 @@ export function AllCafes() {
                         <Box className="like">
                           <div className="like_cnt">{cafe.likeCount}</div>
                           <div className="like_img">
-                            <img src="icons/like.svg" alt={`like_${index}`} />
+                            <img src="/icons/like.svg" alt={`like_${index}`} />
                           </div>
                         </Box>
                         <div className="dvr"></div>
                         <Box className="view">
                           <div className="view_cnt">{cafe.viewCount}</div>
                           <div className="view_img">
-                            <img src="icons/view.svg" alt={`view_${index}`} />
+                            <img src="/icons/view.svg" alt={`view_${index}`} />
                           </div>
                         </Box>
                       </Box>

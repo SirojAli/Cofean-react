@@ -11,7 +11,7 @@ export function OnSales() {
       <Stack className="home_sale_box">
         {/* 1. Text title */}
         <Box className="sale_title">
-          <h2>Hot Sales</h2>
+          <h2>Featured Coffee</h2>
         </Box>
 
         {/* 2. Products in Trends */}

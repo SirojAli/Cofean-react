@@ -219,21 +219,19 @@ $accent-color: #d2691e; // Accent color for titles
       height: 60px;
       display: flex;
       justify-content: center;
-      // border: 2px solid yellow;
       align-items: center;
       margin-bottom: 10px;
       h2 {
         width: 500px;
         height: 60px;
-        // border: 2px solid red;
-        color: #802d20; //  d2691e
+        color: #802d20;
         text-align: center;
-        /* Heading/h2 */
         font-family: "Roboto", sans-serif;
-        font-size: 39.06px; // 2rem
+        font-size: 39.06px;
         font-style: normal;
         font-weight: 600;
-        line-height: 48.8px; /* 124.936% */
+        line-height: 48.8px;
+        letter-spacing: 2px;
       }
     }
 
@@ -263,7 +261,8 @@ $accent-color: #d2691e; // Accent color for titles
         img {
           width: 100%;
           height: 100%;
-          border-radius: 50%;
+          // border-radius: 50%;
+          border-radius: 10%;
           box-shadow: 0 4px 8px rgba(0.5, 0.5, 0.5, 0.8);
         }
       }
@@ -319,6 +318,7 @@ $accent-color: #d2691e; // Accent color for titles
         font-style: normal;
         font-weight: 600;
         line-height: 48.8px;
+        letter-spacing: 2px;
       }
     }
 

@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
+// CAFE HEADER STYLE START
 .cafe_header {
   height: 400px;
   width: 100%;
@@ -15,7 +16,9 @@
   //   margin-top: 200px;
   // }
 }
+// CAFE HEADER STYLE END
 
+// ALL CAFE STYLE START
 .all_cafes {
   width: 100%;
   height: 100%;
@@ -65,7 +68,7 @@
             line-height: 25.2px;
             text-transform: uppercase;
             cursor: pointer;
-            margin: 0; /* Remove default margin */
+            margin: 0;
           }
         }
       }
@@ -88,10 +91,10 @@
             width: 180px;
             height: 30px;
             border: none;
-            background-color: #fff; /* White background */
-            border: 1px solid #d2b48c; /* Tan color border */
-            border-radius: 5px; /* Rounded corners */
-            padding: 5px; /* Add padding */
+            background-color: #fff;
+            border: 1px solid #d2b48c;
+            border-radius: 5px;
+            padding: 5px;
           }
 
           .search_btn {
@@ -271,3 +274,337 @@
     }
   }
 }
+// ALL CAFE STYLE END
+
+// CHOSEN CAFE STYLE START
+.chosen_cafe {
+  width: 1320px;
+  height: auto;
+  // border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+
+  .chosen_cafe_box {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .name_search_box {
+      width: 100%;
+      height: 50px;
+      margin-top: 80px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      .cafe_name {
+        margin-left: 380px;
+        p {
+          width: 500px;
+          height: 50px;
+          margin: 0;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: #802d20;
+          text-align: center;
+          font-family: "Roboto", sans-serif;
+          font-size: 39.06px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 48.8px;
+        }
+      }
+
+      .search_cafe {
+        display: flex;
+
+        .search_form {
+          display: flex;
+
+          .search_input {
+            padding: 0.5em;
+            border: none;
+            border-radius: 3px;
+            font-size: 1em;
+            margin-right: 0.5em;
+            width: 200px;
+            font-family: "Open Sans", sans-serif;
+            border: 1px solid #a76c47; //  d2b48c
+          }
+
+          .search_btn {
+            // padding: 0.5em 0.5em;
+            background-color: #a76c47; //  d2b48c
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #8b4513;
+            }
+          }
+        }
+      }
+    }
+
+    .other_cafe_swiper {
+      width: 100%;
+      height: 170px; // 147px
+      display: flex;
+      flex-direction: row;
+      margin-top: 35px;
+      // border: 1px solid red;
+
+      .prev_btn,
+      .next_btn {
+        width: 5%;
+        height: 150px; // 147px
+        font-size: 40px;
+        color: #000;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #d2b48c; // f2f2f2;
+        }
+      }
+
+      .other_cafe {
+        width: 95%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        // border: 1px solid green;
+
+        .cafe_avatar {
+          width: 140px; // 123px
+          height: 170px; // 147px
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+
+          img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+          }
+
+          p {
+            // margin-top: 10px;
+            font-family: "Open Sans", sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 16px;
+            color: #000;
+          }
+        }
+      }
+    }
+
+    .filter_box1 {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      margin-top: 65px;
+
+      .filter_1 {
+        width: 25%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .filter_btn {
+          background-color: #a76c47;
+        }
+      }
+    }
+
+    .product_types {
+      width: 1320px; // 100%
+      height: auto; //1400px
+      display: flex;
+      flex-direction: row;
+      // border: 1px solid black;
+
+      .filter_box2 {
+        margin-top: 60px;
+        width: 50px;
+        height: 350px; //  auto
+        display: flex;
+        flex-direction: column;
+
+        .filter_2 {
+          display: flex;
+          flex-direction: row;
+          justify-content: end;
+          -moz-transform: rotate(-90deg);
+          -ms-transform: rotate(-90deg);
+          -o-transform: rotate(-90deg);
+          -webkit-transform: rotate(-90deg);
+
+          .filter_btn {
+            background-color: #a76c47;
+            min-width: auto;
+            margin-right: 10px;
+          }
+        }
+      }
+
+      .cafe_all_products {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        // border: 1px solid red;
+
+        margin: 40px 10px;
+
+        .cafe_product {
+          width: 280px;
+          height: 480px;
+          background: #fff;
+          border: 1px solid #fcfceb;
+          cursor: pointer;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+          transition: transform 0.3s, box-shadow 0.3s;
+          margin-bottom: 40px;
+
+          &:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+          }
+
+          img {
+            width: 280px;
+            height: 390px;
+          }
+
+          .product_info {
+            width: 280px;
+            height: 90px;
+            padding: 2px;
+            display: flex;
+            flex-direction: column;
+
+            .product_review {
+              width: 280px;
+              height: 16px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+
+              .rating {
+                width: auto;
+                height: auto;
+                text-align: center;
+                font-family: "Open Sans", sans-serif;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 900;
+                line-height: 22px;
+              }
+              .text {
+                width: 100px;
+                height: 16px;
+                color: #808080;
+                text-align: center;
+                font-family: "Open Sans", sans-serif;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 19.6px;
+              }
+            }
+
+            .pro_name {
+              width: 100%;
+              height: auto;
+              align-self: stretch;
+              color: #000;
+              margin-top: 5px;
+              margin-bottom: 5px;
+              font-family: "Roboto", sans-serif;
+              font-size: 24px;
+              font-style: normal;
+              font-weight: 700;
+              line-height: 28px;
+            }
+
+            .pro_basket {
+              width: 280px;
+              height: 26px;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              align-self: stretch;
+
+              .price {
+                width: 140px;
+                height: 24px;
+                color: #000;
+                font-family: "Open Sans", sans-serif;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 24px;
+              }
+
+              .basket {
+                width: 132px;
+                height: 24px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-right: 10px;
+
+                p {
+                  width: 102px;
+                  height: 20px;
+                  color: #000;
+                  text-align: right;
+                  margin-right: 5px;
+
+                  font-family: "Open Sans", sans-serif;
+                  font-size: 18px;
+                  font-style: normal;
+                  font-weight: 500;
+                  line-height: 24px;
+                }
+
+                img {
+                  width: 24px;
+                  height: 24px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// CHOSEN CAFE STYLE END

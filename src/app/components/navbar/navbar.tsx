@@ -2,8 +2,9 @@ import { Box, Button, Container, IconButton, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Footer } from "../footer/footer";
+import "../../../scss/navbar.scss";
 
-export function Navbar() {
+export function Navbar(props: any) {
   /*INITIALIZATIONS*/
   const [scrollPosition, setScrollPosition] = useState(0);
   useEffect(() => {
@@ -23,16 +24,11 @@ export function Navbar() {
   // Check if scrollPosition is greater than or equal to 100
   const isScrolled = scrollPosition >= 100;
   const isTopScroll = scrollPosition >= 300;
-  // const [menu, setMenu] = useState(false);
-  // const onMenu = () => {
-  //   setMenu(!menu);
-  // };
 
   return (
     <>
       <div className={isScrolled ? "navbar active_scroll" : "navbar"}>
         <div className="navbar_box">
-          {/* Navbar Logo part */}
           <div className="navbar_left">
             <Box className="navbar_logo">
               <img src="/images/navbar/logo1.png" alt="" />
@@ -40,50 +36,66 @@ export function Navbar() {
             </Box>
           </div>
 
-          {/* Navbar Menu part */}
           <div className="navbar_middle">
             <div className="navbar_menu">
-              <Box className="navbar_menu_1">
-                <h5>Home</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/">
+                  <h5>Home</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>Brands</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/cafe">
+                  <h5>Brands</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>Products</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/products">
+                  <h5>Products</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>Blog</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/blog">
+                  <h5>Blog</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>Help</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/help">
+                  <h5>Help</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>Orders</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/orders">
+                  <h5>Orders</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_menu_1">
-                <h5>My Page</h5>
+              <Box className="menu_page" onClick={props.setPath}>
+                <NavLink className="menu" to="/members">
+                  <h5>My Page</h5>
+                </NavLink>
               </Box>
             </div>
           </div>
 
-          {/* Navbar Icon part */}
           <div className="navbar_right">
             <div className="navbar_icons">
               <Box className="icon_search">
                 <img src="/icons/search.svg" alt="" />
               </Box>
-              <Box className="icon_cart">
+              <Box className="icon_cart" onClick={props.setPath}>
                 <img src="/icons/cart.svg" alt="" />
               </Box>
-              <Box className="icon_user">
+              <Box className="icon_user" onClick={props.setPath}>
                 <img src="/icons/User.svg" alt="" />
               </Box>
-              <Box className="navbar_signup">
-                <h5>Signup</h5>
+              <Box className="navbar_signup" onClick={props.setPath}>
+                <NavLink className="menu" to="/signup">
+                  <h5>Signup</h5>
+                </NavLink>
               </Box>
-              <Box className="navbar_login">
-                <h5>Login</h5>
+              <Box className="navbar_login" onClick={props.setPath}>
+                <NavLink className="menu" to="/login">
+                  <h5>Login</h5>
+                </NavLink>
               </Box>
             </div>
           </div>

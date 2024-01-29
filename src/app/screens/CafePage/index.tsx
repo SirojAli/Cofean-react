@@ -8,7 +8,7 @@ export function CafePage() {
   /** INITIALIZATIONS */
 
   return (
-    <div className="homepage">
+    <div>
       <Header />
       <AllCafes />
     </div>
