@@ -10,16 +10,22 @@ import {
   Routes,
 } from "react-router-dom";
 
-import { CafePage } from "./screens/CafePage";
-import { ProductPage } from "./screens/ProductPage";
-import { BlogPage } from "./screens/BlogPage";
-import { OrdersPage } from "./screens/OrdersPage";
-import { MembersPage } from "./screens/MembersPage";
-import { HelpPage } from "./screens/HelpPage";
-import { LoginPage } from "./screens/LoginPage";
-import { HomePage } from "./screens/HomePage";
+import { Homepage } from "./screens/HomePage";
+import { Signup } from "./screens/SignupPage";
+import { Login } from "./screens/LoginPage";
 import { Navbar } from "./components/navbar/navbar";
+
+import { Cafe } from "./screens/CafePage";
 import { ChosenCafe } from "./screens/CafePage/chosenCafe";
+
+import { Product } from "./screens/ProductPage";
+import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
+
+import { Members } from "./screens/MembersPage";
+
+import { Blog } from "./screens/BlogPage";
+import { Orders } from "./screens/OrdersPage";
+import { Help } from "./screens/HelpPage";
 
 function App() {
   // const [path, setPath] = useState();
@@ -30,22 +36,22 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Navbar />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<LoginPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
 
-          <Route path="/cafe" element={<CafePage />} />
+          <Route path="/cafe" element={<Cafe />} />
           <Route path="/cafe/:cafe_id" element={<ChosenCafe />} />
 
-          <Route path="/products" element={<ProductPage />} />
-          <Route path="/products/:product_id" element={<ProductPage />} />
+          <Route path="/products" element={<Product />} />
+          <Route path="/products/:products_id" element={<ChosenProduct />} />
 
-          <Route path="/members" element={<MembersPage />} />
-          <Route path="/members/other" element={<MembersPage />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/members/other" element={<Members />} />
 
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/help" element={<HelpPage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/help" element={<Help />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />
       </Routes>

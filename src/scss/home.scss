@@ -649,7 +649,7 @@ $accent-color: #d2691e; // Accent color for titles
               .price {
                 width: 140px;
                 height: 28px;
-                color: $brand-trend-text-color;
+                color: #000;
                 font-family: "Open Sans", sans-serif;
                 font-size: 18px;
                 font-style: normal;
@@ -657,15 +657,16 @@ $accent-color: #d2691e; // Accent color for titles
                 line-height: 24px;
 
                 .discounted {
-                  color: $brand-trend-discounted-color;
+                  color: #ff0000;
                   font-weight: 600;
                   line-height: 28px;
                 }
 
                 .original {
-                  color: $brand-trend-original-color;
+                  color: #999999;
                   text-decoration: line-through;
                   margin-left: 10px;
+                  font-size: 14px;
                 }
               }
 

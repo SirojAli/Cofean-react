@@ -52,18 +52,19 @@
         justify-content: space-between;
 
         .f_box {
-          width: 100px;
-          height: 50px;
+          width: 90px;
+          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
           background-color: #8b4513;
           border-radius: 8px;
+          padding: 10px;
 
           p {
             color: #fff; /* White text */
             font-family: "Urbanist", sans-serif;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
             line-height: 25.2px;
             text-transform: uppercase;

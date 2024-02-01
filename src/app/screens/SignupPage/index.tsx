@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 
-export function Login() {
+export function Signup() {
   /** INITIALIZATIONS */
 
   return (
-    <div className="login_page">
-      <h1>You are in LoginPage</h1>
+    <div className="signup_page">
+      <h1>You are in SignupPage</h1>
     </div>
   );
 }

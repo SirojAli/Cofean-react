@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Header } from "./header";
 
-export function BlogPage() {
+export function Blog() {
   /** INITIALIZATIONS */
 
   return (

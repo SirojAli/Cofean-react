@@ -7,7 +7,7 @@ import { OnSales } from "./onSales";
 import { Events } from "./events";
 import "../../../scss/home.scss";
 
-export function HomePage() {
+export function Homepage() {
   /** INITIALIZATIONS */
 
   return (

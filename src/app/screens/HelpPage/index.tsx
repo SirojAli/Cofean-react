@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Header } from "./header";
 
-export function HelpPage() {
+export function Help() {
   /** INITIALIZATIONS */
 
   return (

@@ -4,7 +4,7 @@ import { AllProducts } from "./allProducts";
 
 import "../../../scss/products.scss";
 
-export function ProductPage() {
+export function Product() {
   /** INITIALIZATIONS */
 
   return (

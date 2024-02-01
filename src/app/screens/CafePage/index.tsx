@@ -4,7 +4,7 @@ import { AllCafes } from "./allCafes";
 
 import "../../../scss/cafe.scss";
 
-export function CafePage() {
+export function Cafe() {
   /** INITIALIZATIONS */
 
   return (
