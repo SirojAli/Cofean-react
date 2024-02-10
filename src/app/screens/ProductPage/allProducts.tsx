@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Checkbox, Container, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import "../../../scss/cafe.scss";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
@@ -50,7 +51,7 @@ export function AllProducts() {
                   placeholder="Search Product"
                 />
                 <Button className="search_btn">
-                  <img src="/icons/search.svg" alt="" />
+                  <SearchIcon />
                 </Button>
               </form>
             </Box>
@@ -265,7 +266,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -295,7 +296,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -322,7 +323,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -349,7 +350,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -379,7 +380,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -409,7 +410,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -436,7 +437,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -463,7 +464,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -493,7 +494,7 @@ export function AllProducts() {
                       </div>
                       <div className="basket">
                         <p>Add to Cart</p>
-                        <img src="/icons/cart.svg" alt="cart" />
+                        <ShoppingCartIcon />
                       </div>
                     </Box>
                   </Box>
@@ -540,7 +541,7 @@ export function AllProducts() {
                   </div>
                   <div className="basket">
                     <p>Add to Cart</p>
-                    <img src="/icons/cart.svg" alt="cart" />
+                    <ShoppingCartIcon />
                   </div>
                 </Box>
               </Box>
@@ -570,7 +571,7 @@ export function AllProducts() {
                   </div>
                   <div className="basket">
                     <p>Add to Cart</p>
-                    <img src="/icons/cart.svg" alt="cart" />
+                    <ShoppingCartIcon />
                   </div>
                 </Box>
               </Box>
@@ -597,7 +598,7 @@ export function AllProducts() {
                   </div>
                   <div className="basket">
                     <p>Add to Cart</p>
-                    <img src="/icons/cart.svg" alt="cart" />
+                    <ShoppingCartIcon />
                   </div>
                 </Box>
               </Box>
@@ -624,7 +625,7 @@ export function AllProducts() {
                   </div>
                   <div className="basket">
                     <p>Add to Cart</p>
-                    <img src="/icons/cart.svg" alt="cart" />
+                    <ShoppingCartIcon />
                   </div>
                 </Box>
               </Box>

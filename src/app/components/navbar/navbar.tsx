@@ -3,6 +3,9 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Footer } from "../footer/footer";
 import "../../../scss/navbar.scss";
+import SearchIcon from "@mui/icons-material/Search";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
@@ -40,37 +43,37 @@ export function Navbar(props: any) {
             <div className="navbar_menu">
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/">
-                  <h5>Home</h5>
+                  <span>Home</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/cafe">
-                  <h5>Brands</h5>
+                  <span>Brands</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/products">
-                  <h5>Products</h5>
+                  <span>Products</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/blog">
-                  <h5>Blog</h5>
+                  <span>Blog</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/help">
-                  <h5>Help</h5>
+                  <span>Help</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/orders">
-                  <h5>Orders</h5>
+                  <span>Orders</span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
                 <NavLink className="menu" to="/members">
-                  <h5>My Page</h5>
+                  <span>My Page</span>
                 </NavLink>
               </Box>
             </div>
@@ -79,24 +82,29 @@ export function Navbar(props: any) {
           <div className="navbar_right">
             <div className="navbar_icons">
               <Box className="icon_search">
-                <img src="/icons/search.svg" alt="" />
+                <SearchIcon />
               </Box>
               <Box className="icon_cart" onClick={props.setPath}>
-                <img src="/icons/cart.svg" alt="" />
+                <ShoppingCartIcon />
               </Box>
               <Box className="icon_user" onClick={props.setPath}>
-                <img src="/icons/User.svg" alt="" />
+                <AccountBoxIcon />
               </Box>
               <Box className="navbar_signup" onClick={props.setPath}>
                 <NavLink className="menu" to="/signup">
-                  <h5>Signup</h5>
+                  <span>Signup</span>
                 </NavLink>
               </Box>
               <Box className="navbar_login" onClick={props.setPath}>
                 <NavLink className="menu" to="/login">
-                  <h5>Login</h5>
+                  <span>Login</span>
                 </NavLink>
               </Box>
+              {/* <Box className="navbar_logout" onClick={props.setPath}>
+                <NavLink className="menu" to="/login">
+                  <span>Logout</span>
+                </NavLink>
+              </Box> */}
             </div>
           </div>
         </div>

@@ -158,10 +158,10 @@ export function Footer() {
               {/* for number & email */}
               <div className="f3_num_email">
                 <Box className="number">
-                  <p>+82 10-8240-5559</p>
+                  <span>+82 10-8240-5559</span>
                 </Box>
                 <Box className="email">
-                  <p>cofean@gmail.com</p>
+                  <span>cofean@gmail.com</span>
                 </Box>
               </div>
             </div>

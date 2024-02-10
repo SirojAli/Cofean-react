@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import "../../../scss/home.scss";
 
@@ -33,7 +34,7 @@ export function Trends() {
               <div className="price">$7.00</div>
               <div className="basket">
                 <p>Add to Cart</p>
-                <img src="/icons/cart.svg" alt="cart" />
+                <ShoppingCartIcon />
               </div>
             </Box>
           </Box>
@@ -57,7 +58,7 @@ export function Trends() {
               <div className="price">$5.00</div>
               <div className="basket">
                 <p>Add to Cart</p>
-                <img src="/icons/cart.svg" alt="cart" />
+                <ShoppingCartIcon />
               </div>
             </Box>
           </Box>
@@ -81,7 +82,7 @@ export function Trends() {
               <div className="price">$12.00</div>
               <div className="basket">
                 <p>Add to Cart</p>
-                <img src="/icons/cart.svg" alt="cart" />
+                <ShoppingCartIcon />
               </div>
             </Box>
           </Box>
@@ -105,7 +106,7 @@ export function Trends() {
               <div className="price">$17.00</div>
               <div className="basket">
                 <p>Add to Cart</p>
-                <img src="/icons/cart.svg" alt="cart" />
+                <ShoppingCartIcon />
               </div>
             </Box>
           </Box>

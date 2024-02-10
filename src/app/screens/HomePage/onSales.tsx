@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import "../../../scss/home.scss";
 
 export function OnSales() {
@@ -40,7 +40,7 @@ export function OnSales() {
                 </div>
                 <div className="basket">
                   <p>Add to Cart</p>
-                  <img src="/icons/cart.svg" alt="cart" />
+                  <ShoppingCartIcon />
                 </div>
               </Box>
             </Box>
@@ -70,7 +70,7 @@ export function OnSales() {
                 </div>
                 <div className="basket">
                   <p>Add to Cart</p>
-                  <img src="/icons/cart.svg" alt="cart" />
+                  <ShoppingCartIcon />
                 </div>
               </Box>
             </Box>
@@ -97,7 +97,7 @@ export function OnSales() {
                 </div>
                 <div className="basket">
                   <p>Add to Cart</p>
-                  <img src="/icons/cart.svg" alt="cart" />
+                  <ShoppingCartIcon />
                 </div>
               </Box>
             </Box>
@@ -124,7 +124,7 @@ export function OnSales() {
                 </div>
                 <div className="basket">
                   <p>Add to Cart</p>
-                  <img src="/icons/cart.svg" alt="cart" />
+                  <ShoppingCartIcon />
                 </div>
               </Box>
             </Box>

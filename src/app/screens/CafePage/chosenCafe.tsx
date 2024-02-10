@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -41,20 +41,17 @@ export function ChosenCafe() {
             <Box className="cafe_name">
               <p>Ediya Coffee</p>
             </Box>
-            <Box className="search_cafe">
-              <form className="search_form" action="">
+            <Box className="search_box">
+              <form className="search_forms" action="" method="">
                 <input
-                  className="search_input"
                   type="search"
-                  name="single_search"
-                  placeholder="Search cafe"
+                  className="search_input"
+                  name="SearchCafe"
+                  placeholder="Search Cafe"
                 />
-
-                <Button
-                  className="search_btn"
-                  variant="contained"
-                  endIcon={<SearchIcon />}
-                ></Button>
+                <Button className="search_btn">
+                  <SearchIcon />
+                </Button>
               </form>
             </Box>
           </Stack>
@@ -182,7 +179,7 @@ export function ChosenCafe() {
                     <div className="price">$7.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -206,7 +203,7 @@ export function ChosenCafe() {
                     <div className="price">$5.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -230,7 +227,7 @@ export function ChosenCafe() {
                     <div className="price">$12.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -254,7 +251,7 @@ export function ChosenCafe() {
                     <div className="price">$17.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -277,7 +274,7 @@ export function ChosenCafe() {
                     <div className="price">$7.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -301,7 +298,7 @@ export function ChosenCafe() {
                     <div className="price">$5.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -325,7 +322,7 @@ export function ChosenCafe() {
                     <div className="price">$12.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -349,7 +346,7 @@ export function ChosenCafe() {
                     <div className="price">$17.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -372,7 +369,7 @@ export function ChosenCafe() {
                     <div className="price">$7.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -396,7 +393,7 @@ export function ChosenCafe() {
                     <div className="price">$5.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -420,7 +417,7 @@ export function ChosenCafe() {
                     <div className="price">$12.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -444,7 +441,7 @@ export function ChosenCafe() {
                     <div className="price">$17.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -467,7 +464,7 @@ export function ChosenCafe() {
                     <div className="price">$7.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -491,7 +488,7 @@ export function ChosenCafe() {
                     <div className="price">$5.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -515,7 +512,7 @@ export function ChosenCafe() {
                     <div className="price">$12.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>
@@ -539,7 +536,7 @@ export function ChosenCafe() {
                     <div className="price">$17.00</div>
                     <div className="basket">
                       <p>Add to Cart</p>
-                      <img src="/icons/cart.svg" alt="cart" />
+                      <ShoppingCartIcon />
                     </div>
                   </Box>
                 </Box>

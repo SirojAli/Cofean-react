@@ -123,15 +123,15 @@ export function AllCafes() {
           </Box>
           <Box className="search_box">
             <form className="search_forms" action="" method="">
-              <Button className="search_btn">
-                <img src="/icons/search.svg" alt="" />
-              </Button>
               <input
                 type="search"
                 className="search_input"
                 name="SearchCafe"
                 placeholder="Search Cafe"
               />
+              <Button className="search_btn">
+                <SearchIcon />
+              </Button>
             </form>
           </Box>
         </Box>

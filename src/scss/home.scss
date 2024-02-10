@@ -1,21 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-$event-section-bg: #f8f8f8; // Light Gray
-$event-card-bg: #ffffff; // White
-$event-card-hover-bg: #ededed; // Lighter Gray
-$event-text-color: #333333; // Dark Gray
-$event-subtext-color: #666666; // Medium Gray
-$box-shadow-color: rgba(0, 0, 0, 0.1); // Box Shadow Color
-
-$brand-trend-text-color: #000; // Black text color
-$brand-trend-background-color: #fff; // White background color
-$brand-trend-hover-bg: #f0f0f0; // Light Gray background on hover
-$brand-trend-discounted-color: #ff0000;
-$brand-trend-original-color: #999999;
-// Add more if needed
-$main-font: "Urbanist", sans-serif;
-$accent-color: #d2691e; // Accent color for titles
-
 // HOMEPAGE START
 .homepage {
   width: 100%;
@@ -40,7 +24,7 @@ $accent-color: #d2691e; // Accent color for titles
 
         .text_box1 {
           position: absolute;
-          top: 45%;
+          top: 50%;
           left: 0.2%;
           transform: translateY(-50%);
           color: #fff;
@@ -52,32 +36,33 @@ $accent-color: #d2691e; // Accent color for titles
             justify-content: center;
             flex-direction: column;
             align-items: center;
+
             .header_title {
               font-size: 3.2rem;
               font-family: "Roboto", sans-serif;
-
-              color: #1b1212;
+              color: #000000; // 1b1212
               font-weight: bold;
               margin: 10px 0;
             }
 
             .header_subtitle {
               font-size: 1.2rem;
-              color: #28282b;
+              color: #000000;
               font-family: "Open Sans", sans-serif;
               font-weight: normal;
+              font-size: 20px;
             }
 
             .header_sale {
               font-size: 1.5rem;
-              color: #964b00;
+              color: #000000;
               font-weight: bold;
               font-family: "Roboto", sans-serif;
               // margin-top: 20px;
             }
 
             .header_btn {
-              background: #964b00;
+              background: #ff5403; // ff5403 ff6701
               color: #fff;
               font-weight: bold;
               font-size: 1.5rem;
@@ -109,28 +94,28 @@ $accent-color: #d2691e; // Accent color for titles
             .header_title {
               font-size: 3.2rem;
               font-family: "Roboto", sans-serif;
-              color: #1b1212;
+              color: #000000;
               font-weight: bold;
               margin: 10px 0;
             }
 
             .header_subtitle {
               font-size: 1.2rem;
-              color: #28282b;
+              color: #000000;
               font-family: "Open Sans", sans-serif;
               font-weight: normal;
             }
 
             .header_sale {
               font-size: 1.5rem;
-              color: #1b1212;
+              color: #000000;
               font-weight: bold;
               font-family: "Roboto", sans-serif;
               // margin-top: 20px;
             }
 
             .header_btn {
-              background: #964b00;
+              background: #ff5403; // ff6701
               color: #fff;
               font-weight: bold;
               font-size: 1.5rem;
@@ -162,28 +147,28 @@ $accent-color: #d2691e; // Accent color for titles
             .header_title {
               font-size: 3.2rem;
               font-family: "Roboto", sans-serif;
-              color: #1b1212;
+              color: #000000;
               font-weight: bold;
               margin: 10px 0;
             }
 
             .header_subtitle {
               font-size: 1.2rem;
-              color: #28282b;
+              color: #000000;
               font-family: "Open Sans", sans-serif;
               font-weight: normal;
             }
 
             .header_sale {
               font-size: 1.5rem;
-              color: #1b1212;
+              color: #000000;
               font-weight: bold;
               font-family: "Roboto", sans-serif;
               // margin-top: 20px;
             }
 
             .header_btn {
-              background: #964b00;
+              background: #ff5403;
               color: #fff;
               font-weight: bold;
               font-size: 1.5rem;
@@ -220,18 +205,20 @@ $accent-color: #d2691e; // Accent color for titles
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      // border: 1px solid red;
+
       h2 {
         width: 500px;
-        height: 60px;
-        color: #802d20;
+        height: 50px;
+        color: #000000;
         text-align: center;
         font-family: "Roboto", sans-serif;
-        font-size: 39.06px;
+        font-size: 36px;
         font-style: normal;
-        font-weight: 600;
-        line-height: 48.8px;
-        letter-spacing: 2px;
+        font-weight: 500;
+        line-height: 42px;
+        letter-spacing: 1px;
       }
     }
 
@@ -278,14 +265,15 @@ $accent-color: #d2691e; // Accent color for titles
       padding: 5px;
       margin-bottom: 5px;
       margin-top: 15px;
+
       .br_btn {
         text-decoration: none;
         font-family: "Roboto", sans-serif;
         font-size: 16px;
         font-weight: bold;
         margin-right: 10px;
-        background-color: #a76c47;
-        color: #fff;
+        background-color: #ffca03;
+        color: #000;
       }
     }
   }
@@ -306,19 +294,19 @@ $accent-color: #d2691e; // Accent color for titles
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
 
       h2 {
         width: 500px;
-        height: 60px;
-        color: #802d20;
+        height: 50px;
+        color: #000000;
         text-align: center;
         font-family: "Roboto", sans-serif;
-        font-size: 39.06px; // 2rem
+        font-size: 36px;
         font-style: normal;
-        font-weight: 600;
-        line-height: 48.8px;
-        letter-spacing: 2px;
+        font-weight: 500;
+        line-height: 42px;
+        letter-spacing: 1px;
       }
     }
 
@@ -389,7 +377,7 @@ $accent-color: #d2691e; // Accent color for titles
             width: 100%;
             height: auto;
             align-self: stretch;
-            color: $brand-trend-text-color;
+            color: #000;
             margin-top: 5px;
             margin-bottom: 5px;
             font-family: "Roboto", sans-serif;
@@ -453,7 +441,7 @@ $accent-color: #d2691e; // Accent color for titles
 
     .trend_btn {
       width: 100%;
-      height: 60px;
+      height: 50px;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
@@ -467,8 +455,8 @@ $accent-color: #d2691e; // Accent color for titles
         font-size: 16px;
         font-weight: bold;
 
-        background-color: #a76c47;
-        color: #fff;
+        background-color: #ffca03;
+        color: #000;
       }
     }
   }
@@ -496,6 +484,7 @@ $accent-color: #d2691e; // Accent color for titles
     display: flex;
     justify-content: center;
     background: #fffff0;
+    margin-top: 20px;
     // border: 1px solid red;
 
     .home_sale_box {
@@ -512,16 +501,18 @@ $accent-color: #d2691e; // Accent color for titles
         // border: 2px solid black;
         align-items: center;
         margin-bottom: 20px;
+
         h2 {
           width: 500px;
-          height: 60px;
-          color: #802d20;
+          height: 50px;
+          color: #000000;
           text-align: center;
           font-family: "Roboto", sans-serif;
-          font-size: 39.06px; // 2rem
+          font-size: 36px;
           font-style: normal;
-          font-weight: 600;
-          line-height: 48.8px;
+          font-weight: 500;
+          line-height: 42px;
+          letter-spacing: 1px;
         }
       }
 
@@ -577,7 +568,7 @@ $accent-color: #d2691e; // Accent color for titles
           }
 
           &:hover {
-            background-color: $event-card-hover-bg;
+            background-color: #ededed;
             transform: scale(1.02);
           }
 
@@ -628,7 +619,7 @@ $accent-color: #d2691e; // Accent color for titles
               width: 100%;
               height: auto;
               align-self: stretch;
-              color: $brand-trend-text-color;
+              color: #000;
               margin-top: 5px;
               margin-bottom: 5px;
               font-family: "Roboto", sans-serif;
@@ -682,7 +673,7 @@ $accent-color: #d2691e; // Accent color for titles
                 p {
                   width: 102px;
                   height: 22px;
-                  color: $brand-trend-text-color;
+                  color: #000;
                   text-align: right;
                   margin-right: 5px;
                   font-family: "Open Sans", sans-serif;
@@ -735,15 +726,15 @@ $accent-color: #d2691e; // Accent color for titles
 
       .main_title {
         width: 390px;
-        height: 60px;
+        height: 50px;
         align-items: center;
-        color: #802d20;
+        color: #000000;
         text-align: center;
         font-family: "Roboto", sans-serif;
-        font-size: 39.06px;
+        font-size: 36px;
         font-style: normal;
         font-weight: 600;
-        line-height: 48.8px;
+        line-height: 42px;
         margin-top: 15px;
       }
 
@@ -785,14 +776,14 @@ $accent-color: #d2691e; // Accent color for titles
           border: 1px solid #fcfceb;
           cursor: pointer;
 
-          background-color: $event-card-bg;
-          box-shadow: 0 4px 8px $box-shadow-color;
+          background-color: #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           border-radius: 8px;
           overflow: hidden;
           transition: background-color 0.3s, transform 0.3s;
 
           &:hover {
-            background-color: $event-card-hover-bg;
+            background-color: #ededed;
             transform: scale(1.02);
           }
           img {
@@ -905,14 +896,14 @@ $accent-color: #d2691e; // Accent color for titles
       .br_btn {
         // border: 1px solid violet;
         color: #000;
-        background: var(--Brand-color-Accent-2, #ebdbcb);
+        background: var(--Brand-color-Accent-2, #ffca03);
         padding: 16px 35px;
         display: inline-flex;
         align-items: flex-start;
         gap: 10px;
 
         font-family: "Roboto", sans-serif;
-        font-size: 14px;
+        font-size: 16px;
         font-style: normal;
         font-weight: 700;
         line-height: 22.4px; /* 160% */
