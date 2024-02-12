@@ -26,6 +26,7 @@ import { Members } from "./screens/MembersPage";
 import { Blog } from "./screens/BlogPage";
 import { Orders } from "./screens/OrdersPage";
 import { Help } from "./screens/HelpPage";
+import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
 
 function App() {
   // const [path, setPath] = useState();
@@ -46,10 +47,12 @@ function App() {
           <Route path="/products" element={<Product />} />
           <Route path="/products/:products_id" element={<ChosenProduct />} />
 
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:blog_id" element={<ChosenBlog />} />
+
           <Route path="/members" element={<Members />} />
           <Route path="/members/other" element={<Members />} />
 
-          <Route path="/blog" element={<Blog />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/help" element={<Help />} />
         </Route>
