@@ -21,12 +21,13 @@ import { ChosenCafe } from "./screens/CafePage/chosenCafe";
 import { Product } from "./screens/ProductPage";
 import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 
-import { Members } from "./screens/MembersPage";
+import { MyPage } from "./screens/MembersPage";
 
 import { Blog } from "./screens/BlogPage";
 import { Orders } from "./screens/OrdersPage";
 import { Help } from "./screens/HelpPage";
 import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
+import { OtherPage } from "./screens/MembersPage/otherPage";
 
 function App() {
   // const [path, setPath] = useState();
@@ -50,8 +51,8 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:blog_id" element={<ChosenBlog />} />
 
-          <Route path="/members" element={<Members />} />
-          <Route path="/members/other" element={<Members />} />
+          <Route path="/members" element={<MyPage />} />
+          <Route path="/members/other" element={<OtherPage />} />
 
           <Route path="/orders" element={<Orders />} />
           <Route path="/help" element={<Help />} />

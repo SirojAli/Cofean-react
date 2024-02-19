@@ -6,7 +6,7 @@ import "../../../scss/cafe.scss";
 export function Header() {
   return (
     <Stack
-      className="cafe_header"
+      className="myPage_header"
       sx={{ backgroundImage: "url(/images/headers/y2.png)" }}
     >
       {/* <Box className="header_sort" /> */}

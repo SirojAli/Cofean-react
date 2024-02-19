@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+// HELP PAGE STYLE START
+.help_page_box {
+  width: 100%;
+  height: auto;
+  // border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  .help_menu {
+    width: 100%;
+
+    .help_menu_wrap {
+      width: 100%;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 10px;
+      display: flex;
+      flex-direction: row;
+
+      .help_tablist {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        // border: 1px solid black;
+        justify-content: center;
+        // margin-left: 200px;
+
+        .rules {
+          width: 200px;
+          margin-left: 200px;
+          letter-spacing: 2px;
+        }
+
+        .help {
+          width: 200px;
+          margin: 0 150px;
+          letter-spacing: 2px;
+        }
+
+        .contact {
+          width: 220px;
+          margin-right: 200px;
+          letter-spacing: 2px;
+        }
+      }
+    }
+  }
+
+  .help_main_content {
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin: 30px 0;
+
+    .rules_box {
+      .rules_frame {
+        .help_rules {
+          color: #172b4d;
+          font-family: "Roboto", sans-serif; // YoungSerif
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          border-bottom: 1px solid #c4c4c4;
+          padding: 24px 0 17px 0;
+        }
+      }
+    }
+
+    .faq_box {
+      .panella_header {
+        .ques_text {
+          margin: 10px 0;
+          color: #172b4d;
+          font-family: "Roboto", sans-serif;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 120%;
+        }
+      }
+    }
+
+    .message_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      h2 {
+        color: #000;
+        font-family: "Roboto", sans-serif;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        text-align: center;
+      }
+
+      p {
+        color: var(--Text---Color, #4f547b);
+        font-family: "Open Sans", sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px; /* 173.333% */
+        margin: 0;
+        margin-bottom: 60px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+
+      label {
+        color: var(--Head---Color, #140342);
+        font-family: "Roboto", sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 10px;
+      }
+
+      input {
+        border-radius: 8px;
+        border: 1px solid #140342;
+        background: var(--color-white, #fff);
+        height: 60px;
+        margin-bottom: 30px;
+        color: var(--Text---Color, #4f547b);
+        font-family: "Open Sans", sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px; /* 173.333% */
+        padding: 0 20px;
+      }
+
+      .message_text {
+        padding: 10px 20px;
+        height: 160px;
+        border-radius: 8px;
+        border: 1px solid #140342;
+        background: var(--color-white, #fff);
+        font-family: "Open Sans", sans-serif;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+      }
+
+      .btn_wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        margin-top: 30px;
+
+        .submit_btn {
+          width: 200px;
+          height: 55px;
+          padding: 12px 30px;
+          align-items: flex-start;
+          gap: 10px;
+          border: 1px solid #f98404;
+          background: var(--Brand-color-Accent-1, #f98404);
+          display: flex;
+          justify-content: center;
+
+          span {
+            color: #fff;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+}
+// HELP PAGE STYLE END

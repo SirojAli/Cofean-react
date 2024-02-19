@@ -223,15 +223,13 @@ export function ChosenBlog() {
             <div className="post_comment">
               <span>Leave a Comment</span>
               <div className="review_text">
-                <TextField
-                  type="text"
-                  variant="outlined"
-                  color="primary"
-                  label="Your Comment..."
-                  fullWidth
-                  InputProps={{ style: { height: "150px" } }}
+                <textarea
+                  className="blog"
+                  name="blog"
+                  rows={5}
+                  cols={33}
                   style={{ background: "#F4F4F4", color: "#000" }}
-                />
+                ></textarea>
               </div>
               <Button className="submit_btn">
                 <span>Submit Review</span>
