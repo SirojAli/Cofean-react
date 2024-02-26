@@ -24,7 +24,7 @@ import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 import { MyPage } from "./screens/MembersPage";
 
 import { Blog } from "./screens/BlogPage";
-import { Orders } from "./screens/OrdersPage";
+import { MyAccount } from "./screens/MyAccountPage";
 import { Help } from "./screens/HelpPage";
 import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
 import { OtherPage } from "./screens/MembersPage/otherPage";
@@ -54,7 +54,7 @@ function App() {
           <Route path="/members" element={<MyPage />} />
           <Route path="/members/other" element={<OtherPage />} />
 
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/my-account" element={<MyAccount />} />
           <Route path="/help" element={<Help />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />

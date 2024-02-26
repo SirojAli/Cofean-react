@@ -103,7 +103,7 @@ export function Footer() {
               <Box className="f2_bottom">
                 <Box className="f2_cards">
                   <img className="icon" src="/icons/visa.svg" />
-                  <img className="icon" src="/icons/master_card.svg" />
+                  <img className="icon" src="/icons/master_card.png" />
                   <img className="icon_w" src="/icons/western_union.svg" />
                   <img className="icon_p" src="/icons/paypal.svg" />
                   <img className="icon" src="/icons/toss.svg" />

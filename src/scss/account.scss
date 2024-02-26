@@ -1,0 +1,328 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+// ACCOUNT PAGE STYLE START
+.account_page {
+  width: 100%;
+  height: 100%;
+  // background-color: #ffffff;
+
+  .account_page_box {
+    width: 1320px;
+    height: 1150px;
+    display: flex;
+    flex-direction: column;
+    // border: 1px solid red;
+    margin-top: 100px;
+    margin-bottom: 100px;
+
+    .title {
+      width: 100%;
+      height: 60px;
+      // border: 1px solid red;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #808080;
+      margin-top: 20px;
+
+      span {
+        color: #000;
+        font-family: "Roboto", sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+    }
+
+    .main_page {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      // border: 1px solid black;
+      // gap: 10px;
+
+      .menu_tables {
+        width: 19%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        border: 2px solid #d3d3d3;
+        gap: 2px;
+        background-color: #efefef;
+        border-radius: 8px;
+
+        .menu {
+          width: 90%;
+          height: 45px;
+          border-radius: 8px;
+          transition: transform 0.3s, box-shadow 0.3s;
+          cursor: pointer;
+          margin-left: 10px;
+          margin-top: 20px;
+          border: 1px solid #d3d3d3;
+          padding: 5px;
+
+          span {
+            color: #000;
+            font-family: YoungSerif; // YoungSerif
+            font-size: 22px;
+            font-weight: 400;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+          }
+
+          &:hover {
+            border: 1px solid #ffa500;
+            background-color: #ffa500;
+          }
+
+          &:active {
+            border: 1px solid #e64800;
+            background-color: #e64800;
+          }
+        }
+      }
+
+      .menu_parts {
+        width: 80%;
+        height: 1000px;
+
+        .account_set {
+          width: 100%;
+          height: 1000px;
+          display: flex;
+          flex-direction: column;
+          // border: 1px solid red;
+          margin-left: 20px;
+
+          .set_title {
+            width: 99.3%;
+            height: 75px;
+            border-bottom: 2px solid #8c8c8c;
+            // border: 1px solid red;
+            margin-top: 10px;
+
+            span {
+              color: #000;
+              font-family: "Roboto", sans-serif; // YoungSerif
+              font-size: 28px;
+              font-weight: 500;
+              text-transform: capitalize;
+              letter-spacing: 1px;
+            }
+          }
+
+          .text_boxes {
+            width: 99%;
+            height: 1200px;
+            // border: 1px solid red;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .info_box {
+              width: 99%;
+              height: 60px;
+              // border: 1px solid red;
+              display: flex;
+              flex-direction: row;
+              padding: 10px;
+
+              .span {
+                width: 20%;
+                color: #000;
+                font-family: YoungSerif;
+                font-size: 20px;
+                font-weight: 600;
+                // border: 1px solid red;
+              }
+            }
+
+            .info_box_desc {
+              width: 99%;
+              height: auto;
+              // border: 1px solid red;
+              display: flex;
+              flex-direction: row;
+              padding: 10px;
+
+              .span {
+                width: 20%;
+                color: #000;
+                font-family: YoungSerif;
+                font-size: 18px;
+                font-weight: 600;
+                // border: 1px solid red;
+
+                .input {
+                  width: 90%;
+                  // border: 1px solid red;
+                }
+              }
+            }
+
+            .info_box_img {
+              width: 99%;
+              height: 125px;
+              // border: 1px solid red;
+              display: flex;
+              flex-direction: row;
+              padding: 10px;
+
+              .span {
+                width: 20%;
+                color: #000;
+                font-family: YoungSerif;
+                font-size: 18px;
+                font-weight: 600;
+                // border: 1px solid red;
+                gap: 40px;
+              }
+
+              .account_img_box {
+                width: 80%;
+                // border: 1px solid red;
+                display: flex;
+                flex-direction: row;
+                gap: 60px;
+
+                .acc_img {
+                  width: 110px;
+                  height: 110px;
+                  border-radius: 50%;
+                }
+
+                .upload_img {
+                  width: 150px;
+                  height: 50px;
+                  // border: 1px solid red;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 10px;
+                  margin-top: 20px;
+                  cursor: pointer;
+
+                  .change {
+                    background-color: #29b6f6;
+                    display: inline-flex;
+                    padding: 4px 5px;
+                    align-items: flex-start;
+                    border-radius: 8px;
+                    justify-content: center;
+
+                    span {
+                      color: #fff;
+                      font-family: YoungSerif;
+                      font-size: 12px;
+                      font-style: normal;
+                      font-weight: 600;
+                      line-height: 22.4px; /* 160% */
+                      letter-spacing: 1.4px;
+                      text-transform: uppercase;
+                    }
+                  }
+
+                  .delete {
+                    background-color: #f44336;
+                    display: inline-flex;
+                    padding: 4px 5px;
+                    align-items: flex-start;
+                    border-radius: 8px;
+                    justify-content: center;
+
+                    span {
+                      color: #fff;
+                      font-family: YoungSerif;
+                      font-size: 12px;
+                      font-style: normal;
+                      font-weight: 700;
+                      line-height: 22.4px; /* 160% */
+                      letter-spacing: 1.4px;
+                      text-transform: uppercase;
+                    }
+                  }
+                }
+              }
+            }
+
+            .card_info {
+              width: 99%;
+              height: auto;
+              // border: 1px solid red;
+              display: flex;
+              flex-direction: row;
+              padding: 10px;
+
+              .span {
+                width: 20%;
+                color: #000;
+                font-family: YoungSerif;
+                font-size: 20px;
+                font-weight: 600;
+                // border: 1px solid red;
+              }
+
+              .card_info_boxes {
+                width: 450px;
+                height: 230px;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid #d3d3d3;
+                gap: 10px;
+                padding: 10px;
+                border-radius: 8px;
+                // justify-content: center;
+
+                .card_number_form {
+                  width: 100%;
+                }
+
+                .card2_box {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                }
+
+                .card_types {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  margin-top: 10px;
+
+                  .card {
+                    width: 60px;
+                    height: 40px;
+                    // border: 1px solid red;
+                  }
+                }
+              }
+            }
+          }
+
+          .save_btn {
+            width: 180px;
+            height: 45px;
+            margin-top: 30px;
+            margin-left: 205px;
+            padding: 12px 15px;
+            border: 1px solid #f98404;
+            background: var(--Brand-color-Accent-1, #f98404);
+
+            span {
+              color: #fff;
+              font-family: "Roboto", sans-serif;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 600;
+              line-height: 20px;
+              letter-spacing: 1px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// ACCOUNT PAGE STYLE END
+// background: rgba(232, 232, 235, 0.4);

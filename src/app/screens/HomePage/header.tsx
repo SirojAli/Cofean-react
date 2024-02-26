@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
-import EastIcon from "@mui/icons-material/East";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 

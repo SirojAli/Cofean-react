@@ -11,16 +11,16 @@ import {
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Favorite, FavoriteBorder, Settings } from "@mui/icons-material";
 import "../../../scss/blog.scss";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import Facebook from "@mui/icons-material/Facebook";
 import Instagram from "@mui/icons-material/Instagram";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ReplyIcon from "@mui/icons-material/Reply";
 import { TabContext, TabPanel } from "@mui/lab";
+import moment from "moment";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Pagination from "@mui/material/Pagination";
 
 import "../../../scss/members.scss";
 import { Header } from "./header";
@@ -36,7 +36,122 @@ export function MyPage() {
           <TabContext value="value">
             {/* 1/2 Left Side */}
             <Stack className="my_page_left">
-              <Box className="all_blogs"></Box>
+              <div className="post_title">
+                <span>Siroj Ali's all posts</span>
+              </div>
+              <Box className="all_blogs">
+                <div className="post_box">
+                  <img className="post_img" src="/images/headers/q2.png" />
+                  <div className="tag_target">
+                    <Box className="tag">
+                      <div className="first">
+                        <span>Coffee</span>
+                      </div>
+                    </Box>
+                    <Box className="target">
+                      <div className="like">
+                        <span>12</span>
+                        <FavoriteBorderIcon />
+                      </div>
+                      <div className="view">
+                        <span>32</span>
+                        <RemoveRedEyeIcon />
+                      </div>
+                    </Box>
+                  </div>
+                  <Box className="title">
+                    <span>
+                      5 Reasons to Drink Americano 5 Reasons to Drink Americano
+                      Americano
+                    </span>
+                  </Box>
+                  <Box className="context">
+                    <p>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Nihil deserunt non, voluptatem vitae saepe molestias
+                      soluta dicta
+                    </p>
+                  </Box>
+                  <Box className="read">
+                    <span>Read more...</span>
+                  </Box>
+                </div>
+                <div className="post_box">
+                  <img className="post_img" src="/images/headers/q2.png" />
+                  <div className="tag_target">
+                    <Box className="tag">
+                      <div className="first">
+                        <span>Coffee</span>
+                      </div>
+                    </Box>
+                    <Box className="target">
+                      <div className="like">
+                        <span>12</span>
+                        <FavoriteBorderIcon />
+                      </div>
+                      <div className="view">
+                        <span>32</span>
+                        <RemoveRedEyeIcon />
+                      </div>
+                    </Box>
+                  </div>
+                  <Box className="title">
+                    <span>
+                      5 Reasons to Drink Americano 5 Reasons to Drink Americano
+                      Americano
+                    </span>
+                  </Box>
+                  <Box className="context">
+                    <p>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Nihil deserunt non, voluptatem vitae saepe molestias
+                      soluta dicta
+                    </p>
+                  </Box>
+                  <Box className="read">
+                    <span>Read more...</span>
+                  </Box>
+                </div>
+                <div className="post_box">
+                  <img className="post_img" src="/images/headers/q2.png" />
+                  <div className="tag_target">
+                    <Box className="tag">
+                      <div className="first">
+                        <span>Coffee</span>
+                      </div>
+                    </Box>
+                    <Box className="target">
+                      <div className="like">
+                        <span>12</span>
+                        <FavoriteBorderIcon />
+                      </div>
+                      <div className="view">
+                        <span>32</span>
+                        <RemoveRedEyeIcon />
+                      </div>
+                    </Box>
+                  </div>
+                  <Box className="title">
+                    <span>
+                      5 Reasons to Drink Americano 5 Reasons to Drink Americano
+                      Americano
+                    </span>
+                  </Box>
+                  <Box className="context">
+                    <p>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Nihil deserunt non, voluptatem vitae saepe molestias
+                      soluta dicta
+                    </p>
+                  </Box>
+                  <Box className="read">
+                    <span>Read more...</span>
+                  </Box>
+                </div>
+                <Stack className="pagination" spacing={2}>
+                  <Pagination count={3} variant="outlined" shape="rounded" />
+                </Stack>
+              </Box>
             </Stack>
 
             {/* 2/2 Right Side */}
@@ -73,7 +188,7 @@ export function MyPage() {
                 </p>
                 <div className="post_buttons">
                   <Button className="post_btn">Create post</Button>
-                  <Button className="post_btn">View my posts</Button>
+                  <Button className="post_btn">View all posts</Button>
                 </div>
               </Box>
             </Stack>

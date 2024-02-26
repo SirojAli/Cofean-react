@@ -67,8 +67,8 @@ export function Navbar(props: any) {
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
-                <NavLink className="menu" to="/orders">
-                  <span>Orders</span>
+                <NavLink className="menu" to="/my-account">
+                  <span>Account </span>
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import "../../../scss/order.scss";
+import "../../../scss/signup.scss";
 
 export function Login() {
   /** INITIALIZATIONS */
