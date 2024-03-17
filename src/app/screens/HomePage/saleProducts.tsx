@@ -1,10 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import "../../../scss/home.scss";
 
-export function OnSales() {
+// REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import { retrieveSaleProducts } from "./selector";
+import { Cafe } from "../../../types/user";
+import { serverApi } from "../../../lib/config";
+import { Product } from "../../../types/product";
+import { setSaleProducts } from "./slice";
+import ProductApiService from "../../apiServices/productApiService";
+// import { useHistory, useParams } from "react-router-dom";
+
+// REDUX SLICE
+const actionDispatch = (dispatch: Dispatch) => ({
+  setSaleProducts: (data: Product[]) => dispatch(setSaleProducts(data)),
+});
+// REDUX SELECTOR
+const saleProductsRetriever = createSelector(
+  retrieveSaleProducts,
+  (saleProducts) => ({
+    saleProducts,
+  })
+);
+
+export function SaleProducts() {
+  /** INITIALIZATIONS */
+  const { setSaleProducts } = actionDispatch(useDispatch());
+  const { saleProducts } = useSelector(saleProductsRetriever);
+  console.log("saleProducts>>>", saleProducts);
+
+  useEffect(() => {
+    const productService = new ProductApiService();
+
+    productService
+      .getSaleProducts({ page: 1, limit: 4, order: "mb_point" })
+      .then((data) => {
+        setSaleProducts(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     // if need it, change <> to <div>
     <div className="home_sales">

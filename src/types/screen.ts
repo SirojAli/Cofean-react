@@ -1,27 +1,25 @@
-// import { BoArticle } from "./blog";
-// import { Product } from "./product";
-// import { Member, Restaurant } from "./user";
-// import { Order } from "./order";
-// import { Follower, Following } from "./follow";
+import { Blog } from "./blog";
+import { Product } from "./product";
+import { Member, Cafe } from "./user";
+import { Order } from "./order";
+import { Follower, Following } from "./follow";
 
-// /** REACT APP STATE */
-// export interface AppRootState {
-//   homePage: HomePageState;
-//   restaurantPage: RestaurantPageState;
-//   ordersPage: OrdersPageState;
-//   communityPage: CommunityPageState;
-//   memberPage: MemberPageState;
-// }
+/** REACT APP STATE */
+export interface AppRootState {
+  homePage: HomePageState;
+  // cafePage: CafePageState;
+  // ordersPage: OrdersPageState;
+  // communityPage: CommunityPageState;
+  // memberPage: MemberPageState;
+}
 
-// /** HOME PAGE */
-// export interface HomePageState {
-//   topRestaurants: Restaurant[];
-//   bestRestaurants: Restaurant[];
-//   trendProducts: Product[];
-//   bestBoArticles: BoArticle[];
-//   trendBoArticles: BoArticle[];
-//   newsBoArticles: BoArticle[];
-// }
+/** HOME PAGE */
+export interface HomePageState {
+  topCafes: Cafe[];
+  trendProducts: Product[];
+  saleProducts: Product[];
+  topPosts: Blog[];
+}
 
 // /** RESTAURANT PAGE */
 // export interface RestaurantPageState {

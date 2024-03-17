@@ -1,37 +1,37 @@
-// import React from "react";
-// import styled from "styled-components";
+import React from "react";
+import styled from "styled-components";
 
-// export interface IMarginerProps {
-//     width?: string;
-//     height?: string;
-//     direction?: "horizontal" | "vertical";
-//     bg?: string;
-// }
+export interface IMarginerProps {
+  width?: string;
+  height?: string;
+  direction?: "horizontal" | "vertical";
+  bg?: string;
+}
 
-// const HorizontalMargin = styled.span<IMarginerProps>`
-//     display: flex;
-//     min-width: ${({ width }) => `${width}px`};
-//     min-height: ${({ height }) => `${height}px`};
-//     background: ${({ bg }) => `${bg}`};
-// `;
+const HorizontalMargin = styled.span<IMarginerProps>`
+  display: flex;
+  min-width: ${({ width }) => `${width}px`};
+  min-height: ${({ height }) => `${height}px`};
+  background: ${({ bg }) => `${bg}`};
+`;
 
-// const VerticalMargin = styled.span<IMarginerProps>`
-//     display: flex;
-//     min-width: ${({ width }) => `${width}px`};
-//     min-height: ${({ height }) => `${height}px`};
-//     background: ${({ bg }) => `${bg}`};
-// `;
+const VerticalMargin = styled.span<IMarginerProps>`
+  display: flex;
+  min-width: ${({ width }) => `${width}px`};
+  min-height: ${({ height }) => `${height}px`};
+  background: ${({ bg }) => `${bg}`};
+`;
 
-// function Marginer(props: IMarginerProps) {
-//     const { direction } = props;
-//     if (direction === "horizontal") return <HorizontalMargin {...props} />;
-//     else {
-//         return <VerticalMargin {...props} />;
-//     }
-// }
+function Marginer(props: IMarginerProps) {
+  const { direction } = props;
+  if (direction === "horizontal") return <HorizontalMargin {...props} />;
+  else {
+    return <VerticalMargin {...props} />;
+  }
+}
 
-// Marginer.defaultProps = {
-//     direction: "horizontal",
-// };
+Marginer.defaultProps = {
+  direction: "horizontal",
+};
 
-// export default Marginer;
+export default Marginer;

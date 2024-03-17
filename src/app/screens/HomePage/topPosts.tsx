@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -7,7 +7,48 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Autoplay } from "swiper/modules";
 
-export function Events() {
+// REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import { retrieveTopPosts } from "./selector";
+import { Cafe } from "../../../types/user";
+import { serverApi } from "../../../lib/config";
+import { Blog } from "../../../types/blog";
+import { setTopPosts } from "./slice";
+import BlogApiService from "../../apiServices/blogApiService";
+// import { useHistory, useParams } from "react-router-dom";
+
+// REDUX SLICE
+const actionDispatch = (dispatch: Dispatch) => ({
+  setTopPosts: (data: Blog[]) => dispatch(setTopPosts(data)),
+});
+// REDUX SELECTOR
+const topPostsRetriever = createSelector(retrieveTopPosts, (topPosts) => ({
+  topPosts,
+}));
+
+export function TopPosts() {
+  /** INITIALIZATIONS */
+  const { setTopPosts } = actionDispatch(useDispatch());
+  const { topPosts } = useSelector(topPostsRetriever);
+  console.log("topPosts>>>", topPosts);
+
+  useEffect(() => {
+    const blogService = new BlogApiService();
+
+    blogService
+
+      .getTopPosts({
+        board_id: "all",
+        page: 1,
+        limit: 5,
+        order: "post_likes",
+      })
+      .then((data) => setTopPosts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <Container className="home_events">
       <Box className="event_title">

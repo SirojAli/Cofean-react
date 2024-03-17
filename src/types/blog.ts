@@ -1,38 +1,38 @@
-// import { MeLiked } from "./product";
-// import { Member } from "./user";
+import { MeLiked } from "./others";
+import { Member } from "./user";
 
-// export interface BoArticleInput {
-//   art_subject: string;
-//   art_content: string;
-//   art_image: string;
-//   bo_id: string;
-// }
+export interface BlogInput {
+  post_subject: string;
+  post_content: string;
+  post_image: string;
+  board_id: string;
+}
 
-// export interface BoArticle {
-//   _id: string;
-//   art_subject: string;
-//   art_content: string;
-//   art_image?: string | null;
-//   bo_id: string;
-//   art_status: string;
-//   art_views: number;
-//   art_likes: number;
-//   mb_id: string;
-//   createdAt: Date;
-//   updateAt: Date;
-//   member_data: Member;
-//   me_liked: MeLiked[];
-// }
+export interface Blog {
+  _id: string;
+  post_subject: string;
+  post_content: string;
+  post_image: string | null;
+  board_id: string;
+  post_status: string;
+  post_views: number;
+  post_likes: number;
+  mb_id: string;
+  createdAt: Date;
+  updateAt: Date;
+  member_data: Member;
+  me_liked: MeLiked[];
+}
 
-// export interface SearchArticleObj {
-//   page: number;
-//   limit: number;
-//   bo_id: string;
-//   order?: string | null;
-// }
+export interface SearchBlogObj {
+  page: number;
+  limit: number;
+  board_id: string;
+  order?: string | null;
+}
 
-// export interface SearchMemberArticlesObj {
-//   page: number;
-//   limit: number;
-//   mb_id: string;
-// }
+export interface SearchMemberBlogsObj {
+  page: number;
+  limit: number;
+  mb_id: string;
+}

@@ -14,7 +14,7 @@ export function Header() {
       <Swiper
         className="mySwiper"
         spaceBetween={30}
-        centeredSlides={true}
+        centeredSlides={false}
         loop={true}
         autoplay={{
           delay: 2500,
@@ -23,7 +23,7 @@ export function Header() {
         pagination={{
           clickable: true,
         }}
-        navigation={true}
+        // navigation={true}
         modules={[Autoplay, Pagination]}
       >
         <SwiperSlide
