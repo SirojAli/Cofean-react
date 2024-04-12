@@ -136,7 +136,7 @@ export function AllCafes() {
           </Box>
         </Box>
 
-        {/* Middle part: Cards and Restaurant Pictures */}
+        {/* Middle part: Cards and cafe Pictures */}
         <div className="all_cafe_box">
           <div className="cafe_boxes">
             {cafeData.map((cafe, index) => (

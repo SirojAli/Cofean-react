@@ -1,9 +1,27 @@
-import { Box, Button, Container, IconButton, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  IconButton,
+  ListItemIcon,
+  Stack,
+} from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState, useEffect } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Footer } from "../footer/footer";
 import "../../../scss/navbar.scss";
-import SearchIcon from "@mui/icons-material/Search";
+import {
+  Search,
+  ArrowUpward,
+  Person,
+  Logout,
+  FavoriteBorder,
+  ListAlt,
+  MenuOutlined,
+  KeyboardArrowRight,
+} from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
@@ -27,6 +45,17 @@ export function Navbar(props: any) {
   // Check if scrollPosition is greater than or equal to 100
   const isScrolled = scrollPosition >= 100;
   const isTopScroll = scrollPosition >= 300;
+
+  // for dropdown menu:
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <>
@@ -82,14 +111,39 @@ export function Navbar(props: any) {
           <div className="navbar_right">
             <div className="navbar_icons">
               <Box className="icon_search">
-                <SearchIcon />
+                <Search />
               </Box>
               <Box className="icon_cart" onClick={props.setPath}>
                 <ShoppingCartIcon />
               </Box>
-              <Box className="icon_user" onClick={props.setPath}>
-                <AccountBoxIcon />
-              </Box>
+              {/* for dropdown menu */}
+              <Button
+                aria-controls="dropdown-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+                startIcon={<MenuIcon />}
+              >
+                <Box className="icon_user" onClick={props.setPath}>
+                  {/* <AccountBoxIcon /> */}
+                  <ListItemIcon>
+                    <AccountBoxIcon />
+                  </ListItemIcon>
+                </Box>
+              </Button>
+              <Menu
+                id="dropdown-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <MenuItem onClick={handleClose}>My Page</MenuItem>
+                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleClose}>Order</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
+
               <Box className="navbar_signup" onClick={props.setPath}>
                 <NavLink className="menu" to="/signup">
                   <span>Signup</span>

@@ -11,10 +11,11 @@ export interface Product {
   product_size: number;
   product_volume: number;
   product_description: string;
-  product_image: string[];
+  product_images: string;
   product_views: number;
   product_likes: number;
-  restaurant_mb_id: string;
+  product_review: number;
+  cafe_mb_id: string;
   createdAt: Date;
   updateAt: Date;
   me_liked: MeLiked[];

@@ -28,9 +28,11 @@ import { MyAccount } from "./screens/MyAccountPage";
 import { Help } from "./screens/HelpPage";
 import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
 import { OtherPage } from "./screens/MembersPage/otherPage";
+import { Member } from "../types/user";
 
 function App() {
-  // const [path, setPath] = useState();
+  /** INITIALIZATIONS */
+  const [path, setPath] = useState();
   const main_path = window.location.pathname;
   console.log("main_path >>", main_path);
 

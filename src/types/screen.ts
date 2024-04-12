@@ -21,11 +21,11 @@ export interface HomePageState {
   topPosts: Blog[];
 }
 
-// /** RESTAURANT PAGE */
-// export interface RestaurantPageState {
-//   targetRestaurants: Restaurant[];
-//   randomRestaurants: Restaurant[];
-//   chosenRestaurant: Restaurant | null;
+// /** Cafe PAGE */
+// export interface CafePageState {
+//   targetCafes: Cafe[];
+//   randomCafes: Cafe[];
+//   chosenCafe: Cafe | null;
 //   targetProducts: Product[];
 //   chosenProduct: Product | null;
 // }

@@ -4,7 +4,7 @@ export interface MeLiked {
   my_favorite: boolean;
 }
 
-export interface SearchObj {
+export interface CafeSearchObj {
   page: number;
   limit: number;
   order: string;
@@ -14,7 +14,7 @@ export interface ProductSearchObj {
   page: number;
   limit: number;
   order: string;
-  restaurant_mb_id?: string;
+  cafe_mb_id?: string;
   product_collection?: string;
 }
 

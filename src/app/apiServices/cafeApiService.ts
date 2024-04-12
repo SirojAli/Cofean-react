@@ -3,7 +3,7 @@ import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Cafe } from "../../types/user";
-import { SearchObj } from "../../types/others";
+import { CafeSearchObj } from "../../types/others";
 
 class CafeApiService {
   private readonly path: string;
@@ -31,7 +31,7 @@ class CafeApiService {
     }
   }
 
-  async getCafes(data: SearchObj): Promise<Cafe[]> {
+  async getCafes(data: CafeSearchObj): Promise<Cafe[]> {
     try {
       const url = `/cafes?order=${data.order}&page=${data.page}&limit=${data.limit}`,
         result = await axios.get(this.path + url, { withCredentials: true });

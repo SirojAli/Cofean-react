@@ -2,7 +2,7 @@ import axios from "axios";
 import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
-import { ProductSearchObj, SearchObj } from "../../types/others";
+import { ProductSearchObj } from "../../types/others";
 import { Product } from "../../types/product";
 
 class ProductApiService {
@@ -11,26 +11,28 @@ class ProductApiService {
     this.path = serverApi;
   }
 
-  async getTrendProducts(data: SearchObj): Promise<Product[]> {
+  async getTrendProducts(data: ProductSearchObj): Promise<Product[]> {
     try {
-      const url = `/products?order=${data.order}&page=${data.page}&limit=${data.limit}`,
-        result = await axios.get(this.path + url, { withCredentials: true });
+      const url = `/products`;
+      const result = await axios.post(this.path + url, data, {
+        withCredentials: true,
+      });
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
       console.log("state:", result.data.state);
 
-      const best_products: Product[] = result.data.data;
-      return best_products;
+      const products: Product[] = result.data.data;
+      return products;
     } catch (err: any) {
-      console.log(`ERROR >>> getBestProducts ${err.message}`);
+      console.log(`ERROR >>> getTrendProducts ${err.message}`);
       throw err;
     }
   }
 
   async getSaleProducts(data: ProductSearchObj): Promise<Product[]> {
     try {
-      const url = `/products?order=${data.order}&page=${data.page}&limit=${data.limit}`,
+      const url = `/products`,
         result = await axios.post(this.path + url, data, {
           withCredentials: true,
         });
@@ -43,7 +45,7 @@ class ProductApiService {
       const products: Product[] = result.data.data;
       return products;
     } catch (err: any) {
-      console.log(`ERROR >>> getTargetProducts ${err.message}`);
+      console.log(`ERROR >>> getSaleProducts ${err.message}`);
       throw err;
     }
   }
