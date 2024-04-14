@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useState, useEffect } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Footer } from "../footer/footer";
 import "../../../scss/navbar.scss";
 import {
@@ -25,8 +27,16 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
+import verifiedMemberData from "../../apiServices/verify";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetFailureProvider,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
+  const navigate = useNavigate();
   const [scrollPosition, setScrollPosition] = useState(0);
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +65,28 @@ export function Navbar(props: any) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    // Perform logout actions here, such as clearing authentication data
+    // For example, you can clear local storage or session storage
+    localStorage.removeItem("member_data");
+
+    try {
+      // Make a logout request using MemberApiService
+      const memberApiService = new MemberApiService();
+      await memberApiService.logOutRequest();
+
+      // Display success alert
+      await sweetTopSmallSuccessAlert("Logout successful", 700, true);
+    } catch (err) {
+      // Log error and display failure alert
+      console.log(err);
+      await sweetFailureProvider("Logout failed");
+    }
+
+    // Navigate to the homepage ("/")
+    navigate("/");
   };
 
   return (
@@ -95,70 +127,165 @@ export function Navbar(props: any) {
                   <span>Help</span>
                 </NavLink>
               </Box>
-              <Box className="menu_page" onClick={props.setPath}>
-                <NavLink className="menu" to="/my-account">
-                  <span>Account </span>
-                </NavLink>
-              </Box>
-              <Box className="menu_page" onClick={props.setPath}>
-                <NavLink className="menu" to="/members">
-                  <span>My Page</span>
-                </NavLink>
-              </Box>
             </div>
           </div>
 
           <div className="navbar_right">
             <div className="navbar_icons">
-              <Box className="icon_search">
+              <Box
+                className="icon_search"
+                onClick={() => {
+                  handleClose();
+                  navigate("/products");
+                }}
+              >
                 <Search />
               </Box>
               <Box className="icon_cart" onClick={props.setPath}>
                 <ShoppingCartIcon />
               </Box>
-              {/* for dropdown menu */}
-              <Button
-                aria-controls="dropdown-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-                startIcon={<MenuIcon />}
-              >
-                <Box className="icon_user" onClick={props.setPath}>
-                  {/* <AccountBoxIcon /> */}
-                  <ListItemIcon>
-                    <AccountBoxIcon />
-                  </ListItemIcon>
-                </Box>
-              </Button>
-              <Menu
-                id="dropdown-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-              >
-                <MenuItem onClick={handleClose}>My Page</MenuItem>
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
-                <MenuItem onClick={handleClose}>Order</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-              </Menu>
 
-              <Box className="navbar_signup" onClick={props.setPath}>
-                <NavLink className="menu" to="/signup">
-                  <span>Signup</span>
-                </NavLink>
-              </Box>
-              <Box className="navbar_login" onClick={props.setPath}>
-                <NavLink className="menu" to="/login">
-                  <span>Login</span>
-                </NavLink>
-              </Box>
-              {/* <Box className="navbar_logout" onClick={props.setPath}>
-                <NavLink className="menu" to="/login">
-                  <span>Logout</span>
-                </NavLink>
-              </Box> */}
+              {/* for dropdown menu */}
+              {verifiedMemberData && (
+                <Box>
+                  <Button
+                    aria-controls="dropdown-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <Box className="icon_user" onClick={props.setPath}>
+                      <Person
+                        style={{
+                          height: "30px",
+                          width: "30px",
+                          color: "#000000",
+                        }}
+                      />
+                    </Box>
+                  </Button>
+                  <Menu
+                    className="dropdown-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    style={{
+                      width: "180px",
+                      height: "300px",
+                    }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        navigate("/members");
+                      }}
+                      className="drop_menu"
+                      sx={{
+                        width: "150px",
+                        height: "40px",
+                      }}
+                    >
+                      <AccountBoxIcon sx={{ fill: "#444444" }} />
+                      <p
+                        style={{
+                          marginLeft: "8px",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        My Page
+                      </p>
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        navigate("/my-account");
+                      }}
+                      className="drop_menu"
+                      sx={{
+                        width: "150px",
+                        height: "40px",
+                      }}
+                    >
+                      <SettingsIcon sx={{ fill: "#444444" }} />
+                      <p
+                        style={{
+                          marginLeft: "8px",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Settings
+                      </p>
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        navigate("/my-account");
+                      }}
+                      className="drop_menu"
+                      sx={{
+                        width: "150px",
+                        height: "40px",
+                      }}
+                    >
+                      <AssignmentIcon sx={{ fill: "#444444" }} />
+                      <p
+                        style={{
+                          marginLeft: "8px",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        My Orders
+                      </p>
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        handleClose();
+                        handleLogout();
+                        // navigate("/login");
+                      }}
+                      className="drop_menu"
+                      sx={{
+                        width: "150px",
+                        height: "40px",
+                      }}
+                    >
+                      <Logout sx={{ fill: "#444444" }} />
+                      <p
+                        style={{
+                          marginLeft: "8px",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Logout
+                      </p>
+                    </MenuItem>
+                  </Menu>
+                </Box>
+              )}
+
+              {/* Signup and Login buttons for non-members */}
+              {!verifiedMemberData && (
+                <Box className="auth_mb">
+                  <Box className="navbar_signup" onClick={props.setPath}>
+                    <NavLink className="menu" to="/signup">
+                      <span>Signup</span>
+                    </NavLink>
+                  </Box>
+                  <Box className="navbar_login" onClick={props.setPath}>
+                    <NavLink className="menu" to="/login">
+                      <span>Login</span>
+                    </NavLink>
+                  </Box>
+                </Box>
+              )}
             </div>
           </div>
         </div>
