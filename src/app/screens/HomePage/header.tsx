@@ -7,8 +7,11 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "../../../scss/home.scss";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
+  /*INITIALIZATIONS*/
+  const navigate = useNavigate();
   return (
     <div className="home_header">
       <Swiper
@@ -40,7 +43,12 @@ export function Header() {
                 Here to bring your life style to the next level
               </h5>
               <h3 className="header_sale">DON'T MISS TODAY'S HOT SALES</h3>
-              <Button className="header_btn">SHOP NOW</Button>
+              <Button
+                onClick={() => navigate("/products")}
+                className="header_btn"
+              >
+                SHOP NOW
+              </Button>
             </Box>
           </Box>
         </SwiperSlide>
@@ -59,7 +67,12 @@ export function Header() {
                 Here to bring your life style to the next level
               </h5>
               <h3 className="header_sale">DON'T MISS TODAY'S HOT SALES</h3>
-              <Button className="header_btn">SHOP NOW</Button>
+              <Button
+                onClick={() => navigate("/products")}
+                className="header_btn"
+              >
+                SHOP NOW
+              </Button>
             </Box>
           </Box>
         </SwiperSlide>
@@ -78,7 +91,12 @@ export function Header() {
                 Here to bring your life style to the next level
               </h5>
               <h3 className="header_sale">DON'T MISS TODAY'S HOT SALES</h3>
-              <Button className="header_btn">SHOP NOW</Button>
+              <Button
+                onClick={() => navigate("/products")}
+                className="header_btn"
+              >
+                SHOP NOW
+              </Button>
             </Box>
           </Box>
         </SwiperSlide>

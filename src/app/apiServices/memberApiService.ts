@@ -29,7 +29,7 @@ class MemberApiService {
     }
   }
 
-  public async signupRequest(signup_data: any) {
+  public async signupRequest(signup_data: any): Promise<Member> {
     try {
       const result = await axios.post(this.path + "/signup", signup_data, {
         withCredentials: true,
@@ -42,7 +42,7 @@ class MemberApiService {
       localStorage.setItem("member_data", JSON.stringify(member));
       return member;
     } catch (err: any) {
-      console.log(`ERROR>>> loginRequest ${err.message}`);
+      console.log(`ERROR>>> signupRequest ${err.message}`);
       throw err;
     }
   }

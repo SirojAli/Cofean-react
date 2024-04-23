@@ -14,6 +14,7 @@ export interface Product {
   product_images: string;
   product_views: number;
   product_likes: number;
+  product_rating: number;
   product_review: number;
   cafe_mb_id: string;
   createdAt: Date;

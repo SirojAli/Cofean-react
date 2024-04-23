@@ -5,28 +5,22 @@ const cookies = new Cookies();
 let member_data: any = null;
 
 if (cookies.get("access_token")) {
-  const memberDataJson: any = localStorage.getItem("member_data");
-  if (memberDataJson) {
-    try {
-      // Attempt to parse the JSON string
-      member_data = JSON.parse(memberDataJson);
+  // Check for "access_token" cookie
+  const memberDataJson: any = localStorage.getItem("member_data")
+    ? localStorage.getItem("member_data")
+    : null;
+  member_data = memberDataJson ? JSON.parse(memberDataJson) : null;
 
-      // If parsing is successful, modify the member_data object
-      if (member_data && member_data.mb_image) {
-        member_data.mb_image = `${serverApi}/${member_data.mb_image}`;
-      }
-    } catch (error) {
-      // Handle parsing error (invalid JSON)
-      console.error("Error parsing member data:", error);
-    }
+  if (member_data) {
+    member_data.mb_image = member_data.mb_image
+      ? `${serverApi}/${member_data.mb_image}`
+      : "/auth/profile_photo.svg";
   }
 } else {
-  // Clear the member_data if access_token cookie is not present
   localStorage.removeItem("member_data");
 }
 
 console.log("== verify ==");
 console.log(member_data);
 
-const verifiedMemberData = member_data ? member_data : null;
-export default verifiedMemberData;
+export const verifiedMemberData = member_data ? member_data : null;

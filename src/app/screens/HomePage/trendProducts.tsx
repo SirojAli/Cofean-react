@@ -14,6 +14,7 @@ import { setTrendProducts } from "./slice";
 import ProductApiService from "../../apiServices/productApiService";
 import { Product } from "../../../types/product";
 import { MonetizationOn } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 // import { useHistory, useParams } from "react-router-dom";
 
 // REDUX SLICE
@@ -31,6 +32,7 @@ const trendProductsRetriever = createSelector(
 
 export function TrendProducts() {
   /** INITIALIZATIONS */
+  const navigate = useNavigate();
   const { setTrendProducts } = actionDispatch(useDispatch());
   const { trendProducts } = useSelector(trendProductsRetriever);
   console.log("trendProducts>>>", trendProducts);
@@ -73,7 +75,7 @@ export function TrendProducts() {
                       precision={0.5}
                       readOnly
                     />
-                    <p className="text">{pro.product_review} Reviews</p>
+                    <p className="text">({pro.product_review})</p>
                   </Box>
                   <Box className="pro_name">{pro.product_name}</Box>
                   <Box className="pro_basket">
@@ -90,7 +92,9 @@ export function TrendProducts() {
       </Stack>
 
       <Stack className="trend_btn">
-        <Button className="br_btn">See More</Button>
+        <Button onClick={() => navigate("/products")} className="br_btn">
+          See More
+        </Button>
       </Stack>
     </Container>
   );

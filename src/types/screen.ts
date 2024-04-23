@@ -7,7 +7,9 @@ import { Follower, Following } from "./follow";
 /** REACT APP STATE */
 export interface AppRootState {
   homePage: HomePageState;
-  // cafePage: CafePageState;
+  cafePage: CafePageState;
+  productPage: ProductPageState;
+
   // ordersPage: OrdersPageState;
   // communityPage: CommunityPageState;
   // memberPage: MemberPageState;
@@ -21,14 +23,19 @@ export interface HomePageState {
   topPosts: Blog[];
 }
 
-// /** Cafe PAGE */
-// export interface CafePageState {
-//   targetCafes: Cafe[];
-//   randomCafes: Cafe[];
-//   chosenCafe: Cafe | null;
-//   targetProducts: Product[];
-//   chosenProduct: Product | null;
-// }
+/** Cafe PAGE */
+export interface CafePageState {
+  targetCafes: Cafe[];
+  randomCafes: Cafe[];
+  chosenCafe: Cafe | null;
+}
+
+/** Product PAGE */
+export interface ProductPageState {
+  targetProducts: Product[];
+  randomProducts: Product[];
+  chosenProduct: Product | null;
+}
 
 // /** ORDERS PAGE */
 // export interface OrdersPageState {

@@ -17,6 +17,7 @@ import { serverApi } from "../../../lib/config";
 import { Blog } from "../../../types/blog";
 import { setTopPosts } from "./slice";
 import BlogApiService from "../../apiServices/blogApiService";
+import { useNavigate } from "react-router-dom";
 // import { useHistory, useParams } from "react-router-dom";
 
 // REDUX SLICE
@@ -30,6 +31,7 @@ const topPostsRetriever = createSelector(retrieveTopPosts, (topPosts) => ({
 
 export function TopPosts() {
   /** INITIALIZATIONS */
+  const navigate = useNavigate();
   const { setTopPosts } = actionDispatch(useDispatch());
   const { topPosts } = useSelector(topPostsRetriever);
   console.log("topPosts>>>", topPosts);
@@ -194,7 +196,9 @@ export function TopPosts() {
 
       {/* 3. See All Products */}
       <Stack className="event_btn">
-        <Button className="br_btn">View All Articles</Button>
+        <Button onClick={() => navigate("/blog")} className="br_btn">
+          View All Articles
+        </Button>
       </Stack>
       <Box className="blank"></Box>
     </Container>

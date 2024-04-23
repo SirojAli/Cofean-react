@@ -15,6 +15,7 @@ export interface Cafe {
   mb_top?: string;
   mb_views: number;
   mb_likes: number;
+  mb_rating: number;
   mb_follow_count: number;
   mb_subscriber_count: number;
   createdAt: Date;
@@ -35,6 +36,7 @@ export interface Member {
   mb_top?: string;
   mb_views: number;
   mb_likes: number;
+  mb_rating: number;
   mb_follow_count: number;
   mb_subscriber_count: number;
   createdAt: Date;

@@ -17,6 +17,7 @@ import CafeApiService from "../../apiServices/cafeApiService";
 import ProductApiService from "../../apiServices/productApiService";
 import BlogApiService from "../../apiServices/blogApiService";
 import { serverApi } from "../../../lib/config";
+import { useNavigate } from "react-router-dom";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -30,6 +31,7 @@ const topCafesRetriever = createSelector(retrieveTopCafes, (topCafes) => ({
 
 export function TopCafes() {
   /** INITIALIZATIONS */
+  const navigate = useNavigate();
   const { setTopCafes } = actionDispatch(useDispatch());
   const { topCafes } = useSelector(topCafesRetriever);
   console.log("topCafes>>>", topCafes);
@@ -63,7 +65,9 @@ export function TopCafes() {
       </Stack>
 
       <Stack className="brands_btn">
-        <Button className="br_btn">See More</Button>
+        <Button onClick={() => navigate("/cafe")} className="br_btn">
+          See More
+        </Button>
       </Stack>
     </Container>
   );

@@ -27,12 +27,13 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
-import verifiedMemberData from "../../apiServices/verify";
+import { verifiedMemberData } from "../../apiServices/verify";
 import MemberApiService from "../../apiServices/memberApiService";
 import {
   sweetFailureProvider,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
+import { serverApi } from "../../../lib/config";
 
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
@@ -96,7 +97,11 @@ export function Navbar(props: any) {
           <div className="navbar_left">
             <Box className="navbar_logo">
               <img src="/images/navbar/logo1.png" alt="" />
-              <p>COFEAN</p>
+              <Box onClick={props.setPath}>
+                <NavLink style={{ textDecoration: "none" }} to="/">
+                  <p>COFEAN</p>
+                </NavLink>
+              </Box>
             </Box>
           </div>
 
@@ -139,10 +144,20 @@ export function Navbar(props: any) {
                   navigate("/products");
                 }}
               >
-                <Search />
+                <Search
+                  style={{
+                    height: "28px",
+                    width: "28px",
+                  }}
+                />
               </Box>
               <Box className="icon_cart" onClick={props.setPath}>
-                <ShoppingCartIcon />
+                <ShoppingCartIcon
+                  style={{
+                    height: "28px",
+                    width: "28px",
+                  }}
+                />
               </Box>
 
               {/* for dropdown menu */}
@@ -153,15 +168,29 @@ export function Navbar(props: any) {
                     aria-haspopup="true"
                     onClick={handleClick}
                   >
-                    <Box className="icon_user" onClick={props.setPath}>
-                      <Person
+                    {verifiedMemberData.mb_image ? (
+                      <img
+                        src={`${serverApi}/${verifiedMemberData.mb_image}`}
+                        alt="Profile"
                         style={{
                           height: "30px",
                           width: "30px",
-                          color: "#000000",
+                          borderRadius: "50%",
+                          objectFit: "cover",
                         }}
                       />
-                    </Box>
+                    ) : (
+                      <img
+                        src="/auth/profile_photo.svg"
+                        alt="Default Profile"
+                        style={{
+                          height: "30px",
+                          width: "30px",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
                   </Button>
                   <Menu
                     className="dropdown-menu"

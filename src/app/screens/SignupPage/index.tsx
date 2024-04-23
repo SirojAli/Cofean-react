@@ -70,8 +70,9 @@ export function Signup() {
 
         const memberApiService = new MemberApiService();
         await memberApiService.signupRequest(signup_data);
+        navigate("/");
         sweetTopSmallSuccessAlert("Success", 1000, true);
-        await navigate("/"); // Wait for navigation to complete
+        // await navigate("/"); // Wait for navigation to complete
       }
     } catch (err) {
       console.log(err);
