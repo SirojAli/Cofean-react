@@ -1,50 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import "../../../scss/cafe.scss";
-
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { CssVarsProvider } from "@mui/joy/styles";
-import Card from "@mui/joy/Card";
-import CardOverflow from "@mui/joy/CardOverflow";
-import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
 import Favorite from "@mui/icons-material/Favorite";
-import Typography from "@mui/joy/Typography";
-import Link from "@mui/joy/Link";
-import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
-import CallIcon from "@mui/icons-material/Call";
 import Rating from "@mui/material/Rating";
 import Phone from "@mui/icons-material/Phone";
 import assert from "assert";
+import { useNavigate } from "react-router-dom";
+
+import "../../../scss/cafe.scss";
 import { verifiedMemberData } from "../../apiServices/verify";
-import { Definer } from "../../../lib/definer";
+import CafeApiService from "../../apiServices/cafeApiService";
 import MemberApiService from "../../apiServices/memberApiService";
+import { Definer } from "../../../lib/definer";
 import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
-import { useNavigate } from "react-router-dom";
+import { serverApi } from "../../../lib/config";
+import { Cafe } from "../../../types/user";
 import { CafeSearchObj } from "../../../types/others";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrieveAllCafes } from "./selector";
-import { Cafe } from "../../../types/user";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAllCafes } from "./slice";
-import CafeApiService from "../../apiServices/cafeApiService";
-import { serverApi } from "../../../lib/config";
-
-// import { SearchCont } from "../../app/context/Search";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -60,7 +45,6 @@ export function AllCafes() {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
-  // const [search] = SearchCont();
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedCafes, setLikedCafes] = useState<string[]>([]);

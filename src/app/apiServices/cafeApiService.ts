@@ -20,13 +20,13 @@ class CafeApiService {
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
-      console.log("state:", result.data.state);
+      console.log("state >>>", result.data.state);
 
-      // console.log("result>>>", result);
+      console.log("result >>>", result);
       const top_cafes: Cafe[] = result.data.data;
       return top_cafes;
     } catch (err: any) {
-      console.log(`ERROR >>> getTopCafes ${err.message}`);
+      console.log(`ERROR getTopCafes >>> ${err.message}`);
       throw err;
     }
   }
@@ -38,12 +38,12 @@ class CafeApiService {
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
-      console.log("state:", result.data.state);
+      console.log("state>>>", result.data.state);
 
       const cafes: Cafe[] = result.data.data;
       return cafes;
     } catch (err: any) {
-      console.log(`ERROR >>> getCafes ${err.message}`);
+      console.log(`ERROR getCafes >>> ${err.message}`);
       throw err;
     }
   }
@@ -55,12 +55,12 @@ class CafeApiService {
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
+      console.log("state >>>", result.data.state);
 
       const cafe: Cafe = result.data.data;
       return cafe;
     } catch (err: any) {
-      console.log(`ERROR >>> getChosenCafe ${err.message}`);
+      console.log(`ERROR getChosenCafe >>> ${err.message}`);
       throw err;
     }
   }

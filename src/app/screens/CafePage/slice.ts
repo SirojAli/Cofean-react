@@ -3,8 +3,9 @@ import { CafePageState } from "../../../types/screen";
 
 const initialState: CafePageState = {
   allCafes: [],
-  randomCafes: [],
   chosenCafe: null,
+  randomCafes: [],
+  cafeProducts: [],
 };
 
 const CafePageSlice = createSlice({
@@ -14,16 +15,19 @@ const CafePageSlice = createSlice({
     setAllCafes: (state, action) => {
       state.allCafes = action.payload;
     },
+    setChosenCafe: (state, action) => {
+      state.chosenCafe = action.payload;
+    },
     setRandomCafes: (state, action) => {
       state.randomCafes = action.payload;
     },
-    setChosenCafe: (state, action) => {
-      state.chosenCafe = action.payload;
+    setCafeProducts: (state, action) => {
+      state.cafeProducts = action.payload;
     },
   },
 });
 
-export const { setAllCafes, setRandomCafes, setChosenCafe } =
+export const { setAllCafes, setChosenCafe, setRandomCafes, setCafeProducts } =
   CafePageSlice.actions;
 
 const CafePageReducer = CafePageSlice.reducer;

@@ -74,7 +74,7 @@ export function SaleProducts() {
         page: 1,
         limit: 4,
         order: "product_discount",
-        product_collection: "coffee",
+        product_collection: ["coffee"],
       })
       .then((data) => {
         setSaleProducts(data);

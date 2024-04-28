@@ -26,8 +26,9 @@ export interface HomePageState {
 /** Cafe PAGE */
 export interface CafePageState {
   allCafes: Cafe[];
-  randomCafes: Cafe[];
   chosenCafe: Cafe | null;
+  randomCafes: Cafe[];
+  cafeProducts: Product[];
 }
 
 /** Product PAGE */

@@ -11,7 +11,7 @@ class ProductApiService {
     this.path = serverApi;
   }
 
-  async getTrendProducts(data: ProductSearchObj): Promise<Product[]> {
+  async getCafeProducts(data: ProductSearchObj): Promise<Product[]> {
     try {
       const url = `/products`;
       const result = await axios.post(this.path + url, data, {
@@ -25,7 +25,7 @@ class ProductApiService {
       const products: Product[] = result.data.data;
       return products;
     } catch (err: any) {
-      console.log(`ERROR >>> getTrendProducts ${err.message}`);
+      console.log(`ERROR getCafeProducts>>> ${err.message}`);
       throw err;
     }
   }

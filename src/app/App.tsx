@@ -48,10 +48,10 @@ function App() {
           <Route path="/cafes/:cafe_id" element={<ChosenCafe />} />
 
           <Route path="/products" element={<Product />} />
-          <Route path="/products/:products_id" element={<ChosenProduct />} />
+          <Route path="/products/:product_id" element={<ChosenProduct />} />
 
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:blog_id" element={<ChosenBlog />} />
+          <Route path="/blogs" element={<Blog />} />
+          <Route path="/blogs/:blog_id" element={<ChosenBlog />} />
 
           <Route path="/members" element={<MyPage />} />
           <Route path="/members/other" element={<OtherPage />} />

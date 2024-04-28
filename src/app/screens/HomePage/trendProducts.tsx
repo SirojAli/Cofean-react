@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Container, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import "../../../scss/home.scss";
 
 // REDUX
@@ -69,13 +68,12 @@ export function TrendProducts() {
 
   useEffect(() => {
     const productService = new ProductApiService();
-
     productService
-      .getTrendProducts({
+      .getCafeProducts({
         page: 1,
         limit: 4,
         order: "product_likes",
-        product_collection: "coffee",
+        product_collection: ["coffee"],
       })
       .then((data) => {
         setTrendProducts(data);

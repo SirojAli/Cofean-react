@@ -16,7 +16,7 @@ export interface ProductSearchObj {
   limit: number;
   order: string;
   cafe_mb_id?: string;
-  product_collection?: string;
+  product_collection?: string[];
 }
 
 export interface MemberLiken {

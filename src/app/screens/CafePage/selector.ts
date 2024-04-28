@@ -6,11 +6,15 @@ export const retrieveAllCafes = createSelector(
   selectCafePage,
   (CafePage) => CafePage.allCafes
 );
+export const retrieveChosenCafe = createSelector(
+  selectCafePage,
+  (CafePage) => CafePage.chosenCafe
+);
 export const retrieveRandomCafes = createSelector(
   selectCafePage,
   (CafePage) => CafePage.randomCafes
 );
-export const retrieveChosenCafe = createSelector(
+export const retrieveCafeProducts = createSelector(
   selectCafePage,
-  (CafePage) => CafePage.chosenCafe
+  (CafePage) => CafePage.cafeProducts
 );
