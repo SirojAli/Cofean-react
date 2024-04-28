@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { CafePageState } from "../../../types/screen";
 
 const initialState: CafePageState = {
-  targetCafes: [],
+  allCafes: [],
   randomCafes: [],
   chosenCafe: null,
 };
@@ -11,8 +11,8 @@ const CafePageSlice = createSlice({
   name: "cafePage",
   initialState,
   reducers: {
-    setTargetCafes: (state, action) => {
-      state.targetCafes = action.payload;
+    setAllCafes: (state, action) => {
+      state.allCafes = action.payload;
     },
     setRandomCafes: (state, action) => {
       state.randomCafes = action.payload;
@@ -23,7 +23,7 @@ const CafePageSlice = createSlice({
   },
 });
 
-export const { setTargetCafes, setRandomCafes, setChosenCafe } =
+export const { setAllCafes, setRandomCafes, setChosenCafe } =
   CafePageSlice.actions;
 
 const CafePageReducer = CafePageSlice.reducer;

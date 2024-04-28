@@ -2,9 +2,9 @@ import { createSelector } from "reselect";
 import { AppRootState } from "../../../types/screen";
 
 const selectCafePage = (state: AppRootState) => state.cafePage;
-export const retrieveTargetCafes = createSelector(
+export const retrieveAllCafes = createSelector(
   selectCafePage,
-  (CafePage) => CafePage.targetCafes
+  (CafePage) => CafePage.allCafes
 );
 export const retrieveRandomCafes = createSelector(
   selectCafePage,

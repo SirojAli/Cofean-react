@@ -44,8 +44,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
 
-          <Route path="/cafe" element={<Cafe />} />
-          <Route path="/cafe/:cafe_id" element={<ChosenCafe />} />
+          <Route path="/cafes" element={<Cafe />} />
+          <Route path="/cafes/:cafe_id" element={<ChosenCafe />} />
 
           <Route path="/products" element={<Product />} />
           <Route path="/products/:products_id" element={<ChosenProduct />} />

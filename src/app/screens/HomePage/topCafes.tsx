@@ -47,6 +47,11 @@ export function TopCafes() {
       .catch((err) => console.log(err));
   }, []);
 
+  /** HANDLERS */
+  const chosenCafeHandler = (id: string) => {
+    navigate(`/cafes/${id}`);
+  };
+
   return (
     <Container className="home_brands">
       <Box className="brands_title">
@@ -57,7 +62,10 @@ export function TopCafes() {
         {topCafes.map((ele: Cafe) => {
           const image_path = `${serverApi}/${ele.mb_image}`;
           return (
-            <Box className="top_brand">
+            <Box
+              className="top_brand"
+              onClick={() => chosenCafeHandler(ele._id)}
+            >
               <img src={image_path} alt="cafe photo" />
             </Box>
           );
@@ -65,7 +73,7 @@ export function TopCafes() {
       </Stack>
 
       <Stack className="brands_btn">
-        <Button onClick={() => navigate("/cafe")} className="br_btn">
+        <Button onClick={() => navigate("/cafes")} className="br_btn">
           See More
         </Button>
       </Stack>

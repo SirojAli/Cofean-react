@@ -61,6 +61,7 @@
           justify-content: center;
           background-color: #ffa500;
           border-radius: 8px;
+          cursor: pointer;
 
           p {
             color: #fff; /* White text */
@@ -69,7 +70,6 @@
             font-weight: 700;
             line-height: 25.2px;
             text-transform: uppercase;
-            cursor: pointer;
             margin: 0;
           }
         }

@@ -25,14 +25,14 @@ export interface HomePageState {
 
 /** Cafe PAGE */
 export interface CafePageState {
-  targetCafes: Cafe[];
+  allCafes: Cafe[];
   randomCafes: Cafe[];
   chosenCafe: Cafe | null;
 }
 
 /** Product PAGE */
 export interface ProductPageState {
-  targetProducts: Product[];
+  allProducts: Product[];
   randomProducts: Product[];
   chosenProduct: Product | null;
 }

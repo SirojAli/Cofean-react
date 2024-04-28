@@ -82,7 +82,7 @@ class MemberApiService {
       const like_result: MemberLiken = result.data.data;
       return like_result;
     } catch (err: any) {
-      console.log(`ERROR>>> memberLikeTarget ${err.message}`);
+      console.log(`ERROR memberLikeTarget>>> ${err.message}`);
       throw err;
     }
   }

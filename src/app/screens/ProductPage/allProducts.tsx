@@ -30,9 +30,58 @@ import Instagram from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TelegramIcon from "@mui/icons-material/Telegram";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { Definer } from "../../../lib/definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import { useNavigate } from "react-router-dom";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
 
 export function AllProducts() {
   /** INITIALIZATIONS */
+  const navigate = useNavigate();
+  // const { setTargetCafes } = actionDispatch(useDispatch());
+  // const { targetCafes } = useSelector(targetCafesRetriever);
+  // const [targetSearchObj, setTargetSearchObj] = useState<CafeSearchObj>({
+  //   page: 1,
+  //   limit: 25,
+  //   order: "mb_point",
+  // });
+  const refs: any = useRef([]);
+
+  // const { setTopCafes } = actionDispatch(useDispatch());
+  // const { topCafes } = useSelector(topCafesRetriever);
+  // console.log("topCafes>>>", topCafes);
+
+  /** HANDLERS */
+  const targetLikeHandler = async (e: any, id: string) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+
+      const memberService = new MemberApiService();
+      const like_result: any = await memberService.memberLikeTarget({
+        like_ref_id: id,
+        group_type: "member",
+      });
+      assert.ok(like_result, Definer.general_err1);
+
+      if (like_result.like_status > 0) {
+        e.target.style.fill = "red";
+        refs.current[like_result.like_ref_id].innerHTML++;
+      } else {
+        e.target.style.fill = "white";
+        refs.current[like_result.like_ref_id].innerHTML--;
+      }
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+    } catch (err: any) {
+      console.log("ERROR targetLikeTop:", err);
+      sweetErrorHandling(err).then();
+    }
+  };
 
   return (
     <div className="all_products">
@@ -247,7 +296,32 @@ export function AllProducts() {
                     <p className="sale">-20%</p>
                   </div>
                   <img src="/images/products/a1.jpg" alt="" />
+                  <Favorite
+                    className="like_btn"
+                    // onClick={(e) => targetLikeHandler(e, ele._id)}
+                    style={{
+                      // fill:
+                      //   ele?.me_liked && ele?.me_liked[0]?.my_favorite
+                      //     ? "red"
+                      //     : "white",
+                      padding: "5px",
+                      cursor: "pointer",
+                    }}
+                  />
                   <Box className="product_info">
+                    <Box className="pro_name">
+                      <span>Latte</span>
+                      <div className="basket">
+                        <img src="icons/basket.svg" alt="" />
+                      </div>
+                    </Box>
+
+                    <Box className="pro_basket">
+                      <div className="price">
+                        <span className="discounted">₩ 4000</span>
+                        <span className="original">₩ 5000</span>
+                      </div>
+                    </Box>
                     <Box className="product_review">
                       <Rating
                         className="rating"
@@ -256,17 +330,37 @@ export function AllProducts() {
                         precision={0.5}
                         readOnly
                       />
-                      <p className="text">123 Reviews</p>
-                    </Box>
-                    <Box className="pro_name">Latte</Box>
-                    <Box className="pro_basket">
-                      <div className="price">
-                        <span className="discounted">$4.00</span>
-                        <span className="original">$5.00</span>
-                      </div>
-                      <div className="basket">
-                        <p>Add to Cart</p>
-                        <ShoppingCartIcon />
+                      <p className="text">(123)</p>
+                      <div className="rating_2">
+                        <Box className="rating_2">
+                          <Box className="like">
+                            <div className="like_cnt">5</div>
+                            <div className="like_img">
+                              <FavoriteIcon
+                                style={{
+                                  width: "15px",
+                                  height: "15px",
+                                  color: "#666666",
+                                  marginTop: "5px",
+                                }}
+                              />{" "}
+                            </div>
+                          </Box>
+                          <div className="dvr"></div>
+                          <Box className="view">
+                            <div className="view_cnt">5</div>
+                            <div className="view_img">
+                              <VisibilityIcon
+                                style={{
+                                  width: "15px",
+                                  height: "15px",
+                                  color: "#666666",
+                                  marginTop: "5px",
+                                }}
+                              />{" "}
+                            </div>
+                          </Box>
+                        </Box>
                       </div>
                     </Box>
                   </Box>

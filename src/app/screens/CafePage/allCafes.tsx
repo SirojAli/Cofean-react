@@ -37,83 +37,79 @@ import { CafeSearchObj } from "../../../types/others";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { retrieveTargetCafes } from "./selector";
+import { retrieveAllCafes } from "./selector";
 import { Cafe } from "../../../types/user";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setTargetCafes } from "./slice";
+import { setAllCafes } from "./slice";
 import CafeApiService from "../../apiServices/cafeApiService";
 import { serverApi } from "../../../lib/config";
-import { retrieveTopCafes } from "../HomePage/selector";
-import { setTopCafes } from "../HomePage/slice";
+
+// import { SearchCont } from "../../app/context/Search";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
-  setTargetCafes: (data: Cafe[]) => dispatch(setTargetCafes(data)),
-  setTopCafes: (data: Cafe[]) => dispatch(setTopCafes(data)),
+  setAllCafes: (data: Cafe[]) => dispatch(setAllCafes(data)),
 });
 
 // REDUX SELECTOR
-const targetCafesRetriever = createSelector(
-  retrieveTargetCafes,
-  (targetCafes) => ({
-    targetCafes,
-  })
-);
-
-const topCafesRetriever = createSelector(retrieveTopCafes, (topCafes) => ({
-  topCafes,
+const allCafesRetriever = createSelector(retrieveAllCafes, (allCafes) => ({
+  allCafes,
 }));
 
 export function AllCafes() {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
-  const { setTargetCafes } = actionDispatch(useDispatch());
-  const { targetCafes } = useSelector(targetCafesRetriever);
-  const [targetSearchObj, setTargetSearchObj] = useState<CafeSearchObj>({
+  const refs: any = useRef([]);
+  // const [search] = SearchCont();
+
+  const { setAllCafes } = actionDispatch(useDispatch());
+  const { allCafes } = useSelector(allCafesRetriever);
+  console.log("allCafes>>>", allCafes);
+
+  const [allCafesObj, setAllCafesObj] = useState<CafeSearchObj>({
     page: 1,
-    limit: 25,
+    limit: 8,
     order: "mb_point",
   });
-  const refs: any = useRef([]);
-
-  const { setTopCafes } = actionDispatch(useDispatch());
-  const { topCafes } = useSelector(topCafesRetriever);
-  console.log("topCafes>>>", topCafes);
 
   useEffect(() => {
     // TODO: Retrieve targetCafesData
     const cafeService = new CafeApiService();
     cafeService
-      .getCafes(targetSearchObj)
-      .then((data) => setTargetCafes(data))
+      .getCafes(allCafesObj)
+      .then((data) => setAllCafes(data))
       .catch((err) => console.log(err));
-  }, [targetSearchObj]);
-
-  useEffect(() => {
-    const cafeService = new CafeApiService();
-
-    cafeService
-      .getTopCafes()
-      .then((data) => {
-        setTopCafes(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  }, [allCafesObj]);
 
   /** HANDLERS */
   const chosenCafeHandler = (id: string) => {
-    navigate(`/restaurant/${id}`);
+    navigate(`/cafes/${id}`);
   };
 
-  const searchHandler = (category: string) => {
-    targetSearchObj.page = 1;
-    targetSearchObj.order = category;
-    setTargetSearchObj({ ...targetSearchObj });
+  const cafeHandler = (category: string) => {
+    allCafesObj.page = 1;
+    switch (category) {
+      case "Top":
+        allCafesObj.order = "mb_point";
+        break;
+      case "Best":
+        allCafesObj.order = "mb_likes";
+        break;
+      case "Popular":
+        allCafesObj.order = "mb_views";
+        break;
+      case "New":
+        allCafesObj.order = "createdAt";
+        break;
+      default:
+        allCafesObj.order = "mb_point";
+    }
+    setAllCafesObj({ ...allCafesObj });
   };
 
   const handlePaginationChange = (events: any, value: number) => {
-    targetSearchObj.page = value;
-    setTargetSearchObj({ ...targetSearchObj });
+    allCafesObj.page = value;
+    setAllCafesObj({ ...allCafesObj });
   };
 
   const targetLikeHandler = async (e: any, id: string) => {
@@ -137,27 +133,30 @@ export function AllCafes() {
 
       await sweetTopSmallSuccessAlert("success", 700, false);
     } catch (err: any) {
-      console.log("ERROR targetLikeTop:", err);
+      console.log("ERROR targetLikeHandler:", err);
       sweetErrorHandling(err).then();
     }
   };
 
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchValue(e.target.value);
+  // };
+
   return (
     <div className="all_cafes">
       <Container className="cafe_box">
-        {/* High part: Text and Search box */}
         <Box className="filter_search_box">
           <Box className="filter_box">
-            <div className="f_box">
+            <div className="f_box" onClick={() => cafeHandler("Top")}>
               <p>Top</p>
             </div>
-            <div className="f_box">
+            <div className="f_box" onClick={() => cafeHandler("Best")}>
               <p>Best</p>
             </div>
-            <div className="f_box">
+            <div className="f_box" onClick={() => cafeHandler("Popular")}>
               <p>Popular</p>
             </div>
-            <div className="f_box">
+            <div className="f_box" onClick={() => cafeHandler("New")}>
               <p>New</p>
             </div>
           </Box>
@@ -168,6 +167,8 @@ export function AllCafes() {
                 className="search_input"
                 name="SearchCafe"
                 placeholder="Search Cafe"
+                // value={searchValue}
+                // onChange={handleSearch}
               />
               <Button className="search_btn">
                 <SearchIcon />
@@ -176,10 +177,9 @@ export function AllCafes() {
           </Box>
         </Box>
 
-        {/* Middle part: Cards and cafe Pictures */}
         <div className="all_cafe_box">
           <div className="cafe_boxes">
-            {targetCafes.map((ele: Cafe, index: number) => (
+            {allCafes.map((ele: Cafe, index: number) => (
               <Box
                 key={ele._id}
                 className="cafe_box"
@@ -196,7 +196,10 @@ export function AllCafes() {
                       </Box>
                       <Favorite
                         className="like_btn"
-                        onClick={(e) => targetLikeHandler(e, ele._id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          targetLikeHandler(e, ele._id);
+                        }}
                         style={{
                           fill:
                             ele?.me_liked && ele?.me_liked[0]?.my_favorite
@@ -265,9 +268,15 @@ export function AllCafes() {
           </div>
         </div>
 
-        {/* column 3 Pagination */}
         <Stack className="pagination" spacing={2}>
-          <Pagination count={3} variant="outlined" shape="rounded" />
+          <Pagination
+            count={3}
+            variant="outlined"
+            shape="rounded"
+            onChange={handlePaginationChange}
+            boundaryCount={1}
+            siblingCount={0}
+          />
         </Stack>
       </Container>
     </div>
