@@ -8,6 +8,7 @@ export interface CafeSearchObj {
   page: number;
   limit: number;
   order: string;
+  search?: string;
 }
 
 export interface ProductSearchObj {

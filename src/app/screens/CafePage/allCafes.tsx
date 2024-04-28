@@ -62,15 +62,32 @@ export function AllCafes() {
   const refs: any = useRef([]);
   // const [search] = SearchCont();
 
+  const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
+  const [likedCafes, setLikedCafes] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredCafes, setFilteredCafes] = useState<Cafe[]>([]);
+
   const { setAllCafes } = actionDispatch(useDispatch());
   const { allCafes } = useSelector(allCafesRetriever);
   console.log("allCafes>>>", allCafes);
 
   const [allCafesObj, setAllCafesObj] = useState<CafeSearchObj>({
     page: 1,
-    limit: 8,
+    limit: 12,
     order: "mb_point",
   });
+
+  useEffect(() => {
+    // Filter cafes based on searchValue
+    if (searchValue.trim() === "") {
+      setFilteredCafes(allCafes);
+    } else {
+      const filtered = allCafes.filter((cafe) =>
+        cafe.mb_nick.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredCafes(filtered);
+    }
+  }, [allCafes, searchValue]);
 
   useEffect(() => {
     // TODO: Retrieve targetCafesData
@@ -80,6 +97,20 @@ export function AllCafes() {
       .then((data) => setAllCafes(data))
       .catch((err) => console.log(err));
   }, [allCafesObj]);
+
+  useEffect(() => {
+    // Fetch initial like counts
+    allCafes.forEach((ele: Cafe) => {
+      refs.current[ele._id] = ele.mb_likes;
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [ele._id]: ele.mb_likes,
+      }));
+      if (ele.me_liked && ele.me_liked[0]?.my_favorite) {
+        setLikedCafes((prevLikedCafes) => [...prevLikedCafes, ele._id]);
+      }
+    });
+  }, [allCafes]);
 
   /** HANDLERS */
   const chosenCafeHandler = (id: string) => {
@@ -107,9 +138,19 @@ export function AllCafes() {
     setAllCafesObj({ ...allCafesObj });
   };
 
-  const handlePaginationChange = (events: any, value: number) => {
-    allCafesObj.page = value;
-    setAllCafesObj({ ...allCafesObj });
+  const handlePaginationChange = async (_: any, value: any) => {
+    try {
+      setAllCafesObj((prev) => ({ ...prev, page: value }));
+
+      const cafeService = new CafeApiService();
+      const data = await cafeService.getCafes({
+        ...allCafesObj,
+        page: value,
+      });
+      setAllCafes(data);
+    } catch (error) {
+      console.error("Pagination Error:", error);
+    }
   };
 
   const targetLikeHandler = async (e: any, id: string) => {
@@ -117,18 +158,24 @@ export function AllCafes() {
       assert.ok(verifiedMemberData, Definer.auth_err1);
 
       const memberService = new MemberApiService();
-      const like_result: any = await memberService.memberLikeTarget({
-        like_ref_id: id,
-        group_type: "member",
-      });
+      const data = { like_ref_id: id, group_type: "member" };
+      const like_result: any = await memberService.memberLikeTarget(data);
       assert.ok(like_result, Definer.general_err1);
 
+      // Update like count
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]:
+          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
+      }));
+
+      // Update liked cafes
       if (like_result.like_status > 0) {
-        e.target.style.fill = "red";
-        refs.current[like_result.like_ref_id].innerHTML++;
+        setLikedCafes((prevLikedCafes) => [...prevLikedCafes, id]);
       } else {
-        e.target.style.fill = "white";
-        refs.current[like_result.like_ref_id].innerHTML--;
+        setLikedCafes((prevLikedCafes) =>
+          prevLikedCafes.filter((cafeId) => cafeId !== id)
+        );
       }
 
       await sweetTopSmallSuccessAlert("success", 700, false);
@@ -138,9 +185,15 @@ export function AllCafes() {
     }
   };
 
-  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchValue(e.target.value);
-  // };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  // const filteredCafes = searchValue
+  //   ? allCafes.filter((cafe) =>
+  //       cafe.mb_nick.toLowerCase().includes(searchValue.toLowerCase())
+  //     )
+  //   : allCafes;
 
   return (
     <div className="all_cafes">
@@ -161,16 +214,21 @@ export function AllCafes() {
             </div>
           </Box>
           <Box className="search_box">
-            <form className="search_forms" action="" method="">
+            <form
+              className="search_forms"
+              action=""
+              method=""
+              onSubmit={(e) => e.preventDefault()}
+            >
               <input
                 type="search"
                 className="search_input"
                 name="SearchCafe"
                 placeholder="Search Cafe"
-                // value={searchValue}
-                // onChange={handleSearch}
+                value={searchValue}
+                onChange={handleSearch}
               />
-              <Button className="search_btn">
+              <Button className="search_btn" type="submit">
                 <SearchIcon />
               </Button>
             </form>
@@ -179,7 +237,7 @@ export function AllCafes() {
 
         <div className="all_cafe_box">
           <div className="cafe_boxes">
-            {allCafes.map((ele: Cafe, index: number) => (
+            {filteredCafes.map((ele: Cafe, index: number) => (
               <Box
                 key={ele._id}
                 className="cafe_box"
@@ -201,10 +259,7 @@ export function AllCafes() {
                           targetLikeHandler(e, ele._id);
                         }}
                         style={{
-                          fill:
-                            ele?.me_liked && ele?.me_liked[0]?.my_favorite
-                              ? "red"
-                              : "white",
+                          fill: likedCafes.includes(ele._id) ? "red" : "white",
                           padding: "5px",
                           cursor: "pointer",
                         }}
@@ -233,16 +288,15 @@ export function AllCafes() {
                     <div className="rating_2">
                       <Box className="rating_2">
                         <Box className="like">
-                          <div className="like_cnt">{ele.mb_likes}</div>
+                          <div className="like_cnt">{likeCounts[ele._id]}</div>
                           <div className="like_img">
                             <FavoriteIcon
                               style={{
                                 width: "20px",
                                 height: "20px",
-                                color: "#666666",
                                 marginTop: "5px",
                               }}
-                            />{" "}
+                            />
                           </div>
                         </Box>
                         <div className="dvr"></div>
@@ -271,6 +325,7 @@ export function AllCafes() {
         <Stack className="pagination" spacing={2}>
           <Pagination
             count={3}
+            page={allCafesObj.page}
             variant="outlined"
             shape="rounded"
             onChange={handlePaginationChange}
