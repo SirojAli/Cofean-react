@@ -61,8 +61,8 @@ export function AllCafes() {
     order: "mb_point",
   });
 
+  // Filter cafes based on searchValue
   useEffect(() => {
-    // Filter cafes based on searchValue
     if (searchValue.trim() === "") {
       setFilteredCafes(allCafes);
     } else {
@@ -82,8 +82,8 @@ export function AllCafes() {
       .catch((err) => console.log(err));
   }, [allCafesObj]);
 
+  // Fetch initial like counts
   useEffect(() => {
-    // Fetch initial like counts
     allCafes.forEach((ele: Cafe) => {
       refs.current[ele._id] = ele.mb_likes;
       setLikeCounts((prevCounts) => ({
@@ -122,7 +122,7 @@ export function AllCafes() {
     setAllCafesObj({ ...allCafesObj });
   };
 
-  const handlePaginationChange = async (_: any, value: any) => {
+  const paginationHandler = async (_: any, value: any) => {
     try {
       setAllCafesObj((prev) => ({ ...prev, page: value }));
 
@@ -133,7 +133,7 @@ export function AllCafes() {
       });
       setAllCafes(data);
     } catch (error) {
-      console.error("Pagination Error:", error);
+      console.error("Pagination Error>>>", error);
     }
   };
 
@@ -169,15 +169,9 @@ export function AllCafes() {
     }
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
-
-  // const filteredCafes = searchValue
-  //   ? allCafes.filter((cafe) =>
-  //       cafe.mb_nick.toLowerCase().includes(searchValue.toLowerCase())
-  //     )
-  //   : allCafes;
 
   return (
     <div className="all_cafes">
@@ -210,7 +204,7 @@ export function AllCafes() {
                 name="SearchCafe"
                 placeholder="Search Cafe"
                 value={searchValue}
-                onChange={handleSearch}
+                onChange={searchHandler}
               />
               <Button className="search_btn" type="submit">
                 <SearchIcon />
@@ -312,7 +306,7 @@ export function AllCafes() {
             page={allCafesObj.page}
             variant="outlined"
             shape="rounded"
-            onChange={handlePaginationChange}
+            onChange={paginationHandler}
             boundaryCount={1}
             siblingCount={0}
           />

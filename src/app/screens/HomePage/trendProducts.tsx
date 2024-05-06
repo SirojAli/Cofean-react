@@ -49,8 +49,8 @@ export function TrendProducts() {
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
 
+  // Fetch initial like counts
   useEffect(() => {
-    // Fetch initial like counts
     trendProducts.forEach((pro: Product) => {
       refs.current[pro._id] = pro.product_likes;
       setLikeCounts((prevCounts) => ({

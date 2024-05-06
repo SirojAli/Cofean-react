@@ -36,6 +36,7 @@ export interface ProductPageState {
   allProducts: Product[];
   randomProducts: Product[];
   chosenProduct: Product | null;
+  bestSellerProducts: Product[];
 }
 
 // /** ORDERS PAGE */

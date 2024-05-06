@@ -5,6 +5,7 @@ const initialState: ProductPageState = {
   allProducts: [],
   randomProducts: [],
   chosenProduct: null,
+  bestSellerProducts: [],
 };
 
 const ProductPageSlice = createSlice({
@@ -20,11 +21,18 @@ const ProductPageSlice = createSlice({
     setChosenProduct: (state, action) => {
       state.chosenProduct = action.payload;
     },
+    setBestSellerProducts: (state, action) => {
+      state.bestSellerProducts = action.payload;
+    },
   },
 });
 
-export const { setAllProducts, setRandomProducts, setChosenProduct } =
-  ProductPageSlice.actions;
+export const {
+  setAllProducts,
+  setRandomProducts,
+  setChosenProduct,
+  setBestSellerProducts,
+} = ProductPageSlice.actions;
 
 const ProductPageReducer = ProductPageSlice.reducer;
 export default ProductPageReducer;

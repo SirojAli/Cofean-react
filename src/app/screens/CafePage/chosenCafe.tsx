@@ -11,7 +11,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useParams } from "react-router-dom";
 import assert from "assert";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -72,29 +71,25 @@ const cafeProductsRetriever = createSelector(
   })
 );
 
-export function ChosenCafe() {
+export function ChosenCafe(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
   let { cafe_id } = useParams<{ cafe_id: string }>();
 
-  const { setChosenCafe } = actionDispatch(useDispatch());
+  const { setChosenCafe, setRandomCafes, setCafeProducts } = actionDispatch(
+    useDispatch()
+  );
   const { chosenCafe } = useSelector(chosenCafeRetriever);
-  console.log("chosenCafe>>>", chosenCafe);
-
-  const { setRandomCafes } = actionDispatch(useDispatch());
   const { randomCafes } = useSelector(randomCafesRetriever);
-  console.log("randomCafes>>>", randomCafes);
-
-  const { setCafeProducts } = actionDispatch(useDispatch());
   const { cafeProducts } = useSelector(cafeProductsRetriever);
-  console.log("cafeProducts>>>", cafeProducts);
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const [chosenCafeId, setChosenCafeId] = useState<string>(cafe_id || "");
-
   const [cafeProductsObj, setCafeProductsObj] = useState<ProductSearchObj>({
     page: 1,
     limit: 20,
@@ -104,27 +99,32 @@ export function ChosenCafe() {
   });
 
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
+
   useEffect(() => {
-    // TODO: Retrieve Restaurants and Products Data
+    // TODO: Retrieve Cafe and Products Data
     // from cafe
     const cafeService = new CafeApiService();
-    cafeService
-      .getCafes({ page: 1, limit: 10, order: "random" })
-      .then((data) => setRandomCafes(data))
-      .catch((err) => console.log(err));
-
     cafeService
       .getChosenCafe(chosenCafeId)
       .then((data) => setChosenCafe(data))
       .catch((err) => console.log(err));
 
+    cafeService
+      .getCafes({ page: 1, limit: 10, order: "random" })
+      .then((data) => setRandomCafes(data))
+      .catch((err) => console.log(err));
+
     // from products
     const productService = new ProductApiService();
+    console.log("Requesting cafe products with>>> ", cafeProductsObj);
     productService
       .getCafeProducts(cafeProductsObj)
-      .then((data) => setCafeProducts(data))
+      .then((data) => {
+        console.log("Received products data>>> ", data);
+        setCafeProducts(data);
+      })
       .catch((err) => console.log(err));
-  }, [setChosenCafeId, productRebuild, cafeProducts]);
+  }, [setChosenCafeId, productRebuild, cafeProductsObj]);
 
   // For Like Logic
   useEffect(() => {
@@ -143,17 +143,25 @@ export function ChosenCafe() {
     });
   }, [cafeProducts]);
 
+  // Filter products based on searchValue
+  useEffect(() => {
+    if (searchValue.trim() === "") {
+      setFilteredProducts(cafeProducts);
+    } else {
+      const filtered = cafeProducts.filter((product) =>
+        product.product_name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [cafeProducts, searchValue]);
+
   /** HANDLERS */
   const chosenCafeHandler = (id: string) => {
     setChosenCafeId(id);
     cafeProductsObj.cafe_mb_id = id;
     setCafeProductsObj({ ...cafeProductsObj });
     navigate(`/cafes/${id}`);
-    console.log("chosenCafe>>>", chosenCafe);
   };
-
-  //  searchCollectionHandler = cafeProductsHandler
-  // targetProductSearchObj = cafeProductsObj
 
   const productCollectionHandler = (collection: string[]) => {
     cafeProductsObj.page = 1;
@@ -171,15 +179,34 @@ export function ChosenCafe() {
     navigate(`/products/${id}`);
   };
 
-  const targetLikeHandler = async (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const targetLikeHandler = async (id: string) => {
     try {
-      assert.ok(verifiedMemberData, Definer.auth_err1);
       const memberService = new MemberApiService();
-      const data = { like_ref_id: e.target.id, group_type: "product" };
+      const data = { like_ref_id: id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, Definer.general_err1);
+      assert.ok(like_result, "An error occurred while processing the like.");
+
+      // Update like count
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]:
+          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
+      }));
+
+      // Update liked products
+      if (like_result.like_status > 0) {
+        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
+      } else {
+        setLikedProducts((prevLikedProducts) =>
+          prevLikedProducts.filter((productId) => productId !== id)
+        );
+      }
+
       await sweetTopSmallSuccessAlert("success", 700, false);
-      setProductRebuild(new Date());
     } catch (err: any) {
       console.log("targetLikeHandler, ERROR>>>", err);
       sweetErrorHandling(err).then();
@@ -200,10 +227,12 @@ export function ChosenCafe() {
                 <input
                   type="search"
                   className="search_input"
-                  name="SearchCafe"
-                  placeholder="Search Cafe"
+                  name="SearchProduct"
+                  placeholder="Search Product"
+                  value={searchValue}
+                  onChange={handleSearch}
                 />
-                <Button className="search_btn">
+                <Button className="search_btn" type="submit">
                   <SearchIcon />
                 </Button>
               </form>
@@ -225,8 +254,6 @@ export function ChosenCafe() {
                 nextEl: ".cafe-next",
                 prevEl: ".cafe-prev",
               }}
-              // pagination={{ clickable: true }}
-              // scrollbar={{ draggable: true }}
             >
               {randomCafes.map((ele: Cafe) => {
                 const image_path = `${serverApi}/${ele.mb_image}`;
@@ -238,16 +265,11 @@ export function ChosenCafe() {
                     key={ele._id}
                     className={"cafe_avatar"}
                   >
-                    <img src={image_path} />
+                    <img src={image_path} alt={ele.mb_nick} />
                     <span>{ele.mb_nick}</span>
                   </SwiperSlide>
                 );
               })}
-
-              {/* <SwiperSlide className="cafe_avatar">
-                <img src="/images/brands/angelinUs.png" />
-                <p>Angel in Us</p>
-              </SwiperSlide> */}
             </Swiper>
 
             <Box className="next_btn cafe-next">
@@ -318,19 +340,20 @@ export function ChosenCafe() {
             </Stack>
 
             <Stack className="cafe_all_products">
-              {cafeProducts.map((pro: Product) => {
+              {filteredProducts.map((pro: Product) => {
                 const image_path = `${serverApi}/${pro.product_images[0]}`;
 
                 return (
                   <Box
                     className="product_box"
                     onClick={() => chosenProductHandler(pro._id)}
+                    key={pro._id}
                   >
                     <div className="sale_product">
                       <div className="sale_badge">
                         <p className="sale">-{pro.product_discount}%</p>
                       </div>
-                      <img src={image_path} alt="coffee photo" />
+                      <img src={image_path} alt={pro.product_name} />
                       <Favorite
                         className="like_btn"
                         onClick={(e) => {
@@ -350,7 +373,7 @@ export function ChosenCafe() {
                         <Box className="pro_name">
                           <span>{pro.product_name}</span>
                           <div className="basket">
-                            <img src="icons/basket.svg" alt="" />
+                            <img src="icons/basket.svg" alt="basket" />
                           </div>
                         </Box>
 
@@ -393,7 +416,7 @@ export function ChosenCafe() {
                                       color: "#666666",
                                       marginTop: "8px",
                                     }}
-                                  />{" "}
+                                  />
                                 </div>
                               </Box>
                               <div className="dvr"></div>
@@ -409,7 +432,7 @@ export function ChosenCafe() {
                                       color: "#666666",
                                       marginTop: "8px",
                                     }}
-                                  />{" "}
+                                  />
                                 </div>
                               </Box>
                             </Box>

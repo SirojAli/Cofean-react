@@ -14,3 +14,7 @@ export const retrieveChosenProduct = createSelector(
   selectProductPage,
   (ProductPage) => ProductPage.chosenProduct
 );
+export const retrieveBestSellerProducts = createSelector(
+  selectProductPage,
+  (ProductPage) => ProductPage.bestSellerProducts
+);

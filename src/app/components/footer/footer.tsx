@@ -16,22 +16,19 @@ import EmailIcon from "@mui/icons-material/Email";
 import RoomIcon from "@mui/icons-material/Room";
 import PhoneIcon from "@mui/icons-material/Phone";
 
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import Facebook from "@mui/icons-material/Facebook";
+import Instagram from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 import "../../../scss/navbar.scss";
-import Facebook from "@mui/icons-material/Facebook";
-import Instagram from "@mui/icons-material/Instagram";
 
 export function Footer() {
   const navigate = useNavigate;
   return (
     <div className="footer">
       <Stack className="footer_box">
-        {/* Footer  1 */}
         <Box className="footer1">
           <div className="f1_top">
             <Box className="f1_icon">
@@ -62,11 +59,9 @@ export function Footer() {
         </Box>
 
         <Box className="footer2_3">
-          {/* Footer 2 */}
           <Box className="footer2">
             <div className="f2_box">
               <Box className="f2_contents">
-                {/* 1-QATOR */}
                 <Box className="content">
                   <p className="title">COMPANY</p>
                   <Box className="content_texts">
@@ -121,15 +116,12 @@ export function Footer() {
 
           <div className="f2_divider"></div>
 
-          {/* Footer 3 */}
           <Box className="footer3">
             <div className="f3_box">
-              {/* for logo */}
               <div className="f3_logo">
                 <img className="logo" src="/images/navbar/logo1.png" />
               </div>
 
-              {/* for sending email */}
               <Box className="f3_send_email">
                 <h4>Join Cofean Cafe Club and Get $50 for your visit.</h4>
                 <Box className="email_wrap">
@@ -142,20 +134,31 @@ export function Footer() {
                     <img className="send_email" src="/icons/email1.svg" />
                   </Button>
                 </Box>
-                {/* divider */}
                 <div className="f3_divider"></div>
               </Box>
 
-              {/* social media */}
               <div className="f3_social_media">
-                <Facebook className="icon" />
-                <LinkedInIcon className="icon" />
-                <Instagram className="icon" />
-                <GitHubIcon className="icon" />
-                <TelegramIcon className="icon" />
+                <a href="https://facebook.com/sirojiddinsamadov">
+                  <Facebook className="icon" />
+                </a>
+
+                <a href="https://www.linkedin.com/in/sirojiddin-samadov-124985278">
+                  <LinkedInIcon className="icon" />
+                </a>
+
+                <a href="https://www.instagram.com/sirojiddin_samadov_asn">
+                  <Instagram className="icon" />
+                </a>
+
+                <a href="https://github.com/SirojAli">
+                  <GitHubIcon className="icon" />
+                </a>
+
+                <a href="https://t.me/siroj_samadov">
+                  <TelegramIcon className="icon" />
+                </a>
               </div>
 
-              {/* for number & email */}
               <div className="f3_num_email">
                 <Box className="number">
                   <span>+82 10-8240-5559</span>
