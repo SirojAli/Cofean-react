@@ -74,12 +74,13 @@ class ProductApiService {
     }
   }
 
-  async getChosenProduct(dish_id: string): Promise<Product> {
+  async getChosenProduct(product_id: string): Promise<Product> {
     try {
-      const url = `/products/${dish_id}`,
+      const url = `/products/${product_id}`,
         result = await axios.get(this.path + url, {
           withCredentials: true,
         });
+      console.log("Result from backend:", result); // Log the entire result object
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
@@ -87,7 +88,7 @@ class ProductApiService {
       const product: Product = result.data.data;
       return product;
     } catch (err: any) {
-      console.log(`ERROR >>> getChosenDish ${err.message}`);
+      console.log(`ERROR >>> getChosenProduct ${err.message}`);
       throw err;
     }
   }

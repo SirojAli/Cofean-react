@@ -1,8 +1,10 @@
 import { MeLiked } from "./others";
+import { Cafe } from "./user";
 
 export interface Product {
   _id: string;
   product_name: string;
+  product_cafe_name: string;
   product_collection: string;
   product_status: string;
   product_price: number;
@@ -16,7 +18,14 @@ export interface Product {
   product_likes: number;
   product_rating: number;
   product_review: number;
-  cafe_mb_id: string;
+  product_allergy: string;
+  product_calories: number;
+  product_caffeine: number;
+  product_sugar: number;
+  product_protein: number;
+  product_saturated_fat: number;
+  product_sodium: number;
+  cafe_mb_id: Cafe;
   createdAt: Date;
   updateAt: Date;
   me_liked: MeLiked[];

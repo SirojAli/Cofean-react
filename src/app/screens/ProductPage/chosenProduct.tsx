@@ -13,405 +13,545 @@ import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import "../../../scss/products.scss";
 import { Header } from "./header";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import "../../../scss/cafe.scss";
+
+import SearchIcon from "@mui/icons-material/Search";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { CssVarsProvider } from "@mui/joy/styles";
+import Card from "@mui/joy/Card";
+import CardOverflow from "@mui/joy/CardOverflow";
+import AspectRatio from "@mui/joy/AspectRatio";
+import IconButton from "@mui/joy/IconButton";
+import Typography from "@mui/joy/Typography";
+import Link from "@mui/joy/Link";
+import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
+import CallIcon from "@mui/icons-material/Call";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Phone from "@mui/icons-material/Phone";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+
+import "../../../scss/products.scss";
+import Facebook from "@mui/icons-material/Facebook";
+import Instagram from "@mui/icons-material/Instagram";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { Definer } from "../../../lib/definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import { ProductSearchObj } from "../../../types/others";
+import CafeApiService from "../../apiServices/cafeApiService";
+import ProductApiService from "../../apiServices/productApiService";
+import { Collections } from "@mui/icons-material";
+import { serverApi } from "../../../lib/config";
+import { Product } from "../../../types/product";
+import ReactImageMagnify from "react-image-magnify";
+
+// REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setChosenProduct } from "./slice";
+import { retrieveChosenProduct } from "./selector";
+
+//** REDUX SLICE */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setChosenProduct: (data: Product | null) => dispatch(setChosenProduct(data)),
+});
+
+// REDUX SELECTOR
+const chosenProductRetriever = createSelector(
+  retrieveChosenProduct,
+  (chosenProduct) => ({
+    chosenProduct,
+  })
+);
 
 export function ChosenProduct() {
   /** INITIALIZATIONS */
+  const navigate = useNavigate();
+  const { product_id } = useParams<{ product_id: string }>();
+  const { setChosenProduct } = actionDispatch(useDispatch());
+  const { chosenProduct } = useSelector(chosenProductRetriever);
+
+  const productRelatedProcess = async () => {
+    try {
+      if (!product_id) return;
+      // Fetching data from backend
+      const productService = new ProductApiService();
+      const product: Product = await productService.getChosenProduct(
+        product_id
+      );
+      console.log("Fetched product:", product); // Log the fetched product
+
+      // Check if the fetched product has nutritional information
+      if (product && product.product_calories !== undefined) {
+        setChosenProduct(product);
+      } else {
+        console.error("Nutritional information missing");
+      }
+    } catch (err) {
+      console.log("productRelatedProcess>>>", err);
+    }
+  };
+
+  const [productRebuild, setProductRebuild] = useState<Date>(new Date());
+
+  useEffect(() => {
+    productRelatedProcess();
+  }, [productRebuild]);
 
   return (
     <div>
       <Header />
       <Container className="chosen_product">
-        <Stack className="chosen_product_box">
-          {/* for image & product info */}
-          <div className="img_info_box">
-            {/* {for images} */}
-            <Box className="img_box">
-              {/* big img */}
-              <div className="big_img">
-                <div className="wish">
+        {chosenProduct !== null && ( // Added null check
+          <Stack className="chosen_product_box">
+            <div className="img_info_box">
+              <Box className="img_box">
+                <ReactImageMagnify
+                  className="selected_item"
+                  {...{
+                    smallImage: {
+                      alt: "Delicious coffee delivered by Cofean",
+                      isFluidWidth: true,
+                      src: `${serverApi}/${chosenProduct.product_images}`,
+                    },
+                    largeImage: {
+                      width: 470,
+                      height: 520,
+                      src: `${serverApi}/${chosenProduct.product_images}`,
+                    },
+                  }}
+                />
+                <div
+                  className="wish"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    left: "15px",
+                    zIndex: "1",
+                  }}
+                >
                   <Checkbox
                     className="icon"
-                    // {...label}
-                    icon={<FavoriteBorder />}
-                    checkedIcon={<Favorite style={{ color: "red" }} />}
-                    /*@ts-ignore*/
+                    icon={
+                      <FavoriteBorder
+                        style={{ width: "30px", height: "30px" }}
+                      />
+                    }
+                    checkedIcon={
+                      <FavoriteIcon
+                        style={{ color: "red", width: "30px", height: "30px" }}
+                      />
+                    }
                   />
                   <span className="title">Add to Wishlist</span>
                 </div>
-                <img src="/images/products/pin7.jpg" />
-              </div>
+              </Box>
 
-              {/* small img */}
-              <div className="small_img_box">
-                <img src="/images/products/a1.jpg" />
-                <img src="/images/products/a1.jpg" />
-                <img src="/images/products/a1.jpg" />
-                <img src="/images/products/a1.jpg" />
-              </div>
-            </Box>
-
-            {/* {for info} */}
-            <Box className="info_box">
-              {/* div 1: name-star-price */}
-              <div className="product_info">
-                <Box className="name_sort">
-                  <div className="name">Coffee Latte</div>
-                  <Box className="reviews">
-                    <Rating
-                      className="rating"
-                      name="rating"
-                      defaultValue={5}
-                      precision={0.5}
-                      readOnly
-                    />
+              <Box className="info_box">
+                <div className="product_info">
+                  <Box className="name_sort">
+                    <div className="name">{chosenProduct.product_name}</div>
+                    <Box className="reviews">
+                      <Rating
+                        className="rating"
+                        name="rating"
+                        defaultValue={5}
+                        // defaultValue={chosenProduct.product_rating}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </Box>
                   </Box>
-                </Box>
 
-                <Box className="price">
-                  <span className="discounted">$4.00</span>
-                  <span className="original">$5.00</span>
-                </Box>
-              </div>
-
-              {/* <div className="divider_1"></div> */}
-
-              {/* div 2: order methods */}
-              <div className="description">
-                <div className="desc">
-                  Café latte with a smooth blend of vanilla bean syrup
-                  exclusively for reserve. Café latte with a smooth blend of
-                  vanilla bean syrup exclusively for reserve.
-                </div>
-                <div className="nutr_title_btn">
-                  <Box className="nutr_title">
-                    <div className="title">Nutritional Information</div>
+                  <Box className="cafe_name">
+                    <div className="cafe">
+                      {chosenProduct?.cafe_mb_id?.mb_nick}
+                    </div>
                   </Box>
-                  <Box className="nutr_btn">
-                    <div className="btn">HOT</div>
-                    <div className="btn">ICE</div>
+
+                  <Box className="price">
+                    {chosenProduct.product_discount > 0 ? (
+                      <>
+                        <span className="discounted">
+                          ₩{" "}
+                          {chosenProduct.product_price -
+                            chosenProduct.product_price *
+                              (chosenProduct.product_discount / 100)}
+                        </span>
+                        <span className="original">
+                          ₩ {chosenProduct.product_price}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="discounted">
+                        ₩ {chosenProduct.product_price}
+                      </span>
+                    )}
                   </Box>
                 </div>
 
-                <div className="nutr_info">
-                  <div className="left">
-                    <Box className="nutr_item">
-                      <p className="name">Calories (kcal)</p>
-                      <p className="quantity">110</p>
+                <div className="description">
+                  <div className="desc">
+                    {chosenProduct.product_description}
+                  </div>
+                  <div className="nutr_title_btn">
+                    <Box className="nutr_title">
+                      <div className="title">Nutritional Information</div>
                     </Box>
-                    <Box className="nutr_item">
-                      <p className="name">Caffeine (mg)</p>
-                      <p className="quantity">75</p>
-                    </Box>
-                    <Box className="nutr_item">
-                      <p className="name">Sugar (g)</p>
-                      <p className="quantity">8</p>
-                    </Box>
+                    {/* <Box className="nutr_btn">
+                      <div className="btn">HOT</div>
+                      <div className="btn">ICE</div>
+                    </Box> */}
                   </div>
 
-                  <div className="divider_3"></div>
+                  <div className="nutr_info">
+                    <div className="left">
+                      <Box className="nutr_item">
+                        <p className="name">Calories (kcal)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_calories}
+                        </p>
+                      </Box>
+                      <Box className="nutr_item">
+                        <p className="name">Caffeine (mg)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_caffeine}
+                        </p>
+                      </Box>
+                      <Box className="nutr_item">
+                        <p className="name">Sugar (g)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_sugar}
+                        </p>
+                      </Box>
+                    </div>
 
-                  <div className="right">
-                    <Box className="nutr_item">
-                      <p className="name">Protein (g)</p>
-                      <p className="quantity">6</p>
-                    </Box>
-                    <Box className="nutr_item">
-                      <p className="name">Saturated Fat (g)</p>
-                      <p className="quantity">3</p>
-                    </Box>
-                    <Box className="nutr_item">
-                      <p className="name">Sodium (mg)</p>
-                      <p className="quantity">70</p>
-                    </Box>
+                    <div className="divider_3"></div>
+
+                    <div className="right">
+                      <Box className="nutr_item">
+                        <p className="name">Protein (g)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_protein}
+                        </p>
+                      </Box>
+                      <Box className="nutr_item">
+                        <p className="name">Saturated Fat (g)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_saturated_fat}
+                        </p>
+                      </Box>
+                      <Box className="nutr_item">
+                        <p className="name">Sodium (mg)</p>
+                        <p className="quantity">
+                          {chosenProduct.product_sodium}
+                        </p>
+                      </Box>
+                    </div>
+                  </div>
+
+                  <div className="allergy">
+                    <p>Allergy trigger: {chosenProduct.product_allergy}</p>
                   </div>
                 </div>
 
-                <div className="allergy">
-                  <p>Allergy trigger: Milk, Soybean</p>
-                </div>
-              </div>
-
-              {/* div 3: cart-wishlist */}
-              <div className="cart_wish">
-                <div className="count">
-                  <p>-</p>
-                  <p>1</p>
-                  <p>+</p>
-                </div>
-
-                <Button className="cart">
-                  <p>Add to cart</p>
-                  <ShoppingCartIcon style={{ color: "black" }} />
-                </Button>
-              </div>
-            </Box>
-          </div>
-
-          {/* for review & comments */}
-          <div className="review_box">
-            <div className="review_title">
-              <span>Product Reviews</span>
-            </div>
-
-            <div className="review_summary">
-              <div className="rating_box">
-                <Box className="stats_1">
-                  <div className="star_points">
-                    <Box className="point">
-                      <span>5.0</span>
-                    </Box>
-                    <Rating
-                      className="rating"
-                      name="rating"
-                      defaultValue={5}
-                      precision={0.5}
-                      readOnly
-                    />
+                <div className="cart_wish">
+                  <div className="count">
+                    <p>-</p>
+                    <p>1</p>
+                    <p>+</p>
                   </div>
 
-                  <div className="rating_reviews">
-                    <p>Based on 12 Reviews</p>
-                  </div>
-                </Box>
-                <div className="divider_rating"></div>
-                <Box className="stats_2">
-                  <div className="star">
-                    <Rating
-                      className="rating"
-                      // name="rating"
-                      defaultValue={5}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="line"></div>
-                    <div className="count">
-                      <p>(12)</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Rating
-                      className="rating"
-                      // name="rating"
-                      defaultValue={4}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="line"></div>
-                    <div className="count">
-                      <p>(0)</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Rating
-                      className="rating"
-                      // name="rating"
-                      defaultValue={3}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="line"></div>
-                    <div className="count">
-                      <p>(0)</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Rating
-                      className="rating"
-                      // name="rating"
-                      defaultValue={2}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="line"></div>
-                    <div className="count">
-                      <p>(0)</p>
-                    </div>
-                  </div>
-                  <div className="star">
-                    <Rating
-                      className="rating"
-                      // name="rating"
-                      defaultValue={1}
-                      precision={0.5}
-                      readOnly
-                    />
-                    <div className="line"></div>
-                    <div className="count">
-                      <p>(0)</p>
-                    </div>
-                  </div>
-                </Box>
-                <div className="divider_rating"></div>
-              </div>
-
-              <div className="write_review">
-                <div className="write_review_div">
-                  <p>Write a Review</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="submit_review">
-              <Box className="rate">
-                <div className="rating_text">
-                  <span className="rating_name">Rating</span>
-                  <span className="star">*</span>
-                </div>
-                <div className="rating_box">
-                  <Rating
-                    className="rating"
-                    name="rating"
-                    defaultValue={0}
-                    precision={0.5}
-                  />
+                  <Button className="cart">
+                    <p>Add to cart</p>
+                    <ShoppingCartIcon style={{ color: "black" }} />
+                  </Button>
                 </div>
               </Box>
-              <Box className="title_review">
-                <div className="title">
-                  <span className="title_name">Title of Review</span>
-                  <span className="star">*</span>
+            </div>
+
+            {/* for review & comments */}
+            <div className="review_box">
+              <div className="review_title">
+                <span>Product Reviews</span>
+              </div>
+
+              <div className="review_summary">
+                <div className="rating_box">
+                  <Box className="stats_1">
+                    <div className="star_points">
+                      <Box className="point">
+                        <span>5.0</span>
+                      </Box>
+                      <Rating
+                        className="rating"
+                        name="rating"
+                        defaultValue={5}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="rating_reviews">
+                      <p>Based on 12 Reviews</p>
+                    </div>
+                  </Box>
+                  <div className="divider_rating"></div>
+                  <Box className="stats_2">
+                    <div className="star">
+                      <Rating
+                        className="rating"
+                        // name="rating"
+                        defaultValue={5}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <div className="line"></div>
+                      <div className="count">
+                        <p>(12)</p>
+                      </div>
+                    </div>
+                    <div className="star">
+                      <Rating
+                        className="rating"
+                        // name="rating"
+                        defaultValue={4}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <div className="line"></div>
+                      <div className="count">
+                        <p>(0)</p>
+                      </div>
+                    </div>
+                    <div className="star">
+                      <Rating
+                        className="rating"
+                        // name="rating"
+                        defaultValue={3}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <div className="line"></div>
+                      <div className="count">
+                        <p>(0)</p>
+                      </div>
+                    </div>
+                    <div className="star">
+                      <Rating
+                        className="rating"
+                        // name="rating"
+                        defaultValue={2}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <div className="line"></div>
+                      <div className="count">
+                        <p>(0)</p>
+                      </div>
+                    </div>
+                    <div className="star">
+                      <Rating
+                        className="rating"
+                        // name="rating"
+                        defaultValue={1}
+                        precision={0.5}
+                        readOnly
+                      />
+                      <div className="line"></div>
+                      <div className="count">
+                        <p>(0)</p>
+                      </div>
+                    </div>
+                  </Box>
+                  <div className="divider_rating"></div>
                 </div>
-                <div className="title_form">
+
+                <div className="write_review">
+                  <div className="write_review_div">
+                    <p>Write a Review</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="submit_review">
+                <Box className="rate">
+                  <div className="rating_text">
+                    <span className="rating_name">Rating</span>
+                    <span className="star">*</span>
+                  </div>
+                  <div className="rating_box">
+                    <Rating
+                      className="rating"
+                      name="rating"
+                      defaultValue={0}
+                      precision={0.5}
+                    />
+                  </div>
+                </Box>
+                <Box className="title_review">
+                  <div className="title">
+                    <span className="title_name">Title of Review</span>
+                    <span className="star">*</span>
+                  </div>
+                  <div className="title_form">
+                    <TextField
+                      type="text"
+                      variant="outlined"
+                      color="primary"
+                      label="Give a title for your review"
+                      fullWidth
+                      InputProps={{ style: { height: "50px" } }}
+                    />
+                  </div>
+                </Box>
+                <div className="review_text">
+                  <span className="review_name">Review</span>
                   <TextField
                     type="text"
                     variant="outlined"
                     color="primary"
-                    label="Give a title for your review"
+                    label="Type your comment here..."
                     fullWidth
-                    InputProps={{ style: { height: "50px" } }}
+                    InputProps={{ style: { height: "150px" } }}
                   />
                 </div>
-              </Box>
-              <div className="review_text">
-                <span className="review_name">Review</span>
-                <TextField
-                  type="text"
-                  variant="outlined"
-                  color="primary"
-                  label="Type your comment here..."
-                  fullWidth
-                  InputProps={{ style: { height: "150px" } }}
-                />
+                <Button className="submit_btn">
+                  <span>Submit Review</span>
+                </Button>
               </div>
-              <Button className="submit_btn">
-                <span>Submit Review</span>
-              </Button>
-            </div>
 
-            <div className="review_list">
-              <div className="review_title_box">
-                <Box className="title">
-                  <span>Reviews</span>
-                </Box>
-              </div>
-              <div className="comment_box">
-                <Box className="comment">
-                  <div className="info">
-                    <Box className="user_img">
-                      <img src="/icons/default_user.svg" />
-                    </Box>
-                    <div className="star_name">
-                      <Box className="name">
-                        <span>Sirojiddin Samadov</span>
+              <div className="review_list">
+                <div className="review_title_box">
+                  <Box className="title">
+                    <span>Reviews</span>
+                  </Box>
+                </div>
+                <div className="comment_box">
+                  <Box className="comment">
+                    <div className="info">
+                      <Box className="user_img">
+                        <img src="/icons/default_user.svg" />
                       </Box>
-                      <Box className="star">
-                        <Rating
-                          className="rating"
-                          name="rating"
-                          defaultValue={5}
-                          precision={0.5}
-                          readOnly
-                        />
+                      <div className="star_name">
+                        <Box className="name">
+                          <span>Sirojiddin Samadov</span>
+                        </Box>
+                        <Box className="star">
+                          <Rating
+                            className="rating"
+                            name="rating"
+                            defaultValue={5}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </Box>
+                      </div>
+                      <Box className="date">
+                        <span>07/07/2024</span>
                       </Box>
                     </div>
-                    <Box className="date">
-                      <span>07/07/2024</span>
-                    </Box>
-                  </div>
-                  <div className="commented">
-                    <Box className="c_title">
-                      <span>Delicious!</span>
-                    </Box>
-                    <Box className="c_text">
-                      <span>
-                        Highly recommend. Has a beautiful leafy flavor to it.
-                        Sometime it’s almost floral. Highly recommend. Has a
-                        beautiful leafy flavor to it. Sometime it’s almost
-                        floral. Highly recommend.
-                      </span>
-                    </Box>
-                  </div>
-                </Box>
-
-                <Box className="comment">
-                  <div className="info">
-                    <Box className="user_img">
-                      <img src="/icons/default_user.svg" />
-                    </Box>
-                    <div className="star_name">
-                      <Box className="name">
-                        <span>David Believer</span>
+                    <div className="commented">
+                      <Box className="c_title">
+                        <span>Delicious!</span>
                       </Box>
-                      <Box className="star">
-                        <Rating
-                          className="rating"
-                          name="rating"
-                          defaultValue={5}
-                          precision={0.5}
-                          readOnly
-                        />
+                      <Box className="c_text">
+                        <span>
+                          Highly recommend. Has a beautiful leafy flavor to it.
+                          Sometime it’s almost floral. Highly recommend. Has a
+                          beautiful leafy flavor to it. Sometime it’s almost
+                          floral. Highly recommend.
+                        </span>
                       </Box>
                     </div>
-                    <Box className="date">
-                      <span>12/12/2024</span>
-                    </Box>
-                  </div>
-                  <div className="commented">
-                    <Box className="c_title">
-                      <span>Wonderful flavor!</span>
-                    </Box>
-                    <Box className="c_text">
-                      <span>I just wish you had it in larger quantities!</span>
-                    </Box>
-                  </div>
-                </Box>
+                  </Box>
 
-                <Box className="comment">
-                  <div className="info">
-                    <Box className="user_img">
-                      <img src="/icons/default_user.svg" />
-                    </Box>
-                    <div className="star_name">
-                      <Box className="name">
-                        <span>Shon Azizov</span>
+                  <Box className="comment">
+                    <div className="info">
+                      <Box className="user_img">
+                        <img src="/icons/default_user.svg" />
                       </Box>
-                      <Box className="star">
-                        <Rating
-                          className="rating"
-                          name="rating"
-                          defaultValue={1}
-                          precision={0.5}
-                          readOnly
-                        />
+                      <div className="star_name">
+                        <Box className="name">
+                          <span>David Believer</span>
+                        </Box>
+                        <Box className="star">
+                          <Rating
+                            className="rating"
+                            name="rating"
+                            defaultValue={5}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </Box>
+                      </div>
+                      <Box className="date">
+                        <span>12/12/2024</span>
                       </Box>
                     </div>
-                    <Box className="date">
-                      <span>17/07/2024</span>
-                    </Box>
-                  </div>
-                  <div className="commented">
-                    <Box className="c_title">
-                      <span>Not good!</span>
-                    </Box>
-                    <Box className="c_text">
-                      <span>I was disappointed in the flavors</span>
-                    </Box>
-                  </div>
-                </Box>
+                    <div className="commented">
+                      <Box className="c_title">
+                        <span>Wonderful flavor!</span>
+                      </Box>
+                      <Box className="c_text">
+                        <span>
+                          I just wish you had it in larger quantities!
+                        </span>
+                      </Box>
+                    </div>
+                  </Box>
+
+                  <Box className="comment">
+                    <div className="info">
+                      <Box className="user_img">
+                        <img src="/icons/default_user.svg" />
+                      </Box>
+                      <div className="star_name">
+                        <Box className="name">
+                          <span>Shon Azizov</span>
+                        </Box>
+                        <Box className="star">
+                          <Rating
+                            className="rating"
+                            name="rating"
+                            defaultValue={1}
+                            precision={0.5}
+                            readOnly
+                          />
+                        </Box>
+                      </div>
+                      <Box className="date">
+                        <span>17/07/2024</span>
+                      </Box>
+                    </div>
+                    <div className="commented">
+                      <Box className="c_title">
+                        <span>Not good!</span>
+                      </Box>
+                      <Box className="c_text">
+                        <span>I was disappointed in the flavors</span>
+                      </Box>
+                    </div>
+                  </Box>
+                </div>
               </div>
             </div>
-          </div>
-        </Stack>
+          </Stack>
+        )}
       </Container>
     </div>
   );
