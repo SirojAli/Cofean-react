@@ -48,6 +48,7 @@ import MemberApiService from "../../apiServices/memberApiService";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   sweetErrorHandling,
+  sweetFailureProvider,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
 import { ProductSearchObj } from "../../../types/others";
@@ -64,10 +65,16 @@ import { createSelector } from "reselect";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setChosenProduct } from "./slice";
 import { retrieveChosenProduct } from "./selector";
+import axios from "axios";
+import ReviewApiService from "../../apiServices/reviewApiService";
+import { setProductReviews } from "./slice";
+import { retrieveProductReviews } from "./selector";
+import { Review } from "../../../types/review";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
   setChosenProduct: (data: Product | null) => dispatch(setChosenProduct(data)),
+  setProductReviews: (data: Review[]) => dispatch(setProductReviews(data)),
 });
 
 // REDUX SELECTOR
@@ -84,6 +91,12 @@ export function ChosenProduct() {
   const { product_id } = useParams<{ product_id: string }>();
   const { setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
+
+  const [rating, setRating] = useState(0);
+  const [value, setValue] = useState(0);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const review_text = useRef<any>();
 
   const productRelatedProcess = async () => {
     try {
@@ -112,11 +125,47 @@ export function ChosenProduct() {
     productRelatedProcess();
   }, [productRebuild]);
 
+  useEffect(() => {
+    const reviewService = new ReviewApiService();
+    reviewService
+      .getTargetReviews({
+        page: 1,
+        limit: 20,
+        review_ref_id: product_id || "",
+      })
+      .then((data) => setProductReviews(data))
+      .catch((err) => console.log(err));
+  }, [product_id]);
+
+  /** HANDLERS */
+  const chosenCafeHandler = (id: string) => {
+    navigate(`/cafes/${id}`);
+  };
+
+  const submitHandler = async () => {
+    try {
+      const reviewService = new ReviewApiService();
+      const result = await reviewService.createReview({
+        review_ref_id: product_id || "",
+        group_type: "product",
+        title: title, // Capture the title value
+        content: content, // Capture the review content value
+        product_rating: rating,
+      });
+      console.log("state>>>", result.state);
+      // After successful submission, navigate to the product page
+      navigate(`/products/${product_id}`);
+    } catch (error: any) {
+      console.error("ERROR >>> createReviews", error.message);
+      throw error;
+    }
+  };
+
   return (
     <div>
       <Header />
       <Container className="chosen_product">
-        {chosenProduct !== null && ( // Added null check
+        {chosenProduct !== null && (
           <Stack className="chosen_product_box">
             <div className="img_info_box">
               <Box className="img_box">
@@ -129,8 +178,8 @@ export function ChosenProduct() {
                       src: `${serverApi}/${chosenProduct.product_images}`,
                     },
                     largeImage: {
-                      width: 470,
-                      height: 520,
+                      width: 800,
+                      height: 800,
                       src: `${serverApi}/${chosenProduct.product_images}`,
                     },
                   }}
@@ -169,8 +218,7 @@ export function ChosenProduct() {
                       <Rating
                         className="rating"
                         name="rating"
-                        defaultValue={5}
-                        // defaultValue={chosenProduct.product_rating}
+                        value={4.0}
                         precision={0.5}
                         readOnly
                       />
@@ -178,7 +226,12 @@ export function ChosenProduct() {
                   </Box>
 
                   <Box className="cafe_name">
-                    <div className="cafe">
+                    <div
+                      className="cafe"
+                      onClick={() =>
+                        chosenCafeHandler(chosenProduct?.cafe_mb_id?._id)
+                      }
+                    >
                       {chosenProduct?.cafe_mb_id?.mb_nick}
                     </div>
                   </Box>
@@ -284,7 +337,6 @@ export function ChosenProduct() {
               </Box>
             </div>
 
-            {/* for review & comments */}
             <div className="review_box">
               <div className="review_title">
                 <span>Product Reviews</span>
@@ -295,12 +347,12 @@ export function ChosenProduct() {
                   <Box className="stats_1">
                     <div className="star_points">
                       <Box className="point">
-                        <span>5.0</span>
+                        <span>4.0</span>
                       </Box>
                       <Rating
                         className="rating"
                         name="rating"
-                        defaultValue={5}
+                        value={4.0}
                         precision={0.5}
                         readOnly
                       />
@@ -322,7 +374,7 @@ export function ChosenProduct() {
                       />
                       <div className="line"></div>
                       <div className="count">
-                        <p>(12)</p>
+                        <p>(5)</p>
                       </div>
                     </div>
                     <div className="star">
@@ -335,7 +387,7 @@ export function ChosenProduct() {
                       />
                       <div className="line"></div>
                       <div className="count">
-                        <p>(0)</p>
+                        <p>(6)</p>
                       </div>
                     </div>
                     <div className="star">
@@ -348,7 +400,7 @@ export function ChosenProduct() {
                       />
                       <div className="line"></div>
                       <div className="count">
-                        <p>(0)</p>
+                        <p>(1)</p>
                       </div>
                     </div>
                     <div className="star">
@@ -416,11 +468,13 @@ export function ChosenProduct() {
                       label="Give a title for your review"
                       fullWidth
                       InputProps={{ style: { height: "50px" } }}
+                      value={title} // Add value prop
+                      onChange={(e) => setTitle(e.target.value)} // Add onChange handler
                     />
                   </div>
                 </Box>
                 <div className="review_text">
-                  <span className="review_name">Review</span>
+                  <span className="review_name">Content of Review</span>
                   <TextField
                     type="text"
                     variant="outlined"
@@ -428,9 +482,11 @@ export function ChosenProduct() {
                     label="Type your comment here..."
                     fullWidth
                     InputProps={{ style: { height: "150px" } }}
+                    value={content} // Add value prop
+                    onChange={(e) => setContent(e.target.value)} // Add onChange handler
                   />
                 </div>
-                <Button className="submit_btn">
+                <Button className="submit_btn" onClick={submitHandler}>
                   <span>Submit Review</span>
                 </Button>
               </div>

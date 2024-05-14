@@ -1344,6 +1344,7 @@
               font-size: 16px;
               font-weight: 700;
               text-decoration: underline;
+              cursor: pointer;
             }
           }
 
@@ -1357,7 +1358,7 @@
             font-weight: 500;
             line-height: 28px;
             margin-top: 5px;
-            border: 1px solid red;
+            // border: 1px solid red;
             margin-bottom: 10px;
             display: flex;
             align-items: center;

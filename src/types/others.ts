@@ -19,6 +19,20 @@ export interface ProductSearchObj {
   product_collection?: string[];
 }
 
+export interface ReviewSearchObj {
+  page: number;
+  limit: number;
+  review_ref_id: string;
+}
+
+export interface CreateReviewObj {
+  review_ref_id: string;
+  group_type: string;
+  title: string;
+  content?: string;
+  product_rating?: number;
+}
+
 export interface MemberLiken {
   like_group: string;
   like_status: number;

@@ -3,6 +3,7 @@ import { Product } from "./product";
 import { Member, Cafe } from "./user";
 import { Order } from "./order";
 import { Follower, Following } from "./follow";
+import { Review } from "./review";
 
 /** REACT APP STATE */
 export interface AppRootState {
@@ -37,6 +38,7 @@ export interface ProductPageState {
   randomProducts: Product[];
   chosenProduct: Product | null;
   bestSellerProducts: Product[];
+  productReviews: Review[];
 }
 
 // /** ORDERS PAGE */

@@ -18,3 +18,7 @@ export const retrieveBestSellerProducts = createSelector(
   selectProductPage,
   (ProductPage) => ProductPage.bestSellerProducts
 );
+export const retrieveProductReviews = createSelector(
+  selectProductPage,
+  (ProductPage) => ProductPage.productReviews
+);
