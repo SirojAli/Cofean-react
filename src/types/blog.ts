@@ -2,21 +2,21 @@ import { MeLiked } from "./others";
 import { Member } from "./user";
 
 export interface BlogInput {
-  post_subject: string;
-  post_content: string;
-  post_image: string;
-  board_id: string;
+  blog_subject: string;
+  blog_content: string;
+  blog_image: string;
+  blog_types: string;
 }
 
 export interface Blog {
   _id: string;
-  post_subject: string;
-  post_content: string;
-  post_image: string | null;
-  board_id: string;
-  post_status: string;
-  post_views: number;
-  post_likes: number;
+  blog_subject: string;
+  blog_content: string;
+  blog_image: string | null;
+  blog_types: string;
+  blog_status: string;
+  blog_views: number;
+  blog_likes: number;
   mb_id: string;
   createdAt: Date;
   updateAt: Date;
@@ -27,7 +27,7 @@ export interface Blog {
 export interface SearchBlogObj {
   page: number;
   limit: number;
-  board_id: string;
+  blog_types: string;
   order?: string | null;
 }
 

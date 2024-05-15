@@ -129,7 +129,7 @@ export function ChosenBlog() {
                   <ArrowBackIcon className="icon" />
                   <span>previous post</span>
                 </div>
-                <span className="post_name">best event ticket deals</span>
+                <span className="blog_name">best event ticket deals</span>
               </Box>
 
               <Box className="next">
@@ -137,7 +137,7 @@ export function ChosenBlog() {
                   <span>next post</span>
                   <ArrowForwardIcon className="icon" />
                 </div>
-                <span className="post_name">best event ticket deals</span>
+                <span className="blog_name">best event ticket deals</span>
               </Box>
             </div>
           </div>
@@ -220,7 +220,7 @@ export function ChosenBlog() {
               </Box>
             </div>
 
-            <div className="post_comment">
+            <div className="blog_comment">
               <span>Leave a Comment</span>
               <div className="review_text">
                 <textarea

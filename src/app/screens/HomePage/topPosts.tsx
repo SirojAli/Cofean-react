@@ -42,10 +42,10 @@ export function TopPosts() {
     blogService
 
       .getTopPosts({
-        board_id: "all",
+        blog_types: "all",
         page: 1,
         limit: 5,
-        order: "post_likes",
+        order: "blog_likes",
       })
       .then((data) => setTopPosts(data))
       .catch((err) => console.log(err));

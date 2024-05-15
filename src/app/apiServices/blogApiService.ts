@@ -18,7 +18,7 @@ class BlogApiService {
 
   public async getTopPosts(data: SearchBlogObj) {
     try {
-      let url = `/blog/target?board_id=${data.board_id}&page=${data.page}&limit=${data.limit}`;
+      let url = `/blog/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
 
       const result = await axios.get(this.path + url, {
@@ -40,7 +40,7 @@ class BlogApiService {
   public async uploadImageToServer(image: any) {
     try {
       let formData = new FormData();
-      formData.append("post_image", image);
+      formData.append("blog_image", image);
       console.log("image >>>", image);
 
       const result = await axios(`${this.path}/blog/image`, {
@@ -83,7 +83,7 @@ class BlogApiService {
 
   public async getTargetPosts(data: SearchBlogObj) {
     try {
-      let url = `/blog/target?board_id=${data.board_id}&page=${data.page}&limit=${data.limit}`;
+      let url = `/blog/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
 
       const result = await axios.get(this.path + url, {
@@ -122,9 +122,9 @@ class BlogApiService {
     }
   }
 
-  async getChosenPost(post_id: string) {
+  async getChosenPost(blog_id: string) {
     try {
-      let url = `/blog/single-article/${post_id}`;
+      let url = `/blog/single-article/${blog_id}`;
 
       const result = await axios.get(this.path + url, {
         withCredentials: true,

@@ -123,7 +123,7 @@ export function Navbar(props: any) {
                 </NavLink>
               </Box>
               <Box className="menu_page" onClick={props.setPath}>
-                <NavLink className="menu" to="/blog">
+                <NavLink className="menu" to="/blogs">
                   <span>Blog</span>
                 </NavLink>
               </Box>

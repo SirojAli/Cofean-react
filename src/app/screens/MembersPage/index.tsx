@@ -36,12 +36,12 @@ export function MyPage() {
           <TabContext value="value">
             {/* 1/2 Left Side */}
             <Stack className="my_page_left">
-              <div className="post_title">
+              <div className="blog_title">
                 <span>Siroj Ali's all posts</span>
               </div>
               <Box className="all_blogs">
-                <div className="post_box">
-                  <img className="post_img" src="/images/headers/q2.png" />
+                <div className="blog_box">
+                  <img className="blog_img" src="/images/headers/q2.png" />
                   <div className="tag_target">
                     <Box className="tag">
                       <div className="first">
@@ -76,8 +76,8 @@ export function MyPage() {
                     <span>Read more...</span>
                   </Box>
                 </div>
-                <div className="post_box">
-                  <img className="post_img" src="/images/headers/q2.png" />
+                <div className="blog_box">
+                  <img className="blog_img" src="/images/headers/q2.png" />
                   <div className="tag_target">
                     <Box className="tag">
                       <div className="first">
@@ -112,8 +112,8 @@ export function MyPage() {
                     <span>Read more...</span>
                   </Box>
                 </div>
-                <div className="post_box">
-                  <img className="post_img" src="/images/headers/q2.png" />
+                <div className="blog_box">
+                  <img className="blog_img" src="/images/headers/q2.png" />
                   <div className="tag_target">
                     <Box className="tag">
                       <div className="first">
@@ -186,9 +186,9 @@ export function MyPage() {
                   Here to share stories, connect with friends, and make every
                   post count
                 </p>
-                <div className="post_buttons">
-                  <Button className="post_btn">Create post</Button>
-                  <Button className="post_btn">View all posts</Button>
+                <div className="blog_buttons">
+                  <Button className="blog_btn">Create post</Button>
+                  <Button className="blog_btn">View all posts</Button>
                 </div>
               </Box>
             </Stack>
