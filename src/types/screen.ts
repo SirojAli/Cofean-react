@@ -10,10 +10,10 @@ export interface AppRootState {
   homePage: HomePageState;
   cafePage: CafePageState;
   productPage: ProductPageState;
+  memberPage: MemberPageState;
 
   // ordersPage: OrdersPageState;
   // communityPage: CommunityPageState;
-  // memberPage: MemberPageState;
 }
 
 /** HOME PAGE */
@@ -21,7 +21,7 @@ export interface HomePageState {
   topCafes: Cafe[];
   trendProducts: Product[];
   saleProducts: Product[];
-  topPosts: Blog[];
+  topBlogs: Blog[];
 }
 
 /** Cafe PAGE */
@@ -41,6 +41,15 @@ export interface ProductPageState {
   productReviews: Review[];
 }
 
+/** MEMBER PAGE */
+export interface MemberPageState {
+  chosenMember: Member | null;
+  chosenMemberBlogs: Blog[];
+  chosenBlog: Blog | null;
+  memberFollowers: Follower[];
+  memberFollowings: Following[];
+}
+
 // /** ORDERS PAGE */
 // export interface OrdersPageState {
 //   pausedOrders: Order[];
@@ -51,13 +60,4 @@ export interface ProductPageState {
 // /** ORDERS PAGE */
 // export interface CommunityPageState {
 //   targetBoArticles: BoArticle[];
-// }
-
-// /** MEMBER PAGE */
-// export interface MemberPageState {
-//   chosenMember: Member | null;
-//   chosenMemberBoArticles: BoArticle[];
-//   chosenSingleBoArticle: BoArticle | null;
-//   memberFollowers: Follower[];
-//   memberFollowings: Following[];
 // }

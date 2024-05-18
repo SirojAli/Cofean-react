@@ -16,7 +16,7 @@ class BlogApiService {
     this.path = serverApi;
   }
 
-  public async getTopPosts(data: SearchBlogObj) {
+  public async getTopBlogs(data: SearchBlogObj) {
     try {
       let url = `/blog/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
@@ -29,10 +29,10 @@ class BlogApiService {
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
 
-      const posts: Blog[] = result.data.data;
-      return posts;
+      const blogs: Blog[] = result.data.data;
+      return blogs;
     } catch (err: any) {
-      console.log(`ERROR >>> getTopPosts ${err.message}`);
+      console.log(`ERROR >>> getTopBlogs ${err.message}`);
       throw err;
     }
   }
@@ -63,7 +63,7 @@ class BlogApiService {
     }
   }
 
-  public async createPost(data: BlogInput) {
+  public async createBlog(data: BlogInput) {
     try {
       const result = await axios.post(this.path + "/blog/create", data, {
         withCredentials: true,
@@ -73,15 +73,15 @@ class BlogApiService {
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
 
-      const post: Blog = result.data.data;
-      return post;
+      const blog: Blog = result.data.data;
+      return blog;
     } catch (err: any) {
-      console.log(`ERROR >>> createPost ${err.message}`);
+      console.log(`ERROR >>> createBlog ${err.message}`);
       throw err;
     }
   }
 
-  public async getTargetPosts(data: SearchBlogObj) {
+  public async getTargetBlogs(data: SearchBlogObj) {
     try {
       let url = `/blog/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
@@ -94,17 +94,17 @@ class BlogApiService {
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
 
-      const posts: Blog[] = result.data.data;
-      return posts;
+      const blogs: Blog[] = result.data.data;
+      return blogs;
     } catch (err: any) {
-      console.log(`ERROR >>> getTargetPosts ${err.message}`);
+      console.log(`ERROR >>> getTargetBlogs ${err.message}`);
       throw err;
     }
   }
 
-  async getMemberBlogPosts(data: SearchMemberBlogsObj) {
+  async getMemberBlogs(data: SearchMemberBlogsObj) {
     try {
-      let url = `/blog/posts?mb_id=${data.mb_id}&page=${data.page}&limit=${data.limit}`;
+      let url = `/blog/blogs?mb_id=${data.mb_id}&page=${data.page}&limit=${data.limit}`;
 
       const result = await axios.get(this.path + url, {
         withCredentials: true,
@@ -114,15 +114,15 @@ class BlogApiService {
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
 
-      const post: Blog[] = result.data.data;
-      return post;
+      const blog: Blog[] = result.data.data;
+      return blog;
     } catch (err: any) {
-      console.log(`ERROR >>> getMemberBlogPosts ${err.message}`);
+      console.log(`ERROR >>> getMemberBlogBlogs ${err.message}`);
       throw err;
     }
   }
 
-  async getChosenPost(blog_id: string) {
+  async getChosenBlog(blog_id: string) {
     try {
       let url = `/blog/single-article/${blog_id}`;
 
@@ -134,10 +134,10 @@ class BlogApiService {
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
 
-      const post: Blog = result.data.data;
-      return post;
+      const blog: Blog = result.data.data;
+      return blog;
     } catch (err: any) {
-      console.log(`ERROR >>> getChosenPost ${err.message}`);
+      console.log(`ERROR >>> getChosenBlog ${err.message}`);
       throw err;
     }
   }

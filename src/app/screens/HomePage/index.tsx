@@ -4,7 +4,7 @@ import { TopCafes } from "./topCafes";
 import { TrendProducts } from "./trendProducts";
 import { Video } from "./video";
 import { SaleProducts } from "./saleProducts";
-import { TopPosts } from "./topPosts";
+import { TopBlogs } from "./topBlogs";
 import "../../../scss/home.scss";
 
 // REDUX
@@ -31,7 +31,7 @@ export function Homepage() {
       <TrendProducts />
       <Video />
       <SaleProducts />
-      <TopPosts />
+      <TopBlogs />
     </div>
   );
 }

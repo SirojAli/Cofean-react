@@ -21,7 +21,7 @@ import { ChosenCafe } from "./screens/CafePage/chosenCafe";
 import { Product } from "./screens/ProductPage";
 import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 
-import { MyPage } from "./screens/MembersPage";
+import { MyPage } from "./screens/MembersPage/myPage";
 
 import { Blog } from "./screens/BlogPage";
 import { MyAccount } from "./screens/MyAccountPage";

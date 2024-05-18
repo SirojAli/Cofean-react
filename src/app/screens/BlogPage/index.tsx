@@ -23,6 +23,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "@mui/material/Rating";
 import Phone from "@mui/icons-material/Phone";
 
+// ALL BLOGS section
 export function Blog() {
   /** INITIALIZATIONS */
 

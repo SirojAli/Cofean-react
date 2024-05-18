@@ -11,43 +11,43 @@ import { Autoplay } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import { retrieveTopPosts } from "./selector";
+import { retrieveTopBlogs } from "./selector";
 import { Cafe } from "../../../types/user";
 import { serverApi } from "../../../lib/config";
 import { Blog } from "../../../types/blog";
-import { setTopPosts } from "./slice";
+import { setTopBlogs } from "./slice";
 import BlogApiService from "../../apiServices/blogApiService";
 import { useNavigate } from "react-router-dom";
 // import { useHistory, useParams } from "react-router-dom";
 
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
-  setTopPosts: (data: Blog[]) => dispatch(setTopPosts(data)),
+  setTopBlogs: (data: Blog[]) => dispatch(setTopBlogs(data)),
 });
 // REDUX SELECTOR
-const topPostsRetriever = createSelector(retrieveTopPosts, (topPosts) => ({
-  topPosts,
+const topBlogsRetriever = createSelector(retrieveTopBlogs, (topBlogs) => ({
+  topBlogs,
 }));
 
-export function TopPosts() {
+export function TopBlogs() {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
-  const { setTopPosts } = actionDispatch(useDispatch());
-  const { topPosts } = useSelector(topPostsRetriever);
-  console.log("topPosts>>>", topPosts);
+  const { setTopBlogs } = actionDispatch(useDispatch());
+  const { topBlogs } = useSelector(topBlogsRetriever);
+  console.log("topBlogs>>>", topBlogs);
 
   useEffect(() => {
     const blogService = new BlogApiService();
 
     blogService
 
-      .getTopPosts({
+      .getTopBlogs({
         blog_types: "all",
         page: 1,
         limit: 5,
         order: "blog_likes",
       })
-      .then((data) => setTopPosts(data))
+      .then((data) => setTopBlogs(data))
       .catch((err) => console.log(err));
   }, []);
 

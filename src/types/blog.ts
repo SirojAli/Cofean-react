@@ -19,7 +19,7 @@ export interface Blog {
   blog_likes: number;
   mb_id: string;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
   member_data: Member;
   me_liked: MeLiked[];
 }

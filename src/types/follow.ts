@@ -22,7 +22,7 @@ export interface Following {
   follow_id: string;
   subscriber_id: string;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
   follow_member_data: Member;
 }
 

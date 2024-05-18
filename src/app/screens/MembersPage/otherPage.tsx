@@ -24,9 +24,66 @@ import Pagination from "@mui/material/Pagination";
 
 import "../../../scss/members.scss";
 import { Header } from "./header";
+import { MemberPosts } from "./memberPosts";
+import FollowList from "./followList";
+import { Member } from "../../../types/user";
+import {
+  MeFollowed,
+  Follower,
+  Following,
+  FollowSearchObj,
+} from "../../../types/follow";
+import assert from "assert";
+import { Definer } from "../../../lib/definer";
+import FollowApiService from "../../apiServices/followApiService";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { serverApi } from "../../../lib/config";
+import { Blog } from "../../../types/blog";
+import { useNavigate } from "react-router-dom";
 
-export function OtherPage() {
+// REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBlogs,
+  retrieveChosenBlog,
+} from "./selector";
+import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
+
+// REDUX SLICE
+const actionDispatch = (dispatch: Dispatch) => ({
+  setChosenMember: (data: Member) => dispatch(setChosenMember(data)),
+  setChosenMemberBlogs: (data: Blog[]) => dispatch(setChosenMemberBlogs(data)),
+  setChosenBlog: (data: Blog) => dispatch(setChosenBlog(data)),
+});
+
+// REDUX SELECTOR
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember,
+  })
+);
+const chosenMemberBlogsRetriever = createSelector(
+  retrieveChosenMemberBlogs,
+  (chosenMemberBlogs) => ({
+    chosenMemberBlogs,
+  })
+);
+const chosenBlogRetriever = createSelector(
+  retrieveChosenBlog,
+  (chosenBlog) => ({
+    chosenBlog,
+  })
+);
+
+export function OtherPage(props: any) {
   /** INITIALIZATIONS */
+  const { chosen_mb_id, chosen_art_id } = props;
+  const navigate = useNavigate();
+  const refs: any = useRef([]);
 
   return (
     <div className="members_page">
@@ -34,7 +91,6 @@ export function OtherPage() {
       <Container className="my_page_box">
         <Stack className="my_page_frame">
           <TabContext value="value">
-            {/* 1/2 Left Side */}
             <Stack className="my_page_left">
               <div className="blog_title">
                 <span>Bekzod's all posts</span>
@@ -154,7 +210,6 @@ export function OtherPage() {
               </Box>
             </Stack>
 
-            {/* 2/2 Right Side */}
             <Stack className="my_page_right">
               <Box className="account_info">
                 <div className="img_settings">

@@ -27,6 +27,6 @@ export interface Product {
   product_sodium: number;
   cafe_mb_id: Cafe;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
   me_liked: MeLiked[];
 }
