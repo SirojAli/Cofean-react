@@ -1,16 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Pagination,
-  Stack,
-  Tab,
-  TextField,
-} from "@mui/material";
-import { TabContext, TabPanel } from "@mui/lab";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { Favorite, FavoriteBorder, Settings } from "@mui/icons-material";
+import { Box, Button, Container, Pagination, Stack, Tab } from "@mui/material";
+import { TabContext } from "@mui/lab";
+import { Settings } from "@mui/icons-material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TelegramIcon from "@mui/icons-material/Telegram";
@@ -39,9 +30,9 @@ import { Header } from "./header";
 import "../../../scss/blog.scss";
 import "../../../scss/members.scss";
 import { verifiedMemberData } from "../../apiServices/verify";
-// import { Editor } from "@toast-ui/react-editor";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import { TuiEditor } from "./tuiEditor";
+import { Editor } from "@toast-ui/react-editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 // REDUX SELECTOR
 const chosenMemberRetriever = createSelector(
@@ -66,12 +57,12 @@ const chosenBlogRetriever = createSelector(
 export function MyPage(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
-  const refs = useRef([]);
+  const editorRef = useRef<Editor>(null);
 
   const dispatch = useDispatch();
 
   const [value, setValue] = useState("1");
-  const [blogRebuild, setBlogRebuild] = useState(new Date());
+  const [blogRebuild, setBlogRebuild] = useState<Date>(new Date());
   const [followRebuild, setFollowRebuild] = useState(false);
   const [createPost, setCreatePost] = useState(false);
 
@@ -93,13 +84,12 @@ export function MyPage(props: any) {
     }
     const blogService = new BlogApiService();
     const memberService = new MemberApiService();
-    // setChosenMemberBlogs
+
     blogService
       .getMemberBlogs(memberBlogSearchObj)
       .then((data) => dispatch(setChosenMemberBlogs(data)))
       .catch((err) => console.log(err));
 
-    // setChosenMember
     memberService
       .getChosenMember(verifiedMemberData._id)
       .then((data) => dispatch(setChosenMember(data)))
@@ -133,9 +123,16 @@ export function MyPage(props: any) {
   };
 
   const createBlogHandler = () => {
-    console.log(value);
     setCreatePost(true);
   };
+
+  // const saveBlogHandler = () => {
+  //   const editorInstance = editorRef.current?.getInstance();
+  //   const blogContent = editorInstance?.getMarkdown();
+  //   console.log(blogContent);
+  //   setCreatePost(false);
+  //   // Save blog logic here
+  // };
 
   return (
     <div className="members_page">
@@ -143,63 +140,6 @@ export function MyPage(props: any) {
       <Container className="my_page_box">
         <Stack className="my_page_frame">
           <TabContext value={createPost ? "create" : "view"}>
-            {/* Left Section: All Blogs */}
-            {!createPost && (
-              <Stack className="my_page_left">
-                <div className="blog_title">
-                  <span>{`${verifiedMemberData?.mb_nick}'s all posts`}</span>
-                </div>
-                <Box className="all_blogs">
-                  {chosenMemberBlogs.map((blog) => (
-                    <div className="blog_box" key={blog._id}>
-                      <img
-                        className="blog_img"
-                        src={blog?.blog_image || "/default_image.jpg"}
-                        alt={blog?.blog_subject}
-                      />
-                      <div className="tag_target">
-                        <Box className="tag">
-                          <div className="first">
-                            <span>{blog.blog_types}</span>
-                          </div>
-                        </Box>
-                        <Box className="target">
-                          <div className="like">
-                            <span>{blog.blog_likes}</span>
-                            <FavoriteBorderIcon />
-                          </div>
-                          <div className="view">
-                            <span>{blog.blog_views}</span>
-                            <RemoveRedEyeIcon />
-                          </div>
-                        </Box>
-                      </div>
-                      <Box className="title">
-                        <span>{blog.blog_subject}</span>
-                      </Box>
-                      <Box className="context">
-                        <p>{blog.blog_content}</p>
-                      </Box>
-                      <Box className="read">
-                        <span onClick={() => chosenBlogHandler(blog._id)}>
-                          Read more...
-                        </span>
-                      </Box>
-                    </div>
-                  ))}
-                  <Stack className="pagination" spacing={2}>
-                    <Pagination
-                      count={Math.ceil(
-                        chosenMemberBlogs.length / memberBlogSearchObj.limit
-                      )}
-                      page={memberBlogSearchObj.page}
-                      shape="rounded"
-                      onChange={paginationHandler}
-                    />
-                  </Stack>
-                </Box>
-              </Stack>
-            )}
             {/* Right Section: Account Info */}
             <Stack className="my_page_right">
               <Box className="account_info">
@@ -254,23 +194,102 @@ export function MyPage(props: any) {
                 </div>
               </Box>
             </Stack>
-            {/* Text Editor for Creating a Post */}
             {createPost && (
-              <Box className="editor_wrapper">
-                <ReactQuill
-                  value={value}
-                  onChange={setValue}
-                  theme="snow"
-                  style={{ height: "300px" }}
+              <Box
+                className="editor_wrapper"
+                sx={{ margin: 0, border: "1px solid red" }}
+              >
+                <TuiEditor
+                  ref={editorRef}
+                  initialValue="Write something amazing..."
+                  height="300px"
+                  initialEditType="markdown"
+                  previewStyle="vertical"
+                  useCommandShortcut={true}
+                  className="custom-editor"
+                  setBlogRebuild={setBlogRebuild}
+                  setValue={setValue}
                 />
-                <Button
+                {/* <Button
                   className="blog_btn"
-                  onClick={createBlogHandler}
+                  onClick={saveBlogHandler}
                   variant="contained"
+                  style={{
+                    backgroundColor: "#f98404",
+                    width: "150px",
+                    marginLeft: "300px",
+                  }}
                 >
-                  Create post
-                </Button>
+                  Save post
+                </Button> */}
               </Box>
+            )}
+
+            {/* Left Section: All Blogs */}
+            {!createPost && (
+              <Stack className="my_page_left">
+                <div className="blog_title">
+                  <span>{`${verifiedMemberData?.mb_nick}'s all posts`}</span>
+                </div>
+                <Box className="all_blogs">
+                  {chosenMemberBlogs.map((blog) => (
+                    <div className="blog_box" key={blog._id}>
+                      <Box className="title">
+                        <span>{blog.blog_title}</span>
+                      </Box>
+                      {/* <img
+                        className="blog_img"
+                        src={blog?.blog_image || "/default_image.jpg"}
+                        alt={blog?.blog_title}
+                      /> */}
+                      <div className="tag_target">
+                        <Box className="tag">
+                          <div className="first">
+                            <span>{blog.blog_types}</span>
+                          </div>
+                        </Box>
+                        <Box className="target">
+                          <div className="like">
+                            <span>{blog.blog_likes}</span>
+                            <FavoriteBorderIcon />
+                          </div>
+                          <div className="view">
+                            <span>{blog.blog_views}</span>
+                            <RemoveRedEyeIcon />
+                          </div>
+                        </Box>
+                      </div>
+
+                      {/* <Box className="context">
+                        <p>{blog.blog_content}</p>
+                      </Box> */}
+                      <Box className="context">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: blog.blog_content,
+                          }}
+                        />
+                      </Box>
+
+                      <Box className="read">
+                        <span onClick={() => chosenBlogHandler(blog._id)}>
+                          Read more...
+                        </span>
+                      </Box>
+                    </div>
+                  ))}
+                  <Stack className="pagination" spacing={2}>
+                    <Pagination
+                      count={Math.ceil(
+                        chosenMemberBlogs.length / memberBlogSearchObj.limit
+                      )}
+                      page={memberBlogSearchObj.page}
+                      shape="rounded"
+                      onChange={paginationHandler}
+                    />
+                  </Stack>
+                </Box>
+              </Stack>
             )}
           </TabContext>
         </Stack>

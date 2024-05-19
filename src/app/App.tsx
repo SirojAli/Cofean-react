@@ -53,8 +53,8 @@ function App() {
           <Route path="/blogs" element={<Blog />} />
           <Route path="/blogs/:blog_id" element={<ChosenBlog />} />
 
-          <Route path="/members" element={<MyPage />} />
-          <Route path="/members/other" element={<OtherPage />} />
+          <Route path="/member" element={<MyPage />} />
+          <Route path="/member/other" element={<OtherPage />} />
 
           <Route path="/my-account" element={<MyAccount />} />
           <Route path="/help" element={<Help />} />

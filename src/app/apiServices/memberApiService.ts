@@ -89,7 +89,7 @@ class MemberApiService {
 
   async getChosenMember(id: string) {
     try {
-      let url = `/members/${id}`;
+      let url = `/member/${id}`;
 
       const result = await axios.get(this.path + url, {
         withCredentials: true,

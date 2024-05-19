@@ -29,11 +29,12 @@ export const TuiEditor = (props: any) => {
   /** INITIALIZATIONS **/
   const navigate = useNavigate();
   const editorRef = useRef([]);
-
   const dispatch = useDispatch();
 
+  const { setBlogRebuild, setValue } = props;
+
   const [blogData, setBlogData] = useState<BlogInput>({
-    blog_subject: "",
+    blog_title: "",
     blog_content: "",
     blog_image: "",
     blog_types: "",
@@ -61,40 +62,78 @@ export const TuiEditor = (props: any) => {
   };
 
   // const changeTitleHandler = async (e: any) => {
-  //   blogData.blog_subject = e.target.value;
+  //   blogData.blog_title = e.target.value;
   //   setBlogData({ ...blogData });
   // };
 
   const changeTitleHandler = useCallback(
     (e: any) => {
-      blogData.blog_subject = e.target.value;
+      blogData.blog_title = e.target.value;
       setBlogData({ ...blogData });
     },
-    [blogData.blog_subject]
+    [blogData.blog_title]
   );
+
+  // const submitBlogHandler = async () => {
+  //   try {
+  //     const editor: any = editorRef.current;
+  //     const blog_content = editor?.getInstance().getHTML();
+  //     console.log("blog_content >>>", blog_content);
+
+  //     blogData.blog_content = blog_content;
+  //     console.log("blogData >>>", blogData);
+
+  //     assert.ok(
+  //       blogData.blog_types !== "" &&
+  //         blogData.blog_title !== "" &&
+  //         blogData.blog_image !== "" &&
+  //         blogData.blog_content !== "",
+  //       Definer.input_err1
+  //     );
+
+  //     const blogService = new BlogApiService();
+  //     await blogService.createBlog(blogData);
+  //     await sweetTopSmallSuccessAlert("Blog is created successfully!");
+
+  //     setBlogRebuild(new Date());
+  //     setValue("1");
+  //     navigate("/member");
+  //   } catch (err) {
+  //     console.log(`ERROR, handleRegisterButton >>> ${err}`);
+  //     sweetErrorHandling(err).then();
+  //   }
+  // };
 
   const submitBlogHandler = async () => {
     try {
+      console.log("Submitting blog post...");
+
       const editor: any = editorRef.current;
       const blog_content = editor?.getInstance().getHTML();
-      console.log("blog_content >>>", blog_content);
+      // console.log("blog_content >>>", blog_content);
 
       blogData.blog_content = blog_content;
-      console.log("blogData >>>", blogData);
+      // console.log("blogData >>>", blogData);
 
       assert.ok(
-        blogData.blog_content !== "" &&
-          blogData.blog_types !== "" &&
-          blogData.blog_subject !== "",
+        blogData.blog_types !== "" &&
+          blogData.blog_title !== "" &&
+          blogData.blog_image !== "" &&
+          blogData.blog_content !== "",
         Definer.input_err1
       );
 
+      // console.log("Creating blog post >>>");
       const blogService = new BlogApiService();
       await blogService.createBlog(blogData);
-      await sweetTopSmallSuccessAlert("Article is created successfully!");
+      console.log("Blog post created successfully!");
 
-      props.setArticlesRebuild(new Date());
-      props.setValue("1");
+      await sweetTopSmallSuccessAlert("Blog is created successfully!");
+
+      // console.log("Updating state variables >>>");
+      setBlogRebuild(new Date());
+      setValue("1");
+      navigate("/blogs");
     } catch (err) {
       console.log(`ERROR, handleRegisterButton >>> ${err}`);
       sweetErrorHandling(err).then();
@@ -108,12 +147,9 @@ export const TuiEditor = (props: any) => {
         style={{ margin: "40px", justifyContent: "space-evenly" }}
       >
         <Box className="form_row">
-          <Typography
-            variant="h3"
-            style={{ color: "rgb(255, 255, 233)", margin: "10px" }}
-          >
+          {/* <Typography variant="h3" style={{ color: "black", margin: "10px" }}>
             Category
-          </Typography>
+          </Typography> */}
           <FormControl sx={{ width: "300px", background: "#fff" }}>
             <Select
               value={blogData.blog_types}
@@ -122,24 +158,21 @@ export const TuiEditor = (props: any) => {
               onChange={changeCategoryHandler}
             >
               <MenuItem value="">
-                <span>Category tanlang</span>
+                <span>Choose Category</span>
               </MenuItem>
-              <MenuItem value="celebrity">Mashhurlar</MenuItem>
-              <MenuItem value="evaluation">Restaurant baho</MenuItem>
-              <MenuItem value="story">Mening Hikoyam</MenuItem>
+              <MenuItem value="news">News</MenuItem>
+              <MenuItem value="evaluation">Evaluation</MenuItem>
+              <MenuItem value="story">Story</MenuItem>
             </Select>
           </FormControl>
         </Box>
         <Box className="form_row" style={{ width: "300px" }}>
-          <Typography
-            variant="h3"
-            style={{ color: "rgb(255, 255, 233)", margin: "10px" }}
-          >
+          {/* <Typography variant="h3" style={{ color: "black", margin: "10px" }}>
             Mavzu
-          </Typography>
+          </Typography> */}
           <TextField
             id="filled-basic"
-            label="Mavzu"
+            label="Blog Title"
             variant="filled"
             style={{ width: "300px", background: "white" }}
             onChange={changeTitleHandler}
@@ -149,7 +182,7 @@ export const TuiEditor = (props: any) => {
       {/* @ts-ignore */}
       <Editor
         ref={editorRef}
-        initialValue="Type here"
+        initialValue="Type here..."
         placeholder="Type here"
         previewStyle="vertical"
         height="640px"
@@ -170,12 +203,19 @@ export const TuiEditor = (props: any) => {
         events={{
           load: function (param: any) {},
         }}
+        hideModeSwitch={true} // This will hide the mode switch button
       />
+
       <Stack direction={"row"} justifyContent={"center"}>
         <Button
           variant="contained"
           color="primary"
-          style={{ margin: "30px", width: "250px", height: "45px" }}
+          style={{
+            margin: "30px",
+            width: "250px",
+            height: "45px",
+            backgroundColor: "#f98404",
+          }}
           onClick={submitBlogHandler}
         >
           Register

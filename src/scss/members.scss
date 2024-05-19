@@ -27,7 +27,7 @@
   // justify-content: center;
 
   .my_page_box {
-    width: 1120px;
+    width: 1220px;
     height: auto;
     // border: 1px solid red;
     margin-top: 80px;
@@ -40,8 +40,9 @@
       justify-content: space-between;
 
       .my_page_left {
-        width: 600px;
+        width: 700px;
         height: auto;
+        border: 1px solid red;
 
         .blog_title {
           width: 100%;
@@ -209,6 +210,23 @@
         align-items: center;
         position: sticky;
         top: 100px;
+
+        .editor_wrapper {
+          border: 1px solid red;
+          margin-top: 0; /* Remove margin-top */
+
+          // Additional styles for the TUI Editor
+          .tui-editor-contents {
+            border: 1px solid red; /* Add border */
+            margin-top: 0; /* Remove any potential margin */
+            width: 100%; /* Make sure it takes full width */
+            height: 300px; /* Set editor height */
+          }
+
+          .custom-editor {
+            width: 100%; /* Make sure it takes full width */
+          }
+        }
 
         .account_info {
           display: flex;

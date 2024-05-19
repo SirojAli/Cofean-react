@@ -207,7 +207,7 @@ export function Navbar(props: any) {
                     <MenuItem
                       onClick={() => {
                         handleClose();
-                        navigate("/members");
+                        navigate("/member");
                       }}
                       className="drop_menu"
                       sx={{
