@@ -30,9 +30,10 @@ import { Header } from "./header";
 import "../../../scss/blog.scss";
 import "../../../scss/members.scss";
 import { verifiedMemberData } from "../../apiServices/verify";
-import { TuiEditor } from "./tuiEditor";
+// import { TuiEditor } from "./tuiEditor";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { CreateBlog } from "./createBlog";
 
 // REDUX SELECTOR
 const chosenMemberRetriever = createSelector(
@@ -184,7 +185,7 @@ export function MyPage(props: any) {
                     onClick={createBlogHandler}
                     variant="contained"
                   >
-                    Create post
+                    Create blog
                   </Button>
                   {!createPost && (
                     <Button className="blog_btn" onClick={() => setValue("1")}>
@@ -195,14 +196,10 @@ export function MyPage(props: any) {
               </Box>
             </Stack>
             {createPost && (
-              <Box
-                className="editor_wrapper"
-                sx={{ margin: 0, border: "1px solid red" }}
-              >
-                <TuiEditor
+              <Box className="editor_wrapper" sx={{ margin: 0 }}>
+                <CreateBlog
                   ref={editorRef}
                   initialValue="Write something amazing..."
-                  height="300px"
                   initialEditType="markdown"
                   previewStyle="vertical"
                   useCommandShortcut={true}
@@ -234,14 +231,16 @@ export function MyPage(props: any) {
                 <Box className="all_blogs">
                   {chosenMemberBlogs.map((blog) => (
                     <div className="blog_box" key={blog._id}>
-                      <Box className="title">
-                        <span>{blog.blog_title}</span>
-                      </Box>
-                      {/* <img
+                      <img
                         className="blog_img"
-                        src={blog?.blog_image || "/default_image.jpg"}
+                        src={
+                          Array.isArray(blog?.blog_image)
+                            ? blog.blog_image[0] || "/default_image.jpg"
+                            : blog?.blog_image || "/default_image.jpg"
+                        }
                         alt={blog?.blog_title}
-                      /> */}
+                      />
+
                       <div className="tag_target">
                         <Box className="tag">
                           <div className="first">
@@ -259,17 +258,19 @@ export function MyPage(props: any) {
                           </div>
                         </Box>
                       </div>
-
-                      {/* <Box className="context">
-                        <p>{blog.blog_content}</p>
-                      </Box> */}
+                      <Box className="title">
+                        <span>{blog.blog_title}</span>
+                      </Box>
                       <Box className="context">
+                        <p>{blog.blog_content}</p>
+                      </Box>
+                      {/* <Box className="context">
                         <div
                           dangerouslySetInnerHTML={{
                             __html: blog.blog_content,
                           }}
                         />
-                      </Box>
+                      </Box> */}
 
                       <Box className="read">
                         <span onClick={() => chosenBlogHandler(blog._id)}>

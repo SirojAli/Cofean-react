@@ -4,15 +4,15 @@ import { Member } from "./user";
 export interface BlogInput {
   blog_title: string;
   blog_content: string;
-  blog_image: string;
   blog_types: string;
+  blog_image?: FormData[] | null;
 }
 
 export interface Blog {
   _id: string;
   blog_title: string;
   blog_content: string;
-  blog_image: string | null;
+  blog_image?: Array<string> | null;
   blog_types: string;
   blog_status: string;
   blog_views: number;

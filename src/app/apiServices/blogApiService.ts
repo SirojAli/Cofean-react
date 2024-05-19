@@ -37,32 +37,6 @@ class BlogApiService {
     }
   }
 
-  public async uploadImageToServer(image: any) {
-    try {
-      let formData = new FormData();
-      formData.append("blog_image", image);
-      console.log("image >>>", image);
-
-      const result = await axios(`${this.path}/blogs/image`, {
-        method: "POST",
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const image_name: string = result.data.data;
-      return image_name;
-    } catch (err: any) {
-      console.log(`ERROR >>> uploadImageToServer ${err.message}`);
-      throw err;
-    }
-  }
-
   public async createBlog(data: BlogInput) {
     try {
       const result = await axios.post(this.path + "/blogs/create", data, {
