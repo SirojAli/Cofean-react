@@ -63,41 +63,13 @@ export const CreateBlog = (props: any) => {
     setBlogData({ ...blogData, blog_content: editorContent });
   };
 
-  // const imageUploadHandler = (e: any) => {
-  //   try {
-  //     const file = e.target.files[0];
-  //     const fileType = file["type"];
-  //     const validTypes = ["image/jpg", "image/jpeg", "image/png"];
-  //     assert.ok(validTypes.includes(fileType) && file, Definer.input_err2);
-  //     setBlogData({ ...blogData, blog_image: [file] });
-  //     setImg(URL.createObjectURL(file));
-  //   } catch (err) {
-  //     console.log(`ERROR imageUploadHandler >>> ${err}`);
-  //     sweetErrorHandling(err).then();
-  //   }
-  // };
-
-  const imageUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const imageUploadHandler = (e: any) => {
     try {
-      if (!e.target.files) {
-        throw new Error("No file selected");
-      }
-
       const file = e.target.files[0];
-      const fileType = file.type;
+      const fileType = file["type"];
       const validTypes = ["image/jpg", "image/jpeg", "image/png"];
-
-      if (!validTypes.includes(fileType)) {
-        throw new Error(Definer.input_err2);
-      }
-
-      const formData = new FormData();
-      formData.append("image", file);
-
-      setBlogData({
-        ...blogData,
-        blog_image: [...(blogData.blog_image || []), formData],
-      });
+      assert.ok(validTypes.includes(fileType) && file, Definer.input_err2);
+      setBlogData({ ...blogData, blog_image: [file] });
       setImg(URL.createObjectURL(file));
     } catch (err) {
       console.log(`ERROR imageUploadHandler >>> ${err}`);

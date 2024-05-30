@@ -66,6 +66,7 @@ export function MyPage(props: any) {
   const [blogRebuild, setBlogRebuild] = useState<Date>(new Date());
   const [followRebuild, setFollowRebuild] = useState(false);
   const [createPost, setCreatePost] = useState(false);
+  const [blogCreated, setBlogCreated] = useState(false);
 
   const { chosenMember } = useSelector(chosenMemberRetriever);
   const { chosenMemberBlogs } = useSelector(chosenMemberBlogsRetriever);
@@ -102,8 +103,19 @@ export function MyPage(props: any) {
     setValue(newValue);
   };
 
-  const paginationHandler = (event: any, value: any) => {
-    setMemberBlogSearchObj({ ...memberBlogSearchObj, page: value });
+  const paginationHandler = async (_: any, value: any) => {
+    try {
+      setMemberBlogSearchObj((prev) => ({ ...prev, page: value }));
+
+      const blogService = new BlogApiService();
+      const data = await blogService.getMemberBlogs({
+        ...memberBlogSearchObj,
+        page: value,
+      });
+      dispatch(setChosenMemberBlogs(data));
+    } catch (error) {
+      console.error("Pagination Error>>>", error);
+    }
   };
 
   // renderChosenBlogHandler
@@ -125,15 +137,18 @@ export function MyPage(props: any) {
 
   const createBlogHandler = () => {
     setCreatePost(true);
+    setBlogCreated(false);
   };
 
-  // const saveBlogHandler = () => {
-  //   const editorInstance = editorRef.current?.getInstance();
-  //   const blogContent = editorInstance?.getMarkdown();
-  //   console.log(blogContent);
-  //   setCreatePost(false);
-  //   // Save blog logic here
-  // };
+  const blogCreatedHandler = () => {
+    setCreatePost(false);
+    setBlogCreated(true);
+  };
+
+  const viewBlogsHandler = () => {
+    setValue("1");
+    setBlogCreated(false);
+  };
 
   return (
     <div className="members_page">
@@ -173,12 +188,10 @@ export function MyPage(props: any) {
                   <TelegramIcon className="icon" />
                 </div>
                 <p className="desc">
-                  {verifiedMemberData?.mb_description ||
-                    "No additional information!"}
-                  <br />
                   Here to share stories, connect with friends, and make every
                   post count
                 </p>
+
                 <div className="blog_buttons">
                   <Button
                     className="blog_btn"
@@ -187,7 +200,11 @@ export function MyPage(props: any) {
                   >
                     Create blog
                   </Button>
-                  {!createPost && (
+                  {blogCreated ? (
+                    <Button className="blog_btn" onClick={viewBlogsHandler}>
+                      View all posts
+                    </Button>
+                  ) : (
                     <Button className="blog_btn" onClick={() => setValue("1")}>
                       View all posts
                     </Button>
@@ -195,6 +212,7 @@ export function MyPage(props: any) {
                 </div>
               </Box>
             </Stack>
+            {/* Create Blog Section */}
             {createPost && (
               <Box className="editor_wrapper" sx={{ margin: 0 }}>
                 <CreateBlog
@@ -206,6 +224,7 @@ export function MyPage(props: any) {
                   className="custom-editor"
                   setBlogRebuild={setBlogRebuild}
                   setValue={setValue}
+                  onBlogCreated={blogCreatedHandler}
                 />
                 {/* <Button
                   className="blog_btn"
@@ -221,7 +240,6 @@ export function MyPage(props: any) {
                 </Button> */}
               </Box>
             )}
-
             {/* Left Section: All Blogs */}
             {!createPost && (
               <Stack className="my_page_left">
@@ -229,65 +247,69 @@ export function MyPage(props: any) {
                   <span>{`${verifiedMemberData?.mb_nick}'s all posts`}</span>
                 </div>
                 <Box className="all_blogs">
-                  {chosenMemberBlogs.map((blog) => (
-                    <div className="blog_box" key={blog._id}>
-                      <img
-                        className="blog_img"
-                        src={
-                          Array.isArray(blog?.blog_image)
-                            ? blog.blog_image[0] || "/default_image.jpg"
-                            : blog?.blog_image || "/default_image.jpg"
-                        }
-                        alt={blog?.blog_title}
-                      />
+                  {/* Check if chosenMemberBlogs is not empty before mapping */}
+                  {chosenMemberBlogs.length > 0 ? (
+                    chosenMemberBlogs.map((blog) => (
+                      <div className="blog_box" key={blog._id}>
+                        <img
+                          className="blog_img"
+                          src={
+                            Array.isArray(blog?.blog_image) &&
+                            blog.blog_image.length > 0
+                              ? blog.blog_image[0]
+                              : "/images/blog/default_image.png"
+                          }
+                          alt={blog?.blog_title}
+                        />
 
-                      <div className="tag_target">
-                        <Box className="tag">
-                          <div className="first">
-                            <span>{blog.blog_types}</span>
-                          </div>
+                        <div className="tag_target">
+                          <Box className="tag">
+                            <div className="first">
+                              <span>{blog.blog_types}</span>
+                            </div>
+                          </Box>
+                          <Box className="target">
+                            <div className="like">
+                              <span>{blog.blog_likes}</span>
+                              <FavoriteBorderIcon />
+                            </div>
+                            <div className="view">
+                              <span>{blog.blog_views}</span>
+                              <RemoveRedEyeIcon />
+                            </div>
+                          </Box>
+                        </div>
+                        <Box className="title">
+                          <span>{blog.blog_title}</span>
                         </Box>
-                        <Box className="target">
-                          <div className="like">
-                            <span>{blog.blog_likes}</span>
-                            <FavoriteBorderIcon />
-                          </div>
-                          <div className="view">
-                            <span>{blog.blog_views}</span>
-                            <RemoveRedEyeIcon />
-                          </div>
-                        </Box>
-                      </div>
-                      <Box className="title">
-                        <span>{blog.blog_title}</span>
-                      </Box>
-                      <Box className="context">
-                        <p>{blog.blog_content}</p>
-                      </Box>
-                      {/* <Box className="context">
-                        <div
+                        <Box
+                          className="context"
                           dangerouslySetInnerHTML={{
                             __html: blog.blog_content,
                           }}
                         />
-                      </Box> */}
-
-                      <Box className="read">
-                        <span onClick={() => chosenBlogHandler(blog._id)}>
-                          Read more...
-                        </span>
-                      </Box>
-                    </div>
-                  ))}
+                        <Box className="read">
+                          <span onClick={() => chosenBlogHandler(blog._id)}>
+                            Read more...
+                          </span>
+                        </Box>
+                      </div>
+                    ))
+                  ) : (
+                    <div>No blogs found</div>
+                  )}
                   <Stack className="pagination" spacing={2}>
-                    <Pagination
-                      count={Math.ceil(
-                        chosenMemberBlogs.length / memberBlogSearchObj.limit
-                      )}
-                      page={memberBlogSearchObj.page}
-                      shape="rounded"
-                      onChange={paginationHandler}
-                    />
+                    <Stack className="pagination" spacing={2}>
+                      <Pagination
+                        count={3}
+                        page={memberBlogSearchObj.page}
+                        variant="outlined"
+                        shape="rounded"
+                        onChange={paginationHandler}
+                        boundaryCount={1}
+                        siblingCount={0}
+                      />
+                    </Stack>
                   </Stack>
                 </Box>
               </Stack>
