@@ -45,12 +45,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import {
-  retrieveChosenMember,
-  retrieveChosenMemberBlogs,
-  retrieveChosenBlog,
-} from "./selector";
-import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
+import { retrieveChosenMember, retrieveChosenMemberBlogs } from "./selector";
+import { retrieveChosenBlog } from "../BlogPage/selector";
+import { setChosenMember, setChosenMemberBlogs } from "./slice";
+import { setChosenBlog } from "../BlogPage/slice";
 
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({

@@ -12,7 +12,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
+import { setChosenMember, setChosenMemberBlogs } from "./slice";
+import { setChosenBlog } from "../BlogPage/slice";
 import {
   sweetErrorHandling,
   sweetFailureProvider,
@@ -21,11 +22,8 @@ import BlogApiService from "../../apiServices/blogApiService";
 import MemberApiService from "../../apiServices/memberApiService";
 import { Member } from "../../../types/user";
 import { Blog, SearchMemberBlogsObj } from "../../../types/blog";
-import {
-  retrieveChosenMember,
-  retrieveChosenMemberBlogs,
-  retrieveChosenBlog,
-} from "./selector";
+import { retrieveChosenMember, retrieveChosenMemberBlogs } from "./selector";
+import { retrieveChosenBlog } from "../BlogPage/selector";
 import { Header } from "./header";
 import "../../../scss/blog.scss";
 import "../../../scss/members.scss";

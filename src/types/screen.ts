@@ -11,9 +11,8 @@ export interface AppRootState {
   cafePage: CafePageState;
   productPage: ProductPageState;
   memberPage: MemberPageState;
-
+  blogPage: BlogPageState;
   // ordersPage: OrdersPageState;
-  // communityPage: CommunityPageState;
 }
 
 /** HOME PAGE */
@@ -45,9 +44,15 @@ export interface ProductPageState {
 export interface MemberPageState {
   chosenMember: Member | null;
   chosenMemberBlogs: Blog[];
-  chosenBlog: Blog | null;
   memberFollowers: Follower[];
   memberFollowings: Following[];
+}
+
+/** Product PAGE */
+export interface BlogPageState {
+  allBlogs: Blog[];
+  topBlogs: Blog[];
+  chosenBlog: Blog | null;
 }
 
 // /** ORDERS PAGE */

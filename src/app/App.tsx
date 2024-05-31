@@ -23,7 +23,7 @@ import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 
 import { MyPage } from "./screens/MembersPage/myPage";
 
-import { Blog } from "./screens/BlogPage";
+import { BlogPage } from "./screens/BlogPage";
 import { MyAccount } from "./screens/MyAccountPage";
 import { Help } from "./screens/HelpPage";
 import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
@@ -50,7 +50,7 @@ function App() {
           <Route path="/products" element={<Product />} />
           <Route path="/products/:product_id" element={<ChosenProduct />} />
 
-          <Route path="/blogs" element={<Blog />} />
+          <Route path="/blogs" element={<BlogPage />} />
           <Route path="/blogs/:blog_id" element={<ChosenBlog />} />
 
           <Route path="/member" element={<MyPage />} />

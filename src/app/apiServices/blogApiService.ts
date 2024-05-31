@@ -6,7 +6,7 @@ import { Member } from "../../types/user";
 import {
   Blog,
   BlogInput,
-  SearchBlogObj,
+  BlogSearchObj,
   SearchMemberBlogsObj,
 } from "../../types/blog";
 
@@ -14,27 +14,6 @@ class BlogApiService {
   private readonly path: string;
   constructor() {
     this.path = serverApi;
-  }
-
-  public async getTopBlogs(data: SearchBlogObj) {
-    try {
-      let url = `/blogs/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
-      if (data.order) url += `&order=${data.order}`;
-
-      const result = await axios.get(this.path + url, {
-        withCredentials: true,
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const blogs: Blog[] = result.data.data;
-      return blogs;
-    } catch (err: any) {
-      console.log(`ERROR >>> getTopBlogs ${err.message}`);
-      throw err;
-    }
   }
 
   public async createBlog(data: BlogInput) {
@@ -55,7 +34,48 @@ class BlogApiService {
     }
   }
 
-  public async getTargetBlogs(data: SearchBlogObj) {
+  async getAllBlogs(data: BlogSearchObj): Promise<Blog[]> {
+    try {
+      const url = `/blogs`,
+        result = await axios.post(this.path + url, data, {
+          withCredentials: true,
+        });
+      assert.ok(result, Definer.general_err1);
+
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data?.state !== "fail", result?.data?.message);
+      console.log("state>>>", result.data.state);
+
+      const all_blogs: Blog[] = result.data.data;
+      return all_blogs;
+    } catch (err: any) {
+      console.log(`ERROR getAllBlogs >>> ${err.message}`);
+      throw err;
+    }
+  }
+
+  public async getTargetBlogs(data: BlogSearchObj) {
+    try {
+      let url = `/blogs/all-blogs?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
+      if (data.order) url += `&order=${data.order}`;
+
+      const result = await axios.get(this.path + url, {
+        withCredentials: true,
+      });
+
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data?.state !== "fail", result?.data?.message);
+      console.log("state >>>", result.data.state);
+
+      const blogs: Blog[] = result.data.data;
+      return blogs;
+    } catch (err: any) {
+      console.log(`ERROR >>> getTargetBlogs ${err.message}`);
+      throw err;
+    }
+  }
+
+  public async getTopBlogs(data: BlogSearchObj) {
     try {
       let url = `/blogs/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
       if (data.order) url += `&order=${data.order}`;
@@ -71,7 +91,7 @@ class BlogApiService {
       const blogs: Blog[] = result.data.data;
       return blogs;
     } catch (err: any) {
-      console.log(`ERROR >>> getTargetBlogs ${err.message}`);
+      console.log(`ERROR >>> getTopBlogs ${err.message}`);
       throw err;
     }
   }

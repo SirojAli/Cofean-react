@@ -24,7 +24,7 @@ export interface Blog {
   me_liked: MeLiked[];
 }
 
-export interface SearchBlogObj {
+export interface BlogSearchObj {
   page: number;
   limit: number;
   blog_types: string;

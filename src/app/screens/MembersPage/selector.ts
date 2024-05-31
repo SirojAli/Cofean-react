@@ -10,10 +10,6 @@ export const retrieveChosenMemberBlogs = createSelector(
   selectMemberPage,
   (MemberPage) => MemberPage.chosenMemberBlogs
 );
-export const retrieveChosenBlog = createSelector(
-  selectMemberPage,
-  (MemberPage) => MemberPage.chosenBlog
-);
 export const retrieveMemberFollowers = createSelector(
   selectMemberPage,
   (MemberPage) => MemberPage.memberFollowers
