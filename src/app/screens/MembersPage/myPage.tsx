@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Container, Pagination, Stack, Tab } from "@mui/material";
-import { TabContext } from "@mui/lab";
+import {
+  Box,
+  Button,
+  Container,
+  Pagination,
+  Modal,
+  Stack,
+  Tab,
+} from "@mui/material";
+import { TabContext, TabPanel } from "@mui/lab";
 import { Settings } from "@mui/icons-material";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -12,18 +20,21 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-import { setChosenMember, setChosenMemberBlogs } from "./slice";
-import { setChosenBlog } from "../BlogPage/slice";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBlogs,
+  retrieveChosenBlog,
+} from "./selector";
+import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
 import {
   sweetErrorHandling,
   sweetFailureProvider,
+  sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
 import BlogApiService from "../../apiServices/blogApiService";
 import MemberApiService from "../../apiServices/memberApiService";
 import { Member } from "../../../types/user";
 import { Blog, SearchMemberBlogsObj } from "../../../types/blog";
-import { retrieveChosenMember, retrieveChosenMemberBlogs } from "./selector";
-import { retrieveChosenBlog } from "../BlogPage/selector";
 import { Header } from "./header";
 import "../../../scss/blog.scss";
 import "../../../scss/members.scss";
@@ -32,6 +43,10 @@ import { verifiedMemberData } from "../../apiServices/verify";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { CreateBlog } from "./createBlog";
+import { ChosenBlogPage } from "./chosenBlog";
+import { MemberBlogs } from "./memberBlogs";
+import FollowList from "./followList";
+import { serverApi } from "../../../lib/config";
 
 // REDUX SELECTOR
 const chosenMemberRetriever = createSelector(
@@ -57,16 +72,23 @@ export function MyPage(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const editorRef = useRef<Editor>(null);
-
+  const [open, setOpen] = useState<boolean>(false);
+  const [openFollow, setOpenFollow] = useState<boolean>(false);
   const dispatch = useDispatch();
+
+  const { chosenMember } = useSelector(chosenMemberRetriever);
 
   const [value, setValue] = useState("1");
   const [blogRebuild, setBlogRebuild] = useState<Date>(new Date());
-  const [followRebuild, setFollowRebuild] = useState(false);
-  const [createPost, setCreatePost] = useState(false);
+  const [followRebuild, setFollowRebuild] = useState<Date>(new Date());
+  const [createBlog, setCreateBlog] = useState(false);
   const [blogCreated, setBlogCreated] = useState(false);
+  const [user, setUser] = useState<Member>(verifiedMemberData);
+  const [followCase, setFollowCase] = useState<string>("");
+  const userImage = chosenMember?.mb_image
+    ? `${serverApi}/${chosenMember?.mb_image}`
+    : "/icons/default_user.jpg";
 
-  const { chosenMember } = useSelector(chosenMemberRetriever);
   const { chosenMemberBlogs } = useSelector(chosenMemberBlogsRetriever);
   const { chosenBlog } = useSelector(chosenBlogRetriever);
 
@@ -117,14 +139,15 @@ export function MyPage(props: any) {
   };
 
   // renderChosenBlogHandler
-  const chosenBlogHandler = async (blog_id: any) => {
+  const renderChosenBlogHandler = async (blog_id: any) => {
     try {
       const blogService = new BlogApiService();
       blogService
         .getChosenBlog(blog_id)
         .then((data) => {
           dispatch(setChosenBlog(data));
-          setValue("6");
+          setValue("2");
+          navigate(`/blogs/${blog_id}`);
         })
         .catch((err) => console.log(err));
     } catch (err) {
@@ -134,12 +157,12 @@ export function MyPage(props: any) {
   };
 
   const createBlogHandler = () => {
-    setCreatePost(true);
+    setCreateBlog(true);
     setBlogCreated(false);
   };
 
   const blogCreatedHandler = () => {
-    setCreatePost(false);
+    setCreateBlog(false);
     setBlogCreated(true);
   };
 
@@ -148,12 +171,55 @@ export function MyPage(props: any) {
     setBlogCreated(false);
   };
 
+  const userUpdate = async () => {
+    try {
+      const memberService = new MemberApiService();
+      const data = await memberService.getChosenMember(chosenMember?._id);
+      setChosenMember(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const followHandler = async (e: any) => {
+    try {
+      const blogService = new BlogApiService();
+      await blogService.subscribeMember({ mb_id: e.target.id });
+      userUpdate();
+      sweetTopSmallSuccessAlert("followed successfully", 700, false);
+      setFollowRebuild(new Date());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const unfollowHandler = async (e: any) => {
+    try {
+      const blogService = new BlogApiService();
+      await blogService.unsubscribeMember({ mb_id: e.target.id });
+      userUpdate();
+      sweetTopSmallSuccessAlert("unfollowed successfully", 700, false);
+      setFollowRebuild(new Date());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const showFollowersHandler = () => {
+    setOpenFollow(true);
+    setFollowCase("followers");
+  };
+
+  const showFollowingHandler = () => {
+    setOpenFollow(true);
+    setFollowCase("following");
+  };
+
   return (
     <div className="members_page">
-      <Header />
+      {/* <Header /> */}
       <Container className="my_page_box">
         <Stack className="my_page_frame">
-          <TabContext value={createPost ? "create" : "view"}>
+          <TabContext value={value}>
             {/* Right Section: Account Info */}
             <Stack className="my_page_right">
               <Box className="account_info">
@@ -169,15 +235,28 @@ export function MyPage(props: any) {
                   </a>
                 </div>
                 <p className="user_name">{verifiedMemberData?.mb_nick}</p>
-                <div className="follow">
-                  <p className="followers">
-                    <span>{verifiedMemberData?.mb_follow_count}</span> Followers
+                <Box className="follow_box">
+                  <p onClick={showFollowersHandler} className="follow_text">
+                    <span>{chosenMember?.mb_subscriber_count}</span>followers
                   </p>
-                  <p className="followings">
-                    <span>{verifiedMemberData?.mb_subscriber_count}</span>{" "}
-                    Followings
+                  <p onClick={showFollowingHandler} className="follow_text">
+                    <span>{chosenMember?.mb_follow_count}</span>following
                   </p>
-                </div>
+                  <Modal
+                    open={openFollow}
+                    onClose={() => setOpenFollow(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <FollowList
+                      followCase={followCase}
+                      user={user}
+                      unfollowHandler={unfollowHandler}
+                      followRebuild={followRebuild}
+                      followHandler={followHandler}
+                    />
+                  </Modal>
+                </Box>
                 <div className="social_media">
                   <FacebookIcon className="icon" />
                   <LinkedInIcon className="icon" />
@@ -187,7 +266,7 @@ export function MyPage(props: any) {
                 </div>
                 <p className="desc">
                   Here to share stories, connect with friends, and make every
-                  post count
+                  blog count
                 </p>
 
                 <div className="blog_buttons">
@@ -200,104 +279,42 @@ export function MyPage(props: any) {
                   </Button>
                   {blogCreated ? (
                     <Button className="blog_btn" onClick={viewBlogsHandler}>
-                      View all posts
+                      View all blogs
                     </Button>
                   ) : (
-                    <Button className="blog_btn" onClick={() => setValue("1")}>
-                      View all posts
+                    <Button
+                      className="blog_btn"
+                      onClick={() => {
+                        if (value === "create") {
+                          setValue("1");
+                        } else {
+                          setCreateBlog(false); // Close the create blog component if open
+                        }
+                      }}
+                    >
+                      View all blogs
                     </Button>
                   )}
                 </div>
               </Box>
             </Stack>
-            {/* Create Blog Section */}
-            {createPost && (
-              <Box className="editor_wrapper" sx={{ margin: 0 }}>
-                <CreateBlog
-                  ref={editorRef}
-                  initialValue="Write something amazing..."
-                  initialEditType="markdown"
-                  previewStyle="vertical"
-                  useCommandShortcut={true}
-                  className="custom-editor"
-                  setBlogRebuild={setBlogRebuild}
-                  setValue={setValue}
-                  onBlogCreated={blogCreatedHandler}
-                />
-                {/* <Button
-                  className="blog_btn"
-                  onClick={saveBlogHandler}
-                  variant="contained"
-                  style={{
-                    backgroundColor: "#f98404",
-                    width: "150px",
-                    marginLeft: "300px",
-                  }}
-                >
-                  Save post
-                </Button> */}
-              </Box>
-            )}
-            {/* Left Section: All Blogs */}
-            {!createPost && (
-              <Stack className="my_page_left">
-                <div className="blog_title">
-                  <span>{`${verifiedMemberData?.mb_nick}'s all posts`}</span>
-                </div>
-                <Box className="all_blogs">
-                  {/* Check if chosenMemberBlogs is not empty before mapping */}
-                  {chosenMemberBlogs.length > 0 ? (
-                    chosenMemberBlogs.map((blog) => (
-                      <div className="blog_box" key={blog._id}>
-                        <img
-                          className="blog_img"
-                          src={
-                            Array.isArray(blog?.blog_image) &&
-                            blog.blog_image.length > 0
-                              ? blog.blog_image[0]
-                              : "/images/blog/default_image.png"
-                          }
-                          alt={blog?.blog_title}
-                        />
 
-                        <div className="tag_target">
-                          <Box className="tag">
-                            <div className="first">
-                              <span>{blog.blog_types}</span>
-                            </div>
-                          </Box>
-                          <Box className="target">
-                            <div className="like">
-                              <span>{blog.blog_likes}</span>
-                              <FavoriteBorderIcon />
-                            </div>
-                            <div className="view">
-                              <span>{blog.blog_views}</span>
-                              <RemoveRedEyeIcon />
-                            </div>
-                          </Box>
-                        </div>
-                        <Box className="title">
-                          <span>{blog.blog_title}</span>
-                        </Box>
-                        <Box
-                          className="context"
-                          dangerouslySetInnerHTML={{
-                            __html: blog.blog_content,
-                          }}
-                        />
-                        <Box className="read">
-                          <span onClick={() => chosenBlogHandler(blog._id)}>
-                            Read more...
-                          </span>
-                        </Box>
-                      </div>
-                    ))
-                  ) : (
-                    <div>No blogs found</div>
-                  )}
-                  <Stack className="pagination" spacing={2}>
-                    <Stack className="pagination" spacing={2}>
+            <Stack className="my_page_left">
+              <TabPanel value="1">
+                <Box className="menu_name">My Blogs</Box>
+                <Box className="menu_content">
+                  <MemberBlogs
+                    chosenMemberBlogs={chosenMemberBlogs}
+                    renderChosenBlogHandler={renderChosenBlogHandler}
+                    setBlogRebuild={setBlogRebuild}
+                  />
+                  <Stack
+                    sx={{ my: "40px" }}
+                    direction={"row"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
+                    <Stack className="bottom_box" spacing={2}>
                       <Pagination
                         count={3}
                         page={memberBlogSearchObj.page}
@@ -310,8 +327,17 @@ export function MyPage(props: any) {
                     </Stack>
                   </Stack>
                 </Box>
-              </Stack>
-            )}
+              </TabPanel>
+              <TabPanel value="2">
+                {/* <Box className="menu_name">Create Blog</Box> */}
+                <Box className="menu_content">
+                  <CreateBlog
+                    setValue={setValue}
+                    setBlogRebuild={setBlogRebuild}
+                  />
+                </Box>
+              </TabPanel>
+            </Stack>
           </TabContext>
         </Stack>
       </Container>

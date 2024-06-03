@@ -165,17 +165,6 @@ export const CreateBlog = (props: any) => {
           ["table", "link"],
           ["ul", "ol", "task"],
         ]}
-        // hooks={{
-        //   addImageBlobHook: async (image: any, callback: any) => {
-        //     const uploadImageUrl = await uploadImageHandler(image);
-        //     console.log("uploadImageUrl >>>", uploadImageUrl);
-        //     callback(uploadImageUrl);
-        //     return false;
-        //   },
-        // }}
-        // events={{
-        //   load: function (param: any) {},
-        // }}
         hideModeSwitch={true}
         onChange={contentHandler}
       />

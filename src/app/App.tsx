@@ -26,7 +26,7 @@ import { MyPage } from "./screens/MembersPage/myPage";
 import { BlogPage } from "./screens/BlogPage";
 import { MyAccount } from "./screens/MyAccountPage";
 import { Help } from "./screens/HelpPage";
-import { ChosenBlog } from "./screens/BlogPage/chosenBlog";
+import { ChosenBlogPage } from "./screens/MembersPage/chosenBlog";
 import { OtherPage } from "./screens/MembersPage/otherPage";
 import { Member } from "../types/user";
 
@@ -51,7 +51,7 @@ function App() {
           <Route path="/products/:product_id" element={<ChosenProduct />} />
 
           <Route path="/blogs" element={<BlogPage />} />
-          <Route path="/blogs/:blog_id" element={<ChosenBlog />} />
+          <Route path="/blogs/:blog_id" element={<ChosenBlogPage />} />
 
           <Route path="/member" element={<MyPage />} />
           <Route path="/member/other" element={<OtherPage />} />

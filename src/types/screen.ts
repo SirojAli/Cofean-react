@@ -44,6 +44,7 @@ export interface ProductPageState {
 export interface MemberPageState {
   chosenMember: Member | null;
   chosenMemberBlogs: Blog[];
+  chosenBlog: Blog | null;
   memberFollowers: Follower[];
   memberFollowings: Following[];
 }
@@ -52,7 +53,6 @@ export interface MemberPageState {
 export interface BlogPageState {
   allBlogs: Blog[];
   topBlogs: Blog[];
-  chosenBlog: Blog | null;
 }
 
 // /** ORDERS PAGE */

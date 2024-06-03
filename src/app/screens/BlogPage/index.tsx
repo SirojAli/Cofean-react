@@ -36,12 +36,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setAllBlogs, setTopBlogs, setChosenBlog } from "./slice";
-import {
-  retrieveAllBlogs,
-  retrieveTopBlogs,
-  retrieveChosenBlog,
-} from "./selector";
+import { setAllBlogs, setTopBlogs } from "./slice";
+import { setChosenBlog } from "../MembersPage/slice";
+import { retrieveAllBlogs, retrieveTopBlogs } from "./selector";
+import { retrieveChosenBlog } from "../MembersPage/selector";
 import { BlogInput, BlogSearchObj } from "../../../types/blog";
 import BlogApiService from "../../apiServices/blogApiService";
 import { Collections } from "@mui/icons-material";
@@ -52,7 +50,6 @@ import { Blog } from "../../../types/blog";
 const actionDispatch = (dispatch: Dispatch) => ({
   setAllBlogs: (data: Blog[]) => dispatch(setAllBlogs(data)),
   setTopBlogs: (data: Blog[]) => dispatch(setTopBlogs(data)),
-  setChosenBlog: (data: Blog) => dispatch(setChosenBlog(data)),
 });
 
 // REDUX SELECTOR
@@ -62,52 +59,46 @@ const allBlogsRetriever = createSelector(retrieveAllBlogs, (allBlogs) => ({
 const topBlogsRetriever = createSelector(retrieveTopBlogs, (topBlogs) => ({
   topBlogs,
 }));
-const chosenBlogRetriever = createSelector(
-  retrieveChosenBlog,
-  (chosenBlog) => ({
-    chosenBlog,
-  })
-);
 
-const truncateText = (text: any, maxLength: any) => {
+const truncateText = (
+  text: string,
+  maxLength: 150,
+  blogId: any,
+  onReadMore: (blogId: any) => void
+) => {
   if (text.length <= maxLength) return text;
   const truncatedText = text.substr(0, maxLength);
-  // Find the last space before the maxLength to avoid cutting off words
   const lastSpaceIndex = truncatedText.lastIndexOf(" ");
-  // Add non-breaking space character before the ellipsis
-  const truncatedWithEllipsis = `${truncatedText.substr(
-    0,
-    lastSpaceIndex
-  )}&nbsp;...`;
-  return truncatedWithEllipsis;
+  const truncatedWithEllipsis = `${truncatedText.substr(0, lastSpaceIndex)}...`;
+
+  return (
+    <>
+      <span dangerouslySetInnerHTML={{ __html: truncatedWithEllipsis }} />
+      <a
+        href="#"
+        style={{ fontWeight: "bold" }}
+        onClick={(e) => {
+          e.preventDefault();
+          onReadMore(blogId);
+        }}
+      >
+        Read more...
+      </a>
+    </>
+  );
 };
 
 export function BlogPage() {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
+  const dispatch = useDispatch();
 
   const { setAllBlogs } = actionDispatch(useDispatch());
   const { allBlogs } = useSelector(allBlogsRetriever);
   const [value, setValue] = React.useState("1");
 
   // For All Blogs
-  // useEffect(() => {
-  //   const blogService = new BlogApiService();
-
-  //   blogService
-  //     .getAllBlogs({
-  //       page: 1,
-  //       limit: 9,
-  //       order: "createdAt", // blog_likes
-  //       blog_types: "all",
-  //     })
-  //     .then((data) => {
-  //       setAllBlogs(data);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
   const [searchBlogsObj, setSearchBlogsObj] = useState<BlogSearchObj>({
     page: 1,
     limit: 6,
@@ -124,8 +115,20 @@ export function BlogPage() {
   }, [searchBlogsObj, blogsRebuild]);
 
   /** HANDLERS */
-  const chosenBlogHandler = (id: string) => {
-    navigate(`/blogs/${id}`);
+  // renderChosenBlogHandler
+  const chosenBlogHandler = async (blog_id: any, member_id?: string) => {
+    try {
+      if (verifiedMemberData) {
+        // If a verified member is logged in, navigate to their own profile
+        navigate(`/member?mb_id=${member_id}&blog_id=${blog_id}`);
+      } else {
+        // If not, navigate to the other user's profile using the member_id
+        navigate(`/member/other?mb_id=${member_id}&blog_id=${blog_id}`);
+      }
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
   };
 
   const blogChangeHandler = (event: any, newValue: string) => {
@@ -219,15 +222,14 @@ export function BlogPage() {
                 <Box className="title">
                   <h4>{blog.blog_title}</h4>
                 </Box>
-                <Box
-                  className="context"
-                  dangerouslySetInnerHTML={{
-                    __html: truncateText(blog.blog_content, 150),
-                  }}
-                />
-                {/* <Box className="read">
-                  <span>Read more...</span>
-                </Box> */}
+                <Box className="context">
+                  {truncateText(
+                    blog.blog_content,
+                    150,
+                    blog._id,
+                    chosenBlogHandler
+                  )}
+                </Box>
               </Box>
             ))
           ) : (

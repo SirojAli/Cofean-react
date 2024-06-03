@@ -24,7 +24,7 @@ import Pagination from "@mui/material/Pagination";
 
 import "../../../scss/members.scss";
 import { Header } from "./header";
-import { MemberPosts } from "./memberPosts";
+import { MemberBlogs } from "./memberBlogs";
 import FollowList from "./followList";
 import { Member } from "../../../types/user";
 import {
@@ -45,10 +45,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import { retrieveChosenMember, retrieveChosenMemberBlogs } from "./selector";
-import { retrieveChosenBlog } from "../BlogPage/selector";
-import { setChosenMember, setChosenMemberBlogs } from "./slice";
-import { setChosenBlog } from "../BlogPage/slice";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBlogs,
+  retrieveChosenBlog,
+} from "./selector";
+import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
 
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({

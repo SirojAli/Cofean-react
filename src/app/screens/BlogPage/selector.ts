@@ -10,7 +10,7 @@ export const retrieveTopBlogs = createSelector(
   selectBlogPage,
   (BlogPage) => BlogPage.topBlogs
 );
-export const retrieveChosenBlog = createSelector(
-  selectBlogPage,
-  (BlogPage) => BlogPage.chosenBlog
-);
+// export const retrieveChosenBlog = createSelector(
+//   selectBlogPage,
+//   (BlogPage) => BlogPage.chosenBlog
+// );

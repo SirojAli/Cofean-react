@@ -18,8 +18,54 @@ import PinterestIcon from "@mui/icons-material/Pinterest";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ReplyIcon from "@mui/icons-material/Reply";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { Definer } from "../../../lib/definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
 
-export function ChosenBlog() {
+// REDUX
+import { useDispatch, useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  retrieveChosenMember,
+  retrieveChosenMemberBlogs,
+  retrieveChosenBlog,
+} from "./selector";
+import { setChosenMember, setChosenMemberBlogs, setChosenBlog } from "./slice";
+import { BlogInput, BlogSearchObj } from "../../../types/blog";
+import BlogApiService from "../../apiServices/blogApiService";
+import { Collections } from "@mui/icons-material";
+import { serverApi } from "../../../lib/config";
+import { Blog } from "../../../types/blog";
+
+//** REDUX SLICE */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setChosenBlog: (data: Blog) => dispatch(setChosenBlog(data)),
+});
+
+// REDUX SELECTOR
+const chosenBlogRetriever = createSelector(
+  retrieveChosenBlog,
+  (chosenBlog) => ({
+    chosenBlog,
+  })
+);
+
+export function ChosenBlogPage() {
+  const navigate = useNavigate();
+  const refs: any = useRef([]);
+  const { blogId } = useParams();
+
+  const { setChosenBlog } = actionDispatch(useDispatch());
+  const { chosenBlog } = useSelector(chosenBlogRetriever);
+  const [value, setValue] = React.useState("1");
+
   return (
     <div className="chosen_blog_box">
       <Container className="chosen_blog">
@@ -145,7 +191,7 @@ export function ChosenBlog() {
 
         <div className="blog_bottom">
           <div className="blog_bottom_box">
-            <div className="commented">
+            {/* <div className="commented">
               <span>3 Comments</span>
 
               <Box className="post">
@@ -234,7 +280,7 @@ export function ChosenBlog() {
               <Button className="submit_btn">
                 <span>Submit Review</span>
               </Button>
-            </div>
+            </div> */}
 
             <div className="rel_posts">
               <span>Related Posts</span>

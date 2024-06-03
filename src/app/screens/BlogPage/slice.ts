@@ -4,7 +4,7 @@ import { BlogPageState } from "../../../types/screen";
 const initialState: BlogPageState = {
   allBlogs: [],
   topBlogs: [],
-  chosenBlog: null,
+  // chosenBlog: null,
 };
 
 const BlogPageSlice = createSlice({
@@ -17,14 +17,13 @@ const BlogPageSlice = createSlice({
     setTopBlogs: (state, action) => {
       state.topBlogs = action.payload;
     },
-    setChosenBlog: (state, action) => {
-      state.chosenBlog = action.payload;
-    },
+    // setChosenBlog: (state, action) => {
+    //   state.chosenBlog = action.payload;
+    // },
   },
 });
 
-export const { setAllBlogs, setTopBlogs, setChosenBlog } =
-  BlogPageSlice.actions;
+export const { setAllBlogs, setTopBlogs } = BlogPageSlice.actions;
 
 const BlogPageReducer = BlogPageSlice.reducer;
 export default BlogPageReducer;
