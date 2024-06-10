@@ -3,9 +3,7 @@ import HomePageReducer from "./screens/HomePage/slice";
 import reduxLogger from "redux-logger";
 import CafePageReducer from "./screens/CafePage/slice";
 import ProductPageReducer from "./screens/ProductPage/slice";
-import MemberPageReducer from "./screens/MembersPage/slice";
 import BlogPageReducer from "./screens/BlogPage/slice";
-// import OrdersPageReducer from "./screens/OrdersPage/slice";
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -15,9 +13,7 @@ export const store = configureStore({
     homePage: HomePageReducer,
     cafePage: CafePageReducer,
     productPage: ProductPageReducer,
-    memberPage: MemberPageReducer,
     blogPage: BlogPageReducer,
-    // ordersPage: OrdersPageReducer,
   },
 });
 

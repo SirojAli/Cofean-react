@@ -1,252 +1,399 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Container, Stack } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import "../../../scss/blog.scss";
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Container,
+  Modal,
+  Pagination,
+  PaginationItem,
+  Stack,
+  styled,
+} from "@mui/material";
+import {
+  Close,
+  Home,
+  Facebook,
+  Instagram,
+  Telegram,
+  YouTube,
+  WhatsApp,
+  Settings,
+  ArrowBack,
+  ArrowForward,
+} from "@mui/icons-material";
 
-import SearchIcon from "@mui/icons-material/Search";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { CssVarsProvider } from "@mui/joy/styles";
-import Card from "@mui/joy/Card";
-import CardOverflow from "@mui/joy/CardOverflow";
-import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
-import Favorite from "@mui/icons-material/Favorite";
-import Typography from "@mui/joy/Typography";
-import Link from "@mui/joy/Link";
-import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
-import CallIcon from "@mui/icons-material/Call";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import Rating from "@mui/material/Rating";
-import Phone from "@mui/icons-material/Phone";
-import assert from "assert";
-import { verifiedMemberData } from "../../apiServices/verify";
-import { Definer } from "../../../lib/definer";
-import MemberApiService from "../../apiServices/memberApiService";
-import { useNavigate, useParams } from "react-router-dom";
+import "../../scss/blogs.scss";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Blog, BlogSearchObj } from "../../../types/blog";
+import BlogApiService from "../../apiServices/blogApiService";
+
+// REDUX
+import { createSelector } from "reselect";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setChosenMember, setAllBlogs } from "./slice";
+import { retrieveChosenMember, retrieveAllBlogs } from "./selector";
+import Postcard from "./postcard";
+import { verifiedMemberData } from "../../../app/apiServices/verify";
+import CreateBlog from "./createBlog";
+import { Member } from "../../../types/user";
 import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
-
-// REDUX
-import { useDispatch, useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { Dispatch } from "@reduxjs/toolkit";
-import { setAllBlogs, setTopBlogs } from "./slice";
-import { setChosenBlog } from "../MembersPage/slice";
-import { retrieveAllBlogs, retrieveTopBlogs } from "./selector";
-import { retrieveChosenBlog } from "../MembersPage/selector";
-import { BlogInput, BlogSearchObj } from "../../../types/blog";
-import BlogApiService from "../../apiServices/blogApiService";
-import { Collections } from "@mui/icons-material";
+import MemberApiService from "../../apiServices/memberApiService";
+import FollowList from "./followList";
 import { serverApi } from "../../../lib/config";
-import { Blog } from "../../../types/blog";
 
-//** REDUX SLICE */
+// REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
   setAllBlogs: (data: Blog[]) => dispatch(setAllBlogs(data)),
-  setTopBlogs: (data: Blog[]) => dispatch(setTopBlogs(data)),
+  setChosenMember: (data: Member) => dispatch(setChosenMember(data)),
 });
-
 // REDUX SELECTOR
 const allBlogsRetriever = createSelector(retrieveAllBlogs, (allBlogs) => ({
   allBlogs,
 }));
-const topBlogsRetriever = createSelector(retrieveTopBlogs, (topBlogs) => ({
-  topBlogs,
-}));
-
-const truncateText = (
-  text: string,
-  maxLength: 150,
-  blogId: any,
-  onReadMore: (blogId: any) => void
-) => {
-  if (text.length <= maxLength) return text;
-  const truncatedText = text.substr(0, maxLength);
-  const lastSpaceIndex = truncatedText.lastIndexOf(" ");
-  const truncatedWithEllipsis = `${truncatedText.substr(0, lastSpaceIndex)}...`;
-
-  return (
-    <>
-      <span dangerouslySetInnerHTML={{ __html: truncatedWithEllipsis }} />
-      <a
-        href="#"
-        style={{ fontWeight: "bold" }}
-        onClick={(e) => {
-          e.preventDefault();
-          onReadMore(blogId);
-        }}
-      >
-        Read more...
-      </a>
-    </>
-  );
-};
+const chosenMemberRetriever = createSelector(
+  retrieveChosenMember,
+  (chosenMember) => ({
+    chosenMember,
+  })
+);
 
 export function BlogPage() {
-  /** INITIALIZATIONS */
-  const navigate = useNavigate();
-  const refs: any = useRef([]);
-  const dispatch = useDispatch();
-
-  const { setAllBlogs } = actionDispatch(useDispatch());
+  /*INITIALIZATIONS*/
+  const { setAllBlogs, setChosenMember } = actionDispatch(useDispatch());
   const { allBlogs } = useSelector(allBlogsRetriever);
-  const [value, setValue] = React.useState("1");
-
-  // For All Blogs
-  const [searchBlogsObj, setSearchBlogsObj] = useState<BlogSearchObj>({
+  const { chosenMember } = useSelector(chosenMemberRetriever);
+  const pathname = useLocation();
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  useEffect(() => {
+    scrollTop();
+  }, [pathname]);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState<boolean>(false);
+  const [openFollow, setOpenFollow] = useState<boolean>(false);
+  const [blogRebuild, setBlogRebuild] = useState<Date>(new Date());
+  const [user, setUser] = useState<Member>(verifiedMemberData);
+  const [followCase, setFollowCase] = useState<string>("");
+  const userImage = chosenMember?.mb_image
+    ? `${serverApi}/${chosenMember?.mb_image}`
+    : "/icons/default_user.svg";
+  const style_create = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "#fff",
+    boxShadow: 24,
+    borderRadius: "10px",
+    p: 2,
+    display: "flex",
+    justifyContent: "center",
+  };
+  const [followRebuild, setFollowRebuild] = useState<Date>(new Date());
+  const [searchBlogObject, setSearchBlogObject] = useState<BlogSearchObj>({
     page: 1,
-    limit: 6,
-    blog_types: "all",
+    limit: 10,
+    mb_id: "all",
   });
-  const [blogsRebuild, setBlogsRebuild] = useState<Date>(new Date());
-
+  const [blogs, setBlogs] = useState<boolean>(false);
   useEffect(() => {
     const blogService = new BlogApiService();
     blogService
-      .getTargetBlogs(searchBlogsObj)
+      .getAllBlogs(searchBlogObject)
       .then((data) => setAllBlogs(data))
       .catch((err) => console.log(err));
-  }, [searchBlogsObj, blogsRebuild]);
+  }, [searchBlogObject, blogRebuild]);
 
-  /** HANDLERS */
-  // renderChosenBlogHandler
-  const chosenBlogHandler = async (blog_id: any, member_id?: string) => {
+  useEffect(() => {
+    if (verifiedMemberData?._id) {
+      const memberService = new MemberApiService();
+      memberService
+        .getChosenMember(user?._id)
+        .then((data) => setChosenMember(data))
+        .catch((err) => console.log(err));
+    }
+  }, [user]);
+
+  /*HANDLERS*/
+  const handlePaginationChange = (event: any, value: number) => {
+    searchBlogObject.page = value;
+    setSearchBlogObject({ ...searchBlogObject });
+    scrollTop();
+  };
+  const myBlogsHandler = () => {
+    setBlogs(true);
+    if (chosenMember?._id === verifiedMemberData?._id) {
+      setSearchBlogObject({
+        page: 1,
+        limit: 10,
+        mb_id: "none",
+      });
+    } else {
+      setSearchBlogObject({
+        page: 1,
+        limit: 10,
+        mb_id: chosenMember?._id || "all",
+      });
+    }
+  };
+  const allBlogsHandler = () => {
+    setBlogs(false);
+    setSearchBlogObject({
+      page: 1,
+      limit: 10,
+      mb_id: "all",
+    });
+  };
+
+  const userUpdate = async () => {
     try {
-      if (verifiedMemberData) {
-        // If a verified member is logged in, navigate to their own profile
-        navigate(`/member?mb_id=${member_id}&blog_id=${blog_id}`);
-      } else {
-        // If not, navigate to the other user's profile using the member_id
-        navigate(`/member/other?mb_id=${member_id}&blog_id=${blog_id}`);
-      }
+      const memberService = new MemberApiService();
+      const data = await memberService.getChosenMember(chosenMember?._id);
+      setChosenMember(data);
     } catch (err) {
       console.log(err);
-      sweetErrorHandling(err).then();
     }
   };
-
-  const blogChangeHandler = (event: any, newValue: string) => {
-    searchBlogsObj.page = 1;
-    switch (newValue) {
-      case "1":
-        searchBlogsObj.blog_types = "all";
-        break;
-      case "2":
-        searchBlogsObj.blog_types = "story";
-        break;
-      case "3":
-        searchBlogsObj.blog_types = "evaluation";
-        break;
-      case "4":
-        searchBlogsObj.blog_types = "news";
-        break;
+  const followHandler = async (e: any) => {
+    try {
+      const blogService = new BlogApiService();
+      await blogService.subscribeMember({ mb_id: e.target.id });
+      userUpdate();
+      sweetTopSmallSuccessAlert("followed successfully", 700, false);
+      setFollowRebuild(new Date());
+    } catch (err) {
+      console.log(err);
     }
-    setSearchBlogsObj({ ...searchBlogsObj });
-    setValue(newValue);
+  };
+  const unfollowHandler = async (e: any) => {
+    try {
+      const blogService = new BlogApiService();
+      await blogService.unsubscribeMember({ mb_id: e.target.id });
+      userUpdate();
+      sweetTopSmallSuccessAlert("unfollowed successfully", 700, false);
+      setFollowRebuild(new Date());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const showFollowersHandler = () => {
+    setOpenFollow(true);
+    setFollowCase("followers");
+  };
+  const showFollowingHandler = () => {
+    setOpenFollow(true);
+    setFollowCase("following");
   };
 
-  const paginationHandler = (event: any, value: number) => {
-    searchBlogsObj.page = value;
-    setSearchBlogsObj({ ...searchBlogsObj });
-  };
-
+  /*MUI STYLES*/
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      "&::after": {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",
+        animation: "ripple 1.2s infinite ease-in-out",
+        border: "1px solid currentColor",
+        content: '""',
+      },
+    },
+    "@keyframes ripple": {
+      "0%": {
+        transform: "scale(.8)",
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(2.4)",
+        opacity: 0,
+      },
+    },
+  }));
   return (
-    <div className="blog_container">
-      <Container className="all_articles">
-        <div className="blog_title">
-          <Box className="text">
-            <span>* OUR BLOG *</span>
+    <div className="blogs">
+      <Box
+        sx={{ backgroundImage: "url(/images/header_img/blogs-page.jpg)" }}
+        className="header_box"
+      />
+      <div className="mobile_note">
+        Mobile version is on developing process. Please use laptop version
+      </div>
+      <Container className="blogs_page">
+        <Box className="dir_box">
+          <Box onClick={() => navigate("/")} className="dir_link">
+            <Home />
+            <p>Home</p>
           </Box>
-          <Box className="title">
-            <div>
-              <span>
-                More than a Cup of Coffee. <br />
-                Discover the world of Coffee from out insight
-              </span>
-            </div>
+          <p className="link_div">/</p>
+          <Box className="dir_link">
+            <p className="before_icon">DaengGram</p>
+            <Close onClick={() => navigate("/")} className="close" />
           </Box>
-        </div>
-
-        <div className="blog_filter_search">
-          <Box className="filter_box">
-            <div
-              className="f_box"
-              onClick={(event) => blogChangeHandler(event, "1")}
-            >
-              <p>All Blogs</p>
-            </div>
-            <div
-              className="f_box"
-              onClick={(event) => blogChangeHandler(event, "2")}
-            >
-              <p>Story</p>
-            </div>
-            <div
-              className="f_box"
-              onClick={(event) => blogChangeHandler(event, "3")}
-            >
-              <p>Evaluation</p>
-            </div>
-            <div
-              className="f_box"
-              onClick={(event) => blogChangeHandler(event, "4")}
-            >
-              <p>News</p>
-            </div>
-          </Box>
-        </div>
-
-        <div className="blog_boxes">
-          {allBlogs && allBlogs.length > 0 ? (
-            allBlogs.map((blog) => (
-              <Box
-                className="event"
-                key={blog._id}
-                onClick={() => chosenBlogHandler(blog._id)}
-              >
-                <img
-                  src={blog.blog_image?.[0] || "/images/default-image.jpg"}
-                  alt={blog.blog_title}
-                />
-                <Box className="tags">
-                  <div className="first">
-                    <span>{blog.blog_types}</span>
-                  </div>
-                </Box>
-                <Box className="title">
-                  <h4>{blog.blog_title}</h4>
-                </Box>
-                <Box className="context">
-                  {truncateText(
-                    blog.blog_content,
-                    150,
-                    blog._id,
-                    chosenBlogHandler
-                  )}
-                </Box>
+        </Box>
+        <Stack className="main_box">
+          {verifiedMemberData && (
+            <Stack className="side_bar">
+              <Box className="avatar_wrap">
+                {verifiedMemberData._id === user._id && (
+                  <Settings
+                    className="setting_icon"
+                    onClick={() => navigate("/my-account")}
+                  />
+                )}
+                {user._id === verifiedMemberData._id ? (
+                  <StyledBadge
+                    overlap="circular"
+                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    variant="dot"
+                  >
+                    <Avatar alt="user" src={userImage} className="avatar" />
+                  </StyledBadge>
+                ) : (
+                  <Avatar alt="user" src={userImage} className="avatar" />
+                )}
               </Box>
-            ))
-          ) : (
-            <p>No blogs found</p>
-          )}
-        </div>
+              <h4 className="user_name">{chosenMember?.mb_nick}</h4>
+              <Box className="follow_box">
+                <p onClick={showFollowersHandler} className="follow_text">
+                  <span>{chosenMember?.mb_subscriber_count}</span>followers
+                </p>
+                <p onClick={showFollowingHandler} className="follow_text">
+                  <span>{chosenMember?.mb_follow_count}</span>following
+                </p>
+                <Modal
+                  open={openFollow}
+                  onClose={() => setOpenFollow(false)}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <FollowList
+                    followCase={followCase}
+                    user={user}
+                    unfollowHandler={unfollowHandler}
+                    followRebuild={followRebuild}
+                    followHandler={followHandler}
+                  />
+                </Modal>
+              </Box>
+              <Box className="icon_box">
+                <a href="https://github.com/ShahzodTuraev">
+                  <Facebook className="sns_icon" />
+                </a>
+                <a href="https://www.instagram.com/shahzodbek0909/">
+                  <Instagram className="sns_icon" />
+                </a>
+                <a href="https://www.linkedin.com/in/shahzod-turaev-a71b0718b/">
+                  <WhatsApp className="sns_icon" />
+                </a>
+                <a href="https://t.me/shahzodbek_turaev">
+                  <Telegram className="sns_icon" />
+                </a>
+                <a href="https://www.linkedin.com/in/shahzod-turaev-a71b0718b/">
+                  <YouTube className="sns_icon" />
+                </a>
+              </Box>
 
-        <Stack className="pagination" spacing={2}>
-          <Pagination
-            count={3}
-            page={searchBlogsObj.page}
-            variant="outlined"
-            shape="rounded"
-            onChange={paginationHandler}
-            boundaryCount={1}
-            siblingCount={0}
-          />
+              <p className="user_desc">
+                As a new member of the group, I aim to contribute by sharing
+                posts that offer value to everyone.
+                {chosenMember?.mb_description}
+              </p>
+              <Box className="btn_box">
+                {chosenMember?._id === verifiedMemberData?._id ? (
+                  <Button onClick={() => setOpen(true)} className="user_btn">
+                    Create Blog
+                  </Button>
+                ) : chosenMember?.me_followed[0]?.my_following ? (
+                  <Button
+                    id={chosenMember?._id}
+                    onClick={unfollowHandler}
+                    className="user_btn"
+                  >
+                    Unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    id={chosenMember?._id}
+                    onClick={followHandler}
+                    className="user_btn"
+                  >
+                    Follow
+                  </Button>
+                )}
+                {blogs ? (
+                  <Button onClick={allBlogsHandler} className="user_btn">
+                    All Blogs
+                  </Button>
+                ) : (
+                  <Button onClick={myBlogsHandler} className="user_btn">
+                    {chosenMember?.mb_nick === verifiedMemberData?.mb_nick
+                      ? "My Blogs"
+                      : `${chosenMember?.mb_nick}'s posts`}
+                  </Button>
+                )}
+                <Modal
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style_create}>
+                    <CreateBlog
+                      setOpen={setOpen}
+                      setBlogRebuild={setBlogRebuild}
+                    />
+                  </Box>
+                </Modal>
+              </Box>
+              <Box className="follow_container"></Box>
+            </Stack>
+          )}
+          <Stack className="main_posts">
+            {allBlogs.map((post) => {
+              return (
+                <Postcard
+                  key={post?._id}
+                  cartData={post}
+                  setBlogRebuild={setBlogRebuild}
+                  blogRebuild={blogRebuild}
+                  setUser={setUser}
+                />
+              );
+            })}
+            <Pagination
+              count={searchBlogObject.page >= 3 ? searchBlogObject.page + 1 : 3}
+              page={searchBlogObject.page}
+              renderItem={(item) => (
+                <PaginationItem
+                  components={{
+                    previous: ArrowBack,
+                    next: ArrowForward,
+                  }}
+                  {...item}
+                />
+              )}
+              onChange={handlePaginationChange}
+            />
+          </Stack>
         </Stack>
       </Container>
     </div>

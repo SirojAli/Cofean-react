@@ -4,8 +4,11 @@ import React, { useEffect } from "react";
 import { createSelector } from "reselect";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setMemberFollowers, setMemberFollowings } from "./slice";
-import { retrieveMemberFollowers, retrieveMemberFollowings } from "./selector";
+import { setMemberFollowers, setMemberFollowings } from "../BlogPage/slice";
+import {
+  retrieveMemberFollowers,
+  retrieveMemberFollowings,
+} from "../BlogPage/selector";
 import { Follower, Following } from "../../../types/follow";
 import FollowApiService from "../../apiServices/followApiService";
 import "../../../scss/members.scss";

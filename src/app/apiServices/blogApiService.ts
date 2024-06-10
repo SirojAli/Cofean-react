@@ -3,12 +3,7 @@ import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Member } from "../../types/user";
-import {
-  Blog,
-  BlogInput,
-  BlogSearchObj,
-  SearchMemberBlogsObj,
-} from "../../types/blog";
+import { Blog, BlogInput, BlogSearchObj } from "../../types/blog";
 
 class BlogApiService {
   private readonly path: string;
@@ -16,123 +11,61 @@ class BlogApiService {
     this.path = serverApi;
   }
 
-  public async createBlog(data: BlogInput) {
+  public async getAllBlogs(data: BlogSearchObj): Promise<Blog[]> {
     try {
-      const result = await axios.post(this.path + "/blogs/create", data, {
-        withCredentials: true,
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const blog: Blog = result.data.data;
-      return blog;
-    } catch (err: any) {
-      console.log(`ERROR >>> createBlog ${err.message}`);
-      throw err;
-    }
-  }
-
-  async getAllBlogs(data: BlogSearchObj): Promise<Blog[]> {
-    try {
-      const url = `/blogs`,
-        result = await axios.post(this.path + url, data, {
-          withCredentials: true,
-        });
-      assert.ok(result, Definer.general_err1);
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const all_blogs: Blog[] = result.data.data;
-      return all_blogs;
-    } catch (err: any) {
-      console.log(`ERROR getAllBlogs >>> ${err.message}`);
-      throw err;
-    }
-  }
-
-  public async getTargetBlogs(data: BlogSearchObj) {
-    try {
-      let url = `/blogs/all-blogs?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
-      if (data.order) url += `&order=${data.order}`;
-
+      let url = `/blogs/posts?page=${data.page}&limit=${data.limit}&mb_id=${data.mb_id}`;
       const result = await axios.get(this.path + url, {
         withCredentials: true,
       });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state >>>", result.data.state);
-
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data.state !== "fail", result?.data?.message);
       const blogs: Blog[] = result.data.data;
       return blogs;
     } catch (err: any) {
-      console.log(`ERROR >>> getTargetBlogs ${err.message}`);
+      console.log(`ERROR >>> getAllBlogs ${err.message}`);
       throw err;
     }
   }
 
-  public async getTopBlogs(data: BlogSearchObj) {
+  public async getChosenBlog(id: string): Promise<boolean> {
     try {
-      let url = `/blogs/target?blog_types=${data.blog_types}&page=${data.page}&limit=${data.limit}`;
-      if (data.order) url += `&order=${data.order}`;
-
+      let url = `/blogs/single-blog/${id}`;
       const result = await axios.get(this.path + url, {
         withCredentials: true,
       });
-
+      console.log("state:", result.data.state);
       assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const blogs: Blog[] = result.data.data;
-      return blogs;
-    } catch (err: any) {
-      console.log(`ERROR >>> getTopBlogs ${err.message}`);
-      throw err;
-    }
-  }
-
-  async getMemberBlogs(data: SearchMemberBlogsObj) {
-    try {
-      let url = `/blogs/target-blogs?mb_id=${data.mb_id}&page=${data.page}&limit=${data.limit}`;
-
-      const result = await axios.get(this.path + url, {
-        withCredentials: true,
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const blog: Blog[] = result.data.data;
-      return blog;
-    } catch (err: any) {
-      console.log(`ERROR >>> getMemberBlogBlogs ${err.message}`);
-      throw err;
-    }
-  }
-
-  async getChosenBlog(blog_id: string) {
-    try {
-      let url = `/blogs/single-blog/${blog_id}`;
-
-      const result = await axios.get(this.path + url, {
-        withCredentials: true,
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const blog: Blog = result.data.data;
-      return blog;
+      assert.ok(result?.data.state !== "fail", result?.data?.message);
+      return true;
     } catch (err: any) {
       console.log(`ERROR >>> getChosenBlog ${err.message}`);
       throw err;
+    }
+  }
+
+  public async createBlog(data: any) {
+    try {
+      console.log(data);
+      let formData = new FormData();
+      formData.append("blog_title", data.blog_title);
+      formData.append("blog_content", data.blog_content);
+      formData.append("blog_image", data.blog_image);
+      const result = await axios(`${this.path}/blogs/create`, {
+        method: "POST",
+        data: formData,
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data?.state !== "fail", result?.data?.message);
+      console.log("state: ", result.data.data);
+      const blogs: Blog = result.data.data;
+      return blogs;
+    } catch (err: any) {
+      console.log(`ERROR >>> createBlog ${err.message}`);
     }
   }
 
@@ -147,7 +80,7 @@ class BlogApiService {
       assert.ok(result?.data.state !== "fail", result?.data?.message);
       return true;
     } catch (err: any) {
-      console.log(`ERROR::: subscribeMember ${err.message}`);
+      console.log(`ERROR >>> subscribeMember ${err.message}`);
       throw err;
     }
   }
@@ -163,7 +96,7 @@ class BlogApiService {
       assert.ok(result?.data.state !== "fail", result?.data?.message);
       return true;
     } catch (err: any) {
-      console.log(`ERROR::: unsubscribeMember ${err.message}`);
+      console.log(`ERROR >>> unsubscribeMember ${err.message}`);
       throw err;
     }
   }

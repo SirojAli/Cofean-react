@@ -59,7 +59,7 @@ class MemberApiService {
 
       const logout_result = result.data.state;
       // console.log("logout_result>>>", logout_result);
-      return logout_result == "success";
+      return logout_result === "success";
     } catch (err: any) {
       console.log(`ERROR>>> logOutRequest ${err.message}`);
       throw err;

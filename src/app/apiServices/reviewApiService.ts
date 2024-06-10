@@ -29,42 +29,19 @@ class ReviewApiService {
     }
   }
 
-  // async createReview(data: CreateReviewObj): Promise<any> {
-  //   try {
-  //     const url = "/review/create",
-  //       result = await axios.post(this.path + url, data, {
-  //         withCredentials: true,
-  //       });
-  //     assert.ok(result?.data, Definer.general_err1);
-  //     assert.ok(result?.data?.state !== "fail", result?.data?.message);
-  //     console.log("state>>>", result.data.state);
-
-  //     return true;
-  //   } catch (err: any) {
-  //     console.log(`ERROR >>> createReview ${err.message}`);
-  //     throw err;
-  //   }
-  // }
-
   async createReview(data: CreateReviewObj): Promise<any> {
     try {
-      const url = "/review/create";
-      const result = await axios.post(this.path + url, data, {
-        withCredentials: true,
-      });
-
-      if (!result?.data) {
-        throw new Error(Definer.general_err1);
-      }
-
-      if (result?.data?.state === "fail") {
-        throw new Error(result.data.message);
-      }
-
+      const url = "/review/create",
+        result = await axios.post(this.path + url, data, {
+          withCredentials: true,
+        });
+      assert.ok(result?.data, Definer.general_err1);
+      assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
+
       return true;
     } catch (err: any) {
-      console.error(`ERROR >>> createReview ${err.message}`);
+      console.log(`ERROR >>> createReviews ${err.message}`);
       throw err;
     }
   }

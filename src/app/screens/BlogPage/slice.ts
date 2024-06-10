@@ -3,27 +3,51 @@ import { BlogPageState } from "../../../types/screen";
 
 const initialState: BlogPageState = {
   allBlogs: [],
-  topBlogs: [],
-  // chosenBlog: null,
+  chosenMember: null,
+  chosenMemberBlogs: [],
+  chosenBlog: null,
+  memberFollowers: [],
+  memberFollowings: [],
+  blogReviews: [],
 };
 
-const BlogPageSlice = createSlice({
+const blogPageSlice = createSlice({
   name: "blogPage",
   initialState,
   reducers: {
     setAllBlogs: (state, action) => {
       state.allBlogs = action.payload;
     },
-    setTopBlogs: (state, action) => {
-      state.topBlogs = action.payload;
+    setChosenMember: (state, action) => {
+      state.chosenMember = action.payload;
     },
-    // setChosenBlog: (state, action) => {
-    //   state.chosenBlog = action.payload;
-    // },
+    setChosenMemberBlogs: (state, action) => {
+      state.chosenMemberBlogs = action.payload;
+    },
+    setChosenBlog: (state, action) => {
+      state.chosenBlog = action.payload;
+    },
+    setMemberFollowers: (state, action) => {
+      state.memberFollowers = action.payload;
+    },
+    setMemberFollowings: (state, action) => {
+      state.memberFollowings = action.payload;
+    },
+    setBlogReviews: (state, action) => {
+      state.blogReviews = action.payload;
+    },
   },
 });
 
-export const { setAllBlogs, setTopBlogs } = BlogPageSlice.actions;
+export const {
+  setAllBlogs,
+  setChosenMember,
+  setChosenMemberBlogs,
+  setChosenBlog,
+  setMemberFollowers,
+  setMemberFollowings,
+  setBlogReviews,
+} = blogPageSlice.actions;
 
-const BlogPageReducer = BlogPageSlice.reducer;
+const BlogPageReducer = blogPageSlice.reducer;
 export default BlogPageReducer;

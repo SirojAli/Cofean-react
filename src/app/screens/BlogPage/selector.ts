@@ -6,11 +6,27 @@ export const retrieveAllBlogs = createSelector(
   selectBlogPage,
   (BlogPage) => BlogPage.allBlogs
 );
-export const retrieveTopBlogs = createSelector(
+export const retrieveChosenMember = createSelector(
   selectBlogPage,
-  (BlogPage) => BlogPage.topBlogs
+  (BlogPage) => BlogPage.chosenMember
 );
-// export const retrieveChosenBlog = createSelector(
-//   selectBlogPage,
-//   (BlogPage) => BlogPage.chosenBlog
-// );
+export const retrieveChosenMemberBlogs = createSelector(
+  selectBlogPage,
+  (BlogPage) => BlogPage.chosenMemberBlogs
+);
+export const retrieveChosenBlog = createSelector(
+  selectBlogPage,
+  (BlogPage) => BlogPage.chosenBlog
+);
+export const retrieveMemberFollowers = createSelector(
+  selectBlogPage,
+  (BlogPage) => BlogPage.memberFollowers
+);
+export const retrieveMemberFollowings = createSelector(
+  selectBlogPage,
+  (BlogPage) => BlogPage.memberFollowings
+);
+export const retrieveBlogReviews = createSelector(
+  selectBlogPage,
+  (BlogPage) => BlogPage.blogReviews
+);
