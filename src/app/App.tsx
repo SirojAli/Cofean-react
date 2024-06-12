@@ -19,9 +19,11 @@ import { ChosenCafe } from "./screens/CafePage/chosenCafe";
 import { Product } from "./screens/ProductPage";
 import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 import { BlogPage } from "./screens/BlogPage";
-import { MyAccount } from "./screens/MyAccountPage";
+import { MyProfile } from "./screens/MyProfilePage";
 import { Help } from "./screens/HelpPage";
 import { Member } from "../types/user";
+import OrdersPage from "./screens/OrdersPage";
+import WishList from "./screens/OrdersPage/wishList";
 
 function App() {
   /** INITIALIZATIONS */
@@ -44,9 +46,11 @@ function App() {
           <Route path="/products/:product_id" element={<ChosenProduct />} />
 
           <Route path="/blogs" element={<BlogPage />} />
-
-          <Route path="/my-account" element={<MyAccount />} />
           <Route path="/help" element={<Help />} />
+
+          <Route path="/my-account" element={<MyProfile />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/wishlist" element={<WishList />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />
       </Routes>

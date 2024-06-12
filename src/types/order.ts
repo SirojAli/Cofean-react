@@ -1,9 +1,11 @@
 import { Product } from "./product";
+import { Member } from "./user";
 
-export interface OrderItem {
+export interface order_items {
   _id: string;
   item_quantity: number;
   item_price: number;
+  item_delivery_cost: number;
   order_id: string;
   product_id: string;
   createdAt: Date;
@@ -18,7 +20,16 @@ export interface Order {
   mb_id: string;
   createdAt: Date;
   updatedAt: Date;
-  //   from aggregations
-  order_items: OrderItem[];
+  order_items: any[];
   product_data: Product[];
+}
+
+export interface Like {
+  _id: string;
+  like_ref_id: string;
+  like_group: string;
+  mb_id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  product_data: Product;
 }

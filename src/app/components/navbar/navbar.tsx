@@ -207,7 +207,7 @@ export function Navbar(props: any) {
                     <MenuItem
                       onClick={() => {
                         handleClose();
-                        navigate("/member");
+                        navigate("/my-account");
                       }}
                       className="drop_menu"
                       sx={{
@@ -223,30 +223,7 @@ export function Navbar(props: any) {
                           fontWeight: "500",
                         }}
                       >
-                        My Page
-                      </p>
-                    </MenuItem>
-
-                    <MenuItem
-                      onClick={() => {
-                        handleClose();
-                        navigate("/my-account");
-                      }}
-                      className="drop_menu"
-                      sx={{
-                        width: "150px",
-                        height: "40px",
-                      }}
-                    >
-                      <SettingsIcon sx={{ fill: "#444444" }} />
-                      <p
-                        style={{
-                          marginLeft: "8px",
-                          fontSize: "16px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        Settings
+                        My Profile
                       </p>
                     </MenuItem>
 

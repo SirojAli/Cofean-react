@@ -1,7 +1,7 @@
 import { Blog } from "./blog";
 import { Product } from "./product";
 import { Member, Cafe } from "./user";
-import { Order } from "./order";
+import { Like, Order } from "./order";
 import { Follower, Following } from "./follow";
 import { Review } from "./review";
 
@@ -46,4 +46,14 @@ export interface BlogPageState {
   memberFollowers: Follower[];
   memberFollowings: Following[];
   blogReviews: Review[];
+}
+
+/*ORDERS PAGE*/
+export interface OrdersPageState {
+  pendingOrders: Order[];
+  processOrders: Order[];
+  finishedOrders: Order[];
+  cancelledOrders: Order[];
+  allOrders: Order[];
+  wishList: Like[];
 }

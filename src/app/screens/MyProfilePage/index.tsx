@@ -9,6 +9,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { Input } from "antd";
 import {
   ListAltOutlined,
   Favorite,
@@ -26,9 +27,80 @@ import Pagination from "@mui/material/Pagination";
 import { Textarea } from "@mui/joy";
 
 import { useLocation, useNavigate } from "react-router-dom";
+import { verifiedMemberData } from "../../apiServices/verify";
+import assert from "assert";
+import { Definer } from "../../../lib/definer";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import MemberApiService from "../../apiServices/memberApiService";
 
-export function MyAccount() {
+export function MyProfile() {
+  const navigate = useNavigate();
   /** INITIALIZATIONS */
+  const [file, setFile] = useState(verifiedMemberData?.mb_image);
+  const [memberUpdate, setMemberUpdate] = useState<any>({
+    mb_nick: "",
+    mb_email: "",
+    mb_phone: "",
+    mb_address: "",
+    mb_description: "",
+    mb_image: "",
+  });
+
+  // HANDLERS
+  const changeUsernameHandler = (e: any) => {
+    memberUpdate.mb_nick = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeEmailHandler = (e: any) => {
+    memberUpdate.mb_email = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changePhoneHandler = (e: any) => {
+    memberUpdate.mb_phone = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeAddressHandler = (e: any) => {
+    memberUpdate.mb_address = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const changeDescriptionHandler = (e: any) => {
+    memberUpdate.mb_description = e.target.value;
+    setMemberUpdate({ ...memberUpdate });
+  };
+  const imageHandler = (e: any) => {
+    try {
+      const file = e.target.files[0];
+      const fileType = file["type"],
+        validTypes = ["image/jpg", "image/jpeg", "image/png"];
+      assert.ok(validTypes.includes(fileType) && file, Definer.input_err2);
+      memberUpdate.mb_image = file;
+      setMemberUpdate({ ...memberUpdate });
+      setFile(URL.createObjectURL(file));
+    } catch (err) {
+      console.log(`ERROR >>> handleImagePreviewer ${err}`);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const submitHandler = async (e: any) => {
+    try {
+      const memberService = new MemberApiService();
+      const result = await memberService.updateMemberData(memberUpdate);
+      assert.ok(result, Definer.general_err1);
+      await sweetTopSmallSuccessAlert(
+        "Information modified successfully",
+        700,
+        false
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(`ERROR >>> handleSubmitButton ${err}`);
+      sweetErrorHandling(err).then();
+    }
+  };
 
   return (
     <div className="account_page">
@@ -38,13 +110,13 @@ export function MyAccount() {
         </div>
         <div className="main_page">
           <div className="menu_tables">
-            <Box className="menu">
-              <span>Settings</span>
+            <Box className="menu" onClick={() => navigate("/my-account")}>
+              <span>My Profile</span>
             </Box>
-            <Box className="menu">
+            <Box className="menu" onClick={() => navigate("/orders")}>
               <span>Orders</span>
             </Box>
-            <Box className="menu">
+            <Box className="menu" onClick={() => navigate("/wishlist")}>
               <span>Wishlist</span>
             </Box>
           </div>
@@ -52,15 +124,16 @@ export function MyAccount() {
             {/* for account settings */}
             <div className="account_set">
               <Box className="set_title">
-                <span>Account Settings</span>
+                <span>Profile Settings</span>
               </Box>
               <div className="text_boxes">
                 <Box className="info_box">
                   <span className="span">Username</span>
-                  <input
+                  <Input
                     type="text"
-                    placeholder="Sam"
+                    placeholder={verifiedMemberData?.mb_nick}
                     className="input"
+                    onChange={changeUsernameHandler}
                     style={{
                       background: "#F4F4F4",
                       color: "#000",
@@ -74,10 +147,11 @@ export function MyAccount() {
 
                 <Box className="info_box">
                   <span className="span">Email</span>
-                  <input
+                  <Input
                     type="text"
-                    placeholder="sam@gmail.com"
+                    placeholder={verifiedMemberData?.mb_email}
                     className="input"
+                    onChange={changeEmailHandler}
                     style={{
                       background: "#F4F4F4",
                       color: "#000",
@@ -91,10 +165,11 @@ export function MyAccount() {
 
                 <Box className="info_box">
                   <span className="span">Phone</span>
-                  <input
+                  <Input
                     type="text"
-                    placeholder="+8210 7777-2332"
+                    placeholder={verifiedMemberData?.mb_phone}
                     className="input"
+                    onChange={changePhoneHandler}
                     style={{
                       background: "#F4F4F4",
                       color: "#000",
@@ -108,10 +183,11 @@ export function MyAccount() {
 
                 <Box className="info_box">
                   <span className="span">Address</span>
-                  <input
+                  <Input
                     type="text"
-                    placeholder="Busan, South Korea"
+                    placeholder={verifiedMemberData?.mb_address}
                     className="input"
+                    onChange={changeAddressHandler}
                     style={{
                       background: "#F4F4F4",
                       color: "#000",
@@ -128,7 +204,8 @@ export function MyAccount() {
                   <textarea
                     className="desc"
                     // name="blog"
-                    placeholder="User Description"
+                    placeholder={verifiedMemberData?.mb_description}
+                    onChange={changeDescriptionHandler}
                     rows={5}
                     cols={33}
                     style={{
@@ -149,12 +226,12 @@ export function MyAccount() {
                       <img src="/icons/user-profile-icon.svg" />
                     </Box>
                     <Box className="upload_img">
-                      <div className="change">
+                      <div className="change" onChange={imageHandler}>
                         <span>Change Photo</span>
                       </div>
-                      <div className="delete">
+                      {/* <div className="delete">
                         <span>Delete</span>
-                      </div>
+                      </div> */}
                     </Box>
                   </div>
                 </Box>
@@ -219,7 +296,7 @@ export function MyAccount() {
                 </Box>
               </div>
 
-              <Button className="save_btn">
+              <Button className="save_btn" onClick={submitHandler}>
                 <span>Save the Changes</span>
               </Button>
             </div>
