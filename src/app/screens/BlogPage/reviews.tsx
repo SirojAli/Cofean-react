@@ -22,6 +22,8 @@ import { verifiedMemberData } from "../../../app/apiServices/verify";
 import assert from "assert";
 import Moment from "react-moment";
 import { serverApi } from "../../../lib/config";
+import "../../../scss/blog.scss";
+
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
   setBlogReviews: (data: Review[]) => dispatch(setBlogReviews(data)),
@@ -120,7 +122,7 @@ const Reviews = ({ blogId, setBlogRebuild }: any) => {
               onChange={(e) => setTextValue(e.target.value)}
             />
             <Button onClick={submitHandler} className="post_btn">
-              post
+              Post
             </Button>
           </Box>
         </Box>

@@ -13,6 +13,8 @@ import {
 import BlogApiService from "../../apiServices/blogApiService";
 import { serverApi } from "../../../lib/config";
 import Reviews from "./reviews";
+import "../../../scss/blog.scss";
+
 const Postcard = ({ cartData, setBlogRebuild, blogRebuild, setUser }: any) => {
   /*INITIALIZATIONS*/
   const refs: any = useRef([]);

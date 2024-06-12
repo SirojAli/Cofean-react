@@ -9,6 +9,7 @@ import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
+import "../../../scss/blog.scss";
 
 const CreateBlog = ({ setOpen, setBlogRebuild }: any) => {
   /*INITIALIZATIONS*/

@@ -138,7 +138,7 @@ export function Footer() {
               </Box>
 
               <div className="f3_social_media">
-                <a href="https://facebook.com/sirojiddinsamadov">
+                <a href="https://www.facebook.com/people/Sirojiddin-Samadov/pfbid021htWXCV3iAwbhpNsQfKv6vfjvBvCU6zux7fC4gnQZyM57BDFFS9Rpqyv6bJCSPHKl/">
                   <Facebook className="icon" />
                 </a>
 

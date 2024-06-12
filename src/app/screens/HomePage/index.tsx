@@ -4,24 +4,7 @@ import { TopCafes } from "./topCafes";
 import { TrendProducts } from "./trendProducts";
 import { Video } from "./video";
 import { SaleProducts } from "./saleProducts";
-// import { TopBlogs } from "./topBlogs";
 import "../../../scss/home.scss";
-
-// REDUX
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
-import { createSelector } from "reselect";
-import { Cafe } from "../../../types/user";
-import { Product } from "../../../types/product";
-import { Blog } from "../../../types/blog";
-
-import CafeApiService from "../../apiServices/cafeApiService";
-import ProductApiService from "../../apiServices/productApiService";
-import BlogApiService from "../../apiServices/blogApiService";
-
-//** REDUX SLICE */
-
-//** REDUX SELECTOR */
 
 export function Homepage() {
   return (
@@ -31,7 +14,6 @@ export function Homepage() {
       <TrendProducts />
       <Video />
       <SaleProducts />
-      {/* <TopBlogs /> */}
     </div>
   );
 }

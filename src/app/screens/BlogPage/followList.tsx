@@ -12,6 +12,7 @@ import {
 import { Follower, Following } from "../../../types/follow";
 import FollowApiService from "../../apiServices/followApiService";
 import "../../../scss/members.scss";
+import "../../../scss/blog.scss";
 import { serverApi } from "../../../lib/config";
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -51,7 +52,7 @@ const FollowList = ({
     followService
       .getMemberFollowers({
         page: 1,
-        limit: 100,
+        limit: 50,
         mb_id: user._id,
       })
       .then((data) => setMemberFollowers(data))
@@ -63,7 +64,7 @@ const FollowList = ({
     followService
       .getMemberFollowings({
         page: 1,
-        limit: 100,
+        limit: 50,
         mb_id: user?._id,
       })
 

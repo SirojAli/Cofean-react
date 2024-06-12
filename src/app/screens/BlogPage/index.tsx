@@ -22,9 +22,11 @@ import {
   Settings,
   ArrowBack,
   ArrowForward,
+  LinkedIn,
+  GitHub,
 } from "@mui/icons-material";
 
-import "../../scss/blogs.scss";
+import "../../../scss/blog.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Blog, BlogSearchObj } from "../../../types/blog";
 import BlogApiService from "../../apiServices/blogApiService";
@@ -230,15 +232,15 @@ export function BlogPage() {
   }));
   return (
     <div className="blogs">
-      <Box
+      {/* <Box
         sx={{ backgroundImage: "url(/images/header_img/blogs-page.jpg)" }}
         className="header_box"
-      />
-      <div className="mobile_note">
+      /> */}
+      {/* <div className="mobile_note">
         Mobile version is on developing process. Please use laptop version
-      </div>
+      </div> */}
       <Container className="blogs_page">
-        <Box className="dir_box">
+        {/* <Box className="dir_box">
           <Box onClick={() => navigate("/")} className="dir_link">
             <Home />
             <p>Home</p>
@@ -248,7 +250,7 @@ export function BlogPage() {
             <p className="before_icon">DaengGram</p>
             <Close onClick={() => navigate("/")} className="close" />
           </Box>
-        </Box>
+        </Box> */}
         <Stack className="main_box">
           {verifiedMemberData && (
             <Stack className="side_bar">
@@ -295,26 +297,26 @@ export function BlogPage() {
                 </Modal>
               </Box>
               <Box className="icon_box">
-                <a href="https://github.com/ShahzodTuraev">
+                <a href="https://www.facebook.com/people/Sirojiddin-Samadov/pfbid021htWXCV3iAwbhpNsQfKv6vfjvBvCU6zux7fC4gnQZyM57BDFFS9Rpqyv6bJCSPHKl/">
                   <Facebook className="sns_icon" />
                 </a>
-                <a href="https://www.instagram.com/shahzodbek0909/">
+                <a href="https://www.linkedin.com/in/sirojiddin-samadov-124985278/">
+                  <LinkedIn className="sns_icon" />
+                </a>
+                <a href="https://www.instagram.com/sirojiddin_samadov_asn/">
                   <Instagram className="sns_icon" />
                 </a>
-                <a href="https://www.linkedin.com/in/shahzod-turaev-a71b0718b/">
-                  <WhatsApp className="sns_icon" />
+                <a href="https://github.com/SirojAli">
+                  <GitHub className="sns_icon" />
                 </a>
-                <a href="https://t.me/shahzodbek_turaev">
+                <a href="https://t.me/siroj_samadov">
                   <Telegram className="sns_icon" />
-                </a>
-                <a href="https://www.linkedin.com/in/shahzod-turaev-a71b0718b/">
-                  <YouTube className="sns_icon" />
                 </a>
               </Box>
 
               <p className="user_desc">
-                As a new member of the group, I aim to contribute by sharing
-                posts that offer value to everyone.
+                Here to share stories, connect with friends, and make every blog
+                count
                 {chosenMember?.mb_description}
               </p>
               <Box className="btn_box">

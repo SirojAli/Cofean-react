@@ -5,7 +5,6 @@ const initialState: HomePageState = {
   topCafes: [],
   trendProducts: [],
   saleProducts: [],
-  // topBlogs: [],
 };
 
 const HomePageSlice = createSlice({
@@ -21,9 +20,6 @@ const HomePageSlice = createSlice({
     setSaleProducts: (state, action) => {
       state.saleProducts = action.payload;
     },
-    // setTopBlogs: (state, action) => {
-    //   state.topBlogs = action.payload;
-    // },
   },
 });
 

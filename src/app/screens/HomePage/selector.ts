@@ -14,7 +14,3 @@ export const retrieveSaleProducts = createSelector(
   selectHomePage,
   (HomePage) => HomePage.saleProducts
 );
-// export const retrieveTopBlogs = createSelector(
-//   selectHomePage,
-//   (HomePage) => HomePage.topBlogs
-// );

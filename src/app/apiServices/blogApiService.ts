@@ -17,6 +17,7 @@ class BlogApiService {
       const result = await axios.get(this.path + url, {
         withCredentials: true,
       });
+
       console.log("state >>>", result.data.state);
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state !== "fail", result?.data?.message);
