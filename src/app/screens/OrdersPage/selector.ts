@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { AppRootState } from "d:/Javascript Full Stack/puppy-home-react/puppy-home-react-develop/src/types/screen";
+import { AppRootState } from "../../../types/screen";
 
 const selectOrdersPage = (state: AppRootState) => state.ordersPage;
 
@@ -26,5 +26,5 @@ export const retrieveAllOrders = createSelector(
 );
 export const retrieveWishlist = createSelector(
   selectOrdersPage,
-  (OrdersPage) => OrdersPage.wishList
+  (OrdersPage) => OrdersPage.wishlist
 );

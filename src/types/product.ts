@@ -17,7 +17,7 @@ export interface Product {
   product_views: number;
   product_likes: number;
   product_rating: number;
-  product_review: number;
+  product_reviews: number;
   product_allergy: string;
   product_calories: number;
   product_caffeine: number;

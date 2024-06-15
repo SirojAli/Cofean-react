@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 export const WishlistContext = createContext();
 export const WishCont = () => useContext(WishlistContext);
-const Wishlists = ({ children }) => {
+const Wishlist = ({ children }) => {
   const [side, setSide] = useState(0);
 
   return (
@@ -10,4 +10,4 @@ const Wishlists = ({ children }) => {
     </WishlistContext.Provider>
   );
 };
-export default Wishlists;
+export default Wishlist;

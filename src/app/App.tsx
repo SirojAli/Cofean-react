@@ -23,7 +23,6 @@ import { MyProfile } from "./screens/MyProfilePage";
 import { Help } from "./screens/HelpPage";
 import { Member } from "../types/user";
 import OrdersPage from "./screens/OrdersPage";
-import WishList from "./screens/OrdersPage/wishList";
 
 function App() {
   /** INITIALIZATIONS */
@@ -50,7 +49,6 @@ function App() {
 
           <Route path="/my-account" element={<MyProfile />} />
           <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/wishlist" element={<WishList />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />
       </Routes>

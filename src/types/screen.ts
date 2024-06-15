@@ -11,6 +11,7 @@ export interface AppRootState {
   cafePage: CafePageState;
   productPage: ProductPageState;
   blogPage: BlogPageState;
+  ordersPage: OrdersPageState;
 }
 
 /** HOME PAGE */
@@ -31,9 +32,7 @@ export interface CafePageState {
 /** PRODUCT PAGE */
 export interface ProductPageState {
   allProducts: Product[];
-  randomProducts: Product[];
   chosenProduct: Product | null;
-  bestSellerProducts: Product[];
   productReviews: Review[];
 }
 
@@ -55,5 +54,5 @@ export interface OrdersPageState {
   finishedOrders: Order[];
   cancelledOrders: Order[];
   allOrders: Order[];
-  wishList: Like[];
+  wishlist: Like[];
 }

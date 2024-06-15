@@ -17,6 +17,8 @@ export interface ProductSearchObj {
   order: string;
   cafe_mb_id?: string;
   product_collection?: string[];
+  search: string;
+  price: number[];
 }
 
 export interface ReviewSearchObj {
@@ -44,6 +46,7 @@ export interface CartItem {
   quantity: number;
   name: string;
   price: number;
+  discount: number;
   image: string;
 }
 

@@ -42,7 +42,7 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
   /*HANDLERS*/
   const payHandler = async (e: any) => {
     try {
-      assert(verifiedMemberData?.mb_address, Definer.input_err4);
+      assert(verifiedMemberData?.mb_address, Definer.general_err1);
       const order_id = e.target.value;
       const data = { order_id: order_id, order_status: "PROCESS" };
       if (!verifiedMemberData) {
@@ -106,7 +106,6 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
       <Box className="table_head">
         <Box className="head_product">Product</Box>
         <Box className="head_item">Price</Box>
-        <Box className="head_item">Delivery Cost</Box>
         <Box className="head_item">Quantity</Box>
       </Box>
       <Box className="tbody_wrap">
@@ -132,9 +131,6 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
                   (product.product_price * (100 - product.product_discount)) /
                     1000
                 ) * 10}
-              </Box>
-              <Box className="product_delivery">
-                &#8361; {item.item_delivery_cost}
               </Box>
               <Box className="product_quantity">{item.item_quantity} item</Box>
             </Box>

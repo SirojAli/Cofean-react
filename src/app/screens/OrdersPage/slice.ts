@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { OrdersPageState } from "d:/Javascript Full Stack/puppy-home-react/puppy-home-react-develop/src/types/screen";
+import { OrdersPageState } from "../../../types/screen";
 const initialState: OrdersPageState = {
   pendingOrders: [],
   processOrders: [],
   finishedOrders: [],
   cancelledOrders: [],
   allOrders: [],
-  wishList: [],
+  wishlist: [],
 };
 
 const ordersPageSlice = createSlice({
@@ -29,7 +29,7 @@ const ordersPageSlice = createSlice({
       state.allOrders = action.payload;
     },
     setWishList: (state, action) => {
-      state.wishList = action.payload;
+      state.wishlist = action.payload;
     },
   },
 });

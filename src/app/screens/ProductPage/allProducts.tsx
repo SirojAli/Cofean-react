@@ -3,7 +3,6 @@ import { Box, Button, Checkbox, Container, Radio, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import "../../../scss/cafe.scss";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
@@ -41,34 +40,27 @@ import {
   sweetErrorHandling,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
+import Slider, { SliderThumb } from "@mui/material/Slider";
+import { styled } from "@mui/material/styles";
+import CoffeeIcon from "@mui/icons-material/Coffee";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Dispatch } from "@reduxjs/toolkit";
-import {
-  setAllProducts,
-  setRandomProducts,
-  setBestSellerProducts,
-} from "./slice";
-import {
-  retrieveAllProducts,
-  retrieveRandomProducts,
-  retrieveBestSellerProducts,
-} from "./selector";
+import { setAllProducts } from "./slice";
+import { retrieveAllProducts } from "./selector";
 import { ProductSearchObj } from "../../../types/others";
 import CafeApiService from "../../apiServices/cafeApiService";
 import ProductApiService from "../../apiServices/productApiService";
 import { Collections } from "@mui/icons-material";
 import { serverApi } from "../../../lib/config";
 import { Product } from "../../../types/product";
+import ProductCart from "../../components/productCart";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
   setAllProducts: (data: Product[]) => dispatch(setAllProducts(data)),
-  setRandomProducts: (data: Product[]) => dispatch(setRandomProducts(data)),
-  setBestSellerProducts: (data: Product[]) =>
-    dispatch(setBestSellerProducts(data)),
 });
 
 // REDUX SELECTOR
@@ -78,18 +70,67 @@ const allProductsRetriever = createSelector(
     allProducts,
   })
 );
-const randomProductsRetriever = createSelector(
-  retrieveRandomProducts,
-  (randomProducts) => ({
-    randomProducts,
-  })
-);
-const bestSellerProductsRetriever = createSelector(
-  retrieveBestSellerProducts,
-  (bestSellerProducts) => ({
-    bestSellerProducts,
-  })
-);
+
+const AirbnbSlider = styled(Slider)(({ theme }) => ({
+  color: "#fc9823",
+  height: 3,
+  padding: "13px 0",
+  "& .MuiSlider-thumb": {
+    height: 27,
+    width: 27,
+    backgroundColor: "#fff",
+    border: "1px solid currentColor",
+    "&:hover": {
+      boxShadow: "0 0 0 8px rgba(58, 133, 137, 0.16)",
+    },
+    "& .airbnb-bar": {
+      height: 9,
+      width: 1,
+      backgroundColor: "currentColor",
+      marginLeft: 1,
+      marginRight: 1,
+    },
+  },
+  "& .MuiSlider-track": {
+    height: 3,
+  },
+  "& .MuiSlider-rail": {
+    color: theme.palette.mode === "dark" ? "#bfbfbf" : "#d8d8d8",
+    opacity: theme.palette.mode === "dark" ? undefined : 1,
+    height: 3,
+  },
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: "#fc9823",
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&::before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+}));
+
+interface AirbnbThumbComponentProps extends React.HTMLAttributes<unknown> {}
+
+function AirbnbThumbComponent(props: AirbnbThumbComponentProps) {
+  const { children, ...other } = props;
+  return (
+    <SliderThumb {...other}>
+      {children}
+      <CoffeeIcon />
+    </SliderThumb>
+  );
+}
 
 export function AllProducts(props: any) {
   /** INITIALIZATIONS */
@@ -97,11 +138,10 @@ export function AllProducts(props: any) {
   const refs: any = useRef([]);
   // let { product_id } = useParams<{ cafe_id: string }>();
 
-  const { setAllProducts, setRandomProducts, setBestSellerProducts } =
-    actionDispatch(useDispatch());
+  const { setAllProducts } = actionDispatch(useDispatch());
   const { allProducts } = useSelector(allProductsRetriever);
-  const { randomProducts } = useSelector(randomProductsRetriever);
-  const { bestSellerProducts } = useSelector(bestSellerProductsRetriever);
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
+  const [price, setPrice] = useState<number[]>([0, 12000]);
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
@@ -109,55 +149,20 @@ export function AllProducts(props: any) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [selectPrice, setSelectPrice] = useState(null);
   const [sortedItem, setSortedItem] = useState(0);
   const [bestsellers, setBestSellers] = useState<Product[]>([]);
   const [chosenTag, setChosenTag] = useState("");
-  const [followSocial, setFollowSocial] = useState(null);
 
-  // For All & Random Products
-  useEffect(() => {
-    const productService = new ProductApiService();
-
-    productService
-      .getAllProducts({
-        page: 1,
-        limit: 12,
-        order: "product_likes",
-        product_collection: ["coffee", "smoothie", "tea", "food", "card"],
-      })
-      .then((data) => {
-        setAllProducts(data);
-      })
-      .catch((err) => console.log(err));
-
-    productService
-      .getAllProducts({
-        page: 1,
-        limit: 4,
-        order: "random",
-        product_collection: ["coffee", "smoothie", "tea"],
-      })
-      .then((data) => {
-        setRandomProducts(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const [allProductsObj, setAllProductsObj] = useState<ProductSearchObj>({
+  const [searchProductsObj, setSearchProductsObj] = useState<ProductSearchObj>({
     page: 1,
     limit: 12,
-    order: "mb_point",
-    product_collection: ["coffee", "smoothie", "tea", "food", "card"],
+    order: "product_views",
+    product_collection: ["all"],
+    search: "",
+    price: [0, 12000],
   });
 
-  // For best seller Products
-  useEffect(() => {
-    // Fetch top 3 best-selling products from the backend
-    fetchBestSellers();
-  }, []);
-
-  // Fetch initial like counts
+  // Product Likes
   useEffect(() => {
     allProducts.forEach((pro: Product) => {
       refs.current[pro._id] = pro.product_likes;
@@ -174,7 +179,6 @@ export function AllProducts(props: any) {
     });
   }, [allProducts]);
 
-  // Filter Products based on searchValue
   useEffect(() => {
     if (searchValue.trim() === "") {
       setFilteredProducts(allProducts);
@@ -186,105 +190,58 @@ export function AllProducts(props: any) {
     }
   }, [allProducts, searchValue]);
 
-  const fetchBestSellers = async () => {
-    try {
-      const productService = new ProductApiService();
-      const data = await productService.getAllProducts({
-        page: 1,
-        limit: 3,
-        order: "product_views",
-        product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
-      });
-      setBestSellers(data);
-    } catch (error) {
-      console.error("Error fetching best sellers:", error);
-    }
-  };
+  useEffect(() => {
+    const productService = new ProductApiService();
+    productService
+      .getAllProducts(searchProductsObj)
+      .then((data) => setAllProducts(data))
+      .catch((err) => console.log(err));
+  }, [searchProductsObj, price]);
 
   /** HANDLERS */
   const chosenProductHandler = (id: string) => {
     navigate(`/products/${id}`);
   };
 
-  const targetLikeHandler = async (id: string) => {
-    try {
-      const memberService = new MemberApiService();
-      const data = { like_ref_id: id, group_type: "product" };
-      const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, "An error occurred while processing the like.");
-
-      // Update like count
-      setLikeCounts((prevCounts) => ({
-        ...prevCounts,
-        [id]:
-          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
-      }));
-
-      // Update liked products
-      if (like_result.like_status > 0) {
-        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
-      } else {
-        setLikedProducts((prevLikedProducts) =>
-          prevLikedProducts.filter((productId) => productId !== id)
-        );
-      }
-
-      await sweetTopSmallSuccessAlert("success", 700, false);
-    } catch (err: any) {
-      console.log("targetLikeHandler, ERROR:::", err);
-      sweetErrorHandling(err).then();
-    }
-  };
-
   const productHandler = (category: string) => {
-    allProductsObj.page = 1;
+    searchProductsObj.page = 1;
     switch (category) {
       case "New":
-        allProductsObj.order = "createdAt";
+        searchProductsObj.order = "createdAt";
         break;
       case "Popular":
-        allProductsObj.order = "product_likes";
+        searchProductsObj.order = "product_likes";
         break;
       case "Best":
-        allProductsObj.order = "product_views";
+        searchProductsObj.order = "product_views";
         break;
       case "Sale":
-        allProductsObj.order = "product_discount";
+        searchProductsObj.order = "product_discount";
         break;
       case "Featured":
-        allProductsObj.order = "product_rating";
+        searchProductsObj.order = "product_rating";
         break;
       default:
-        allProductsObj.order = "product_likes"; // default to Popular
+        searchProductsObj.order = "product_likes";
     }
-    setAllProductsObj({ ...allProductsObj });
+    setSearchProductsObj({ ...searchProductsObj });
   };
 
-  const paginationHandler = async (_: any, value: any) => {
-    try {
-      setAllProductsObj((prev) => ({ ...prev, page: value }));
-
-      const productService = new ProductApiService();
-      const data = await productService.getAllProducts({
-        ...allProductsObj,
-        page: value,
-      });
-      setAllProducts(data);
-    } catch (error) {
-      console.error("Pagination Error>>>", error);
-    }
+  const paginationHandler = (event: any, value: number) => {
+    searchProductsObj.page = value;
+    setSearchProductsObj({ ...searchProductsObj });
   };
 
   const productCollectionHandler = (collection: string[]) => {
-    allProductsObj.page = 1;
-    allProductsObj.product_collection = collection;
-    setAllProductsObj({ ...allProductsObj });
+    searchProductsObj.page = 1;
+    searchProductsObj.product_collection = collection;
+    setSearchProductsObj({ ...searchProductsObj });
   };
 
   const filterProductHandler = (order: string) => {
-    allProductsObj.page = 1;
-    allProductsObj.order = order;
-    setAllProductsObj({ ...allProductsObj });
+    searchProductsObj.page = 1;
+    searchProductsObj.order = order;
+    setSearchProductsObj({ ...searchProductsObj });
   };
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -306,9 +263,12 @@ export function AllProducts(props: any) {
     setFilteredProducts(filteredProducts);
   };
 
-  // const priceHandler = (index: any) => {
-  //   setSelectPrice(index === sortedItem ? null : index);
-  // };
+  const priceHandler = (event: Event, value: number | number[]) => {
+    if (Array.isArray(value)) {
+      setSliderValue(value); //
+      setPrice(value.map((val) => Math.floor((val / 50) * 12000)));
+    }
+  };
 
   const sortItemHandler = (index: any) => {
     let sortedProducts: Product[] = [];
@@ -336,7 +296,7 @@ export function AllProducts(props: any) {
         break;
       case 4:
         sortedProducts = [...allProducts].sort(
-          (a, b) => b.product_review - a.product_review
+          (a, b) => b.product_reviews - a.product_reviews
         );
         break;
       default:
@@ -360,10 +320,7 @@ export function AllProducts(props: any) {
 
     setFilteredProducts(filteredProducts);
   };
-
-  // const followHandler = (index: any) => {
-  //   setFollowSocial (index === sortedItem ? null : index);
-  // };
+  const formatPrice = (price: number) => `₩ ${price.toLocaleString()}`;
 
   return (
     <div className="all_products">
@@ -463,18 +420,30 @@ export function AllProducts(props: any) {
               <Box className="price_title">
                 <div className="title">Price Filter</div>
               </Box>
-              <Box className="price_line">
-                <img src="/icons/point.svg" />
-                <div className="line1"></div>
-                <img src="/icons/point.svg" />
-                <div className="line2"></div>
+              <Box
+                className="price_line"
+                sx={{ display: "flex", flexDirection: "column" }}
+              >
+                <AirbnbSlider
+                  className="price_change"
+                  valueLabelDisplay="auto"
+                  value={sliderValue}
+                  onChange={priceHandler}
+                  max={50}
+                  min={0}
+                  step={1}
+                  valueLabelFormat={(value) => `${value}`}
+                  slots={{ thumb: AirbnbThumbComponent }}
+                  getAriaLabel={(index) =>
+                    index === 0 ? "Minimum price" : "Maximum price"
+                  }
+                />
               </Box>
               <Box className="price_sum_filter">
                 <Box className="price">
-                  <div>Price: $0 - $20</div>
-                </Box>
-                <Box className="filter">
-                  <div>Filter</div>
+                  <div>
+                    {formatPrice(price[0])} - {formatPrice(price[1])}
+                  </div>
                 </Box>
               </Box>
             </Box>
@@ -718,114 +687,23 @@ export function AllProducts(props: any) {
                   <img src="/images/products/a3.png" />
                 </div>
               </div>
-              <div className="product_boxes">
-                {filteredProducts.map((pro: Product) => {
-                  const image_path = `${serverApi}/${pro.product_images[0]}`;
+              <Box className="product_boxes">
+                {allProducts.map((ele) => {
                   return (
-                    <div
+                    <ProductCart
                       className="product_box"
-                      onClick={() => chosenProductHandler(pro._id)}
-                    >
-                      <Box className="sale_product">
-                        <div className="sale_badge">
-                          <p className="sale">-{pro.product_discount}%</p>
-                        </div>
-                        <img src={image_path} alt="coffee photo" />
-                        <Favorite
-                          className="like_btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            targetLikeHandler(pro._id);
-                          }} // Pass product id to targetLikeHandler
-                          style={{
-                            fill: likedProducts.includes(pro._id)
-                              ? "red"
-                              : "white",
-                            padding: "5px",
-                            cursor: "pointer",
-                          }}
-                        />
-                        <Box className="product_info">
-                          <Box className="pro_name">
-                            <span>{pro.product_name}</span>
-                            <div className="basket">
-                              <img src="icons/basket.svg" alt="" />
-                            </div>
-                          </Box>
-
-                          <Box className="pro_basket">
-                            <div className="price">
-                              <span className="discounted">
-                                ₩{" "}
-                                {pro.product_price -
-                                  pro.product_price *
-                                    (pro.product_discount / 100)}
-                              </span>
-                              <span className="original">
-                                ₩ {pro.product_price}
-                              </span>
-                            </div>
-                          </Box>
-
-                          <Box className="product_review">
-                            <Rating
-                              className="rating"
-                              name="rating"
-                              defaultValue={5}
-                              precision={0.5}
-                              readOnly
-                            />
-                            <p className="text">({pro.product_review})</p>
-                            <div className="rating_2">
-                              <Box className="rating_2">
-                                <Box className="like">
-                                  <div className="like_cnt">
-                                    {likeCounts[pro._id] !== undefined
-                                      ? likeCounts[pro._id]
-                                      : pro.product_likes}
-                                  </div>
-                                  <div className="like_img">
-                                    <FavoriteIcon
-                                      style={{
-                                        width: "15px",
-                                        height: "15px",
-                                        color: "#666666",
-                                        marginTop: "5px",
-                                      }}
-                                    />{" "}
-                                  </div>
-                                </Box>
-                                <div className="dvr"></div>
-                                <Box className="view">
-                                  <div className="view_cnt">
-                                    {pro.product_views}
-                                  </div>
-                                  <div className="view_img">
-                                    <VisibilityIcon
-                                      style={{
-                                        width: "15px",
-                                        height: "15px",
-                                        color: "#666666",
-                                        marginTop: "5px",
-                                      }}
-                                    />{" "}
-                                  </div>
-                                </Box>
-                              </Box>
-                            </div>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </div>
+                      key={ele._id}
+                      cartData={ele}
+                    />
                   );
                 })}
-              </div>
+              </Box>
             </Stack>
 
             <Stack className="pagination_box" spacing={2}>
               <Pagination
                 count={3}
-                page={allProductsObj.page}
+                page={searchProductsObj.page}
                 variant="outlined"
                 shape="rounded"
                 onChange={paginationHandler}
@@ -836,113 +714,6 @@ export function AllProducts(props: any) {
           </div>
         </Stack>
       </Container>
-
-      <div className="bottom_section">
-        <Stack className="container_box">
-          <div className="title_box">
-            <h2>You might also like</h2>
-          </div>
-          <div className="product_boxes">
-            {randomProducts.map((pro: Product) => {
-              const image_path = `${serverApi}/${pro.product_images[0]}`;
-              return (
-                <div
-                  className="product_box"
-                  onClick={() => chosenProductHandler(pro._id)}
-                >
-                  <Box className="sale_product">
-                    <div className="sale_badge">
-                      <p className="sale">-{pro.product_discount}%</p>
-                    </div>
-                    <img src={image_path} alt="coffee photo" />
-                    <Favorite
-                      className="like_btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        targetLikeHandler(pro._id);
-                      }} // Pass product id to targetLikeHandler
-                      style={{
-                        fill: likedProducts.includes(pro._id) ? "red" : "white",
-                        padding: "5px",
-                        cursor: "pointer",
-                      }}
-                    />
-                    <Box className="product_info">
-                      <Box className="pro_name">
-                        <span>{pro.product_name}</span>
-                        <div className="basket">
-                          <img src="icons/basket.svg" alt="" />
-                        </div>
-                      </Box>
-
-                      <Box className="pro_basket">
-                        <div className="price">
-                          <span className="discounted">
-                            ₩{" "}
-                            {pro.product_price -
-                              pro.product_price * (pro.product_discount / 100)}
-                          </span>
-                          <span className="original">
-                            ₩ {pro.product_price}
-                          </span>
-                        </div>
-                      </Box>
-
-                      <Box className="product_review">
-                        <Rating
-                          className="rating"
-                          name="rating"
-                          defaultValue={5}
-                          precision={0.5}
-                          readOnly
-                        />
-                        <p className="text">({pro.product_review})</p>
-                        <div className="rating_2">
-                          <Box className="rating_2">
-                            <Box className="like">
-                              <div className="like_cnt">
-                                {likeCounts[pro._id] !== undefined
-                                  ? likeCounts[pro._id]
-                                  : pro.product_likes}
-                              </div>
-                              <div className="like_img">
-                                <FavoriteIcon
-                                  style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    color: "#666666",
-                                    marginTop: "5px",
-                                  }}
-                                />{" "}
-                              </div>
-                            </Box>
-                            <div className="dvr"></div>
-                            <Box className="view">
-                              <div className="view_cnt">
-                                {pro.product_views}
-                              </div>
-                              <div className="view_img">
-                                <VisibilityIcon
-                                  style={{
-                                    width: "15px",
-                                    height: "15px",
-                                    color: "#666666",
-                                    marginTop: "5px",
-                                  }}
-                                />{" "}
-                              </div>
-                            </Box>
-                          </Box>
-                        </div>
-                      </Box>
-                    </Box>
-                  </Box>
-                </div>
-              );
-            })}
-          </div>
-        </Stack>
-      </div>
     </div>
   );
 }

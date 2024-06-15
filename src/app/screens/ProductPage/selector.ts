@@ -6,17 +6,9 @@ export const retrieveAllProducts = createSelector(
   selectProductPage,
   (ProductPage) => ProductPage.allProducts
 );
-export const retrieveRandomProducts = createSelector(
-  selectProductPage,
-  (ProductPage) => ProductPage.randomProducts
-);
 export const retrieveChosenProduct = createSelector(
   selectProductPage,
   (ProductPage) => ProductPage.chosenProduct
-);
-export const retrieveBestSellerProducts = createSelector(
-  selectProductPage,
-  (ProductPage) => ProductPage.bestSellerProducts
 );
 export const retrieveProductReviews = createSelector(
   selectProductPage,

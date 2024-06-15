@@ -67,22 +67,22 @@ class MemberApiService {
   }
 
   // LIKE PROCESS
-  public async memberLikeTarget(data: any) {
+  public async memberLikeTarget(data: any): Promise<any> {
     try {
-      const url = "/member-liken";
+      const url = "/member-liken"; // wishlist
       const result = await axios.post(this.path + url, data, {
         withCredentials: true,
       });
-      console.log("likeresult>>>", result);
+      console.log("like result >>>", result);
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
-      console.log("state>>>", result.data.data);
+      console.log("state >>>", result.data.data);
 
       const like_result: MemberLiken = result.data.data;
       return like_result;
     } catch (err: any) {
-      console.log(`ERROR memberLikeTarget>>> ${err.message}`);
+      console.log(`ERROR memberLikeTarget >>> ${err.message}`);
       throw err;
     }
   }

@@ -73,7 +73,9 @@ export function TrendProducts() {
         page: 1,
         limit: 4,
         order: "product_likes",
-        product_collection: ["coffee"],
+        product_collection: ["coffee", "smoothie", "tea"],
+        price: [0, 1000],
+        search: "",
       })
       .then((data) => {
         setTrendProducts(data);
@@ -91,7 +93,7 @@ export function TrendProducts() {
       const memberService = new MemberApiService();
       const data = { like_ref_id: id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, "An error occurred while processing the like.");
+      assert.ok(like_result, Definer.general_err1);
 
       // Update like count
       setLikeCounts((prevCounts) => ({
@@ -111,7 +113,7 @@ export function TrendProducts() {
 
       await sweetTopSmallSuccessAlert("success", 700, false);
     } catch (err: any) {
-      console.log("targetLikeHandler, ERROR:::", err);
+      console.log("targetLikeHandler, ERROR >>>", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -168,7 +170,7 @@ export function TrendProducts() {
                       </div>
                     </Box>
 
-                    <Box className="product_review">
+                    <Box className="product_reviews">
                       <Rating
                         className="rating"
                         name="rating"
@@ -176,7 +178,7 @@ export function TrendProducts() {
                         precision={0.5}
                         readOnly
                       />
-                      <p className="text">({pro.product_review})</p>
+                      <p className="text">({pro.product_reviews})</p>
                       <div className="rating_2">
                         <Box className="rating_2">
                           <Box className="like">

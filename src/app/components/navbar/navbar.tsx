@@ -26,7 +26,7 @@ import {
 } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-
+import { WishCont } from "../../context/Wishlist";
 import { verifiedMemberData } from "../../apiServices/verify";
 import MemberApiService from "../../apiServices/memberApiService";
 import {
@@ -38,56 +38,61 @@ import { serverApi } from "../../../lib/config";
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
   const navigate = useNavigate();
+  const setSide = WishCont();
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+
   useEffect(() => {
-    const handleScroll = () => {
+    const scrollHandler = () => {
       const position = window.pageYOffset;
       setScrollPosition(position);
     };
-
-    window.addEventListener("scroll", handleScroll);
-
-    // Clean up the event listener on component unmount
+    window.addEventListener("scroll", scrollHandler);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", scrollHandler);
     };
   }, []);
 
-  // Check if scrollPosition is greater than or equal to 100
   const isScrolled = scrollPosition >= 100;
   const isTopScroll = scrollPosition >= 300;
 
-  // for dropdown menu:
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event: any) => {
+  /*HANDLERS*/
+  const topHandler = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const clickHandler = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const closeHandler = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = async () => {
-    // Perform logout actions here, such as clearing authentication data
-    // For example, you can clear local storage or session storage
+  const logoutHandler = async () => {
     localStorage.removeItem("member_data");
 
     try {
-      // Make a logout request using MemberApiService
       const memberApiService = new MemberApiService();
       await memberApiService.logOutRequest();
-
-      // Display success alert
       await sweetTopSmallSuccessAlert("Logout successful", 700, true);
     } catch (err) {
-      // Log error and display failure alert
       console.log(err);
       await sweetFailureProvider("Logout failed");
     }
 
     // Navigate to the homepage ("/")
     navigate("/");
+  };
+
+  const wishlistHandler = () => {
+    setSide[1](3);
+    navigate("/orders");
   };
 
   return (
@@ -140,7 +145,7 @@ export function Navbar(props: any) {
               <Box
                 className="icon_search"
                 onClick={() => {
-                  handleClose();
+                  closeHandler();
                   navigate("/products");
                 }}
               >
@@ -166,7 +171,7 @@ export function Navbar(props: any) {
                   <Button
                     aria-controls="dropdown-menu"
                     aria-haspopup="true"
-                    onClick={handleClick}
+                    onClick={clickHandler}
                   >
                     {verifiedMemberData.mb_image ? (
                       <img
@@ -196,7 +201,7 @@ export function Navbar(props: any) {
                     className="dropdown-menu"
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
-                    onClose={handleClose}
+                    onClose={closeHandler}
                     anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                     transformOrigin={{ vertical: "top", horizontal: "right" }}
                     style={{
@@ -206,7 +211,7 @@ export function Navbar(props: any) {
                   >
                     <MenuItem
                       onClick={() => {
-                        handleClose();
+                        closeHandler();
                         navigate("/my-account");
                       }}
                       className="drop_menu"
@@ -229,7 +234,7 @@ export function Navbar(props: any) {
 
                     <MenuItem
                       onClick={() => {
-                        handleClose();
+                        closeHandler();
                         navigate("/my-account");
                       }}
                       className="drop_menu"
@@ -252,8 +257,30 @@ export function Navbar(props: any) {
 
                     <MenuItem
                       onClick={() => {
-                        handleClose();
-                        handleLogout();
+                        wishlistHandler();
+                      }}
+                      className="drop_menu"
+                      sx={{
+                        width: "150px",
+                        height: "40px",
+                      }}
+                    >
+                      <FavoriteBorder sx={{ fill: "#444444" }} />
+                      <p
+                        style={{
+                          marginLeft: "8px",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        Wishlist
+                      </p>
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        closeHandler();
+                        logoutHandler();
                         // navigate("/login");
                       }}
                       className="drop_menu"
@@ -277,7 +304,6 @@ export function Navbar(props: any) {
                 </Box>
               )}
 
-              {/* Signup and Login buttons for non-members */}
               {!verifiedMemberData && (
                 <Box className="auth_mb">
                   <Box className="navbar_signup" onClick={props.setPath}>
@@ -295,6 +321,13 @@ export function Navbar(props: any) {
             </div>
           </div>
         </div>
+        {isTopScroll && (
+          <ArrowUpward
+            sx={{ fill: "#ffffff ", width: "40px", height: "40px" }}
+            className="up_icon"
+            onClick={topHandler}
+          />
+        )}
       </div>
       <Outlet />
       <Footer />

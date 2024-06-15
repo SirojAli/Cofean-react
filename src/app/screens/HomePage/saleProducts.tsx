@@ -75,6 +75,8 @@ export function SaleProducts() {
         limit: 4,
         order: "product_discount",
         product_collection: ["coffee"],
+        search: "",
+        price: [0, 1000],
       })
       .then((data) => {
         setSaleProducts(data);
@@ -172,7 +174,7 @@ export function SaleProducts() {
                         </div>
                       </Box>
 
-                      <Box className="product_review">
+                      <Box className="product_reviews">
                         <Rating
                           className="rating"
                           name="rating"
@@ -180,7 +182,7 @@ export function SaleProducts() {
                           precision={0.5}
                           readOnly
                         />
-                        <p className="text">({pro.product_review})</p>
+                        <p className="text">({pro.product_reviews})</p>
                         <div className="rating_2">
                           <Box className="rating_2">
                             <Box className="like">

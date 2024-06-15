@@ -96,6 +96,8 @@ export function ChosenCafe(props: any) {
     order: "product_likes",
     cafe_mb_id: cafe_id,
     product_collection: ["coffee", "smoothie", "tea", "food", "card"],
+    search: "",
+    price: [0, 1000],
   });
 
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
@@ -391,7 +393,7 @@ export function ChosenCafe(props: any) {
                           </div>
                         </Box>
 
-                        <Box className="product_review">
+                        <Box className="product_reviews">
                           <Rating
                             className="rating"
                             name="rating"
@@ -399,7 +401,7 @@ export function ChosenCafe(props: any) {
                             precision={0.5}
                             readOnly
                           />
-                          <p className="text">({pro.product_review})</p>
+                          <p className="text">({pro.product_reviews})</p>
                           <div className="rating_2">
                             <Box className="rating_2">
                               <Box className="like">

@@ -1,6 +1,6 @@
 import React from "react";
 import CategoryContext from "./Category";
-import ShoppingCartContext from "./ShoppingCart";
+import ProductCartContext from "./ProductCart";
 import WishlistContext from "./Wishlist";
 import MakeOrderContext from "./MakeOrder";
 import SearchContext from "./Search";
@@ -9,11 +9,11 @@ export const Context = ({ children }) => {
   return (
     <SearchContext>
       <CategoryContext>
-        <ShoppingCartContext>
+        <ProductCartContext>
           <MakeOrderContext>
             <WishlistContext>{children}</WishlistContext>
           </MakeOrderContext>
-        </ShoppingCartContext>
+        </ProductCartContext>
       </CategoryContext>
     </SearchContext>
   );

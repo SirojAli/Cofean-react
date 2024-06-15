@@ -1,6 +1,6 @@
 import { Box, Pagination, PaginationItem, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ShoppingCart from "d:/Javascript Full Stack/puppy-home-react/puppy-home-react-develop/src/app/components/shoppingCart";
+import ProductCart from "../../components/productCart";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 // REDUX
 import { useDispatch } from "react-redux";
@@ -9,7 +9,7 @@ import { setWishList } from "./slice";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { retrieveWishlist } from "./selector";
-import ProductApiService from "d:/Javascript Full Stack/puppy-home-react/puppy-home-react-develop/src/app/apiServices/productApiService";
+import ProductApiService from "../../apiServices/productApiService";
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
   setWishList: (data: any) => dispatch(setWishList(data)),
@@ -18,7 +18,7 @@ const actionDispatch = (dispatch: Dispatch) => ({
 const wishListRetriever = createSelector(retrieveWishlist, (wishList) => ({
   wishList,
 }));
-const WishList = () => {
+const Wishlist = () => {
   /*INITIALIZATIONS*/
   const { wishList } = useSelector(wishListRetriever);
   const { setWishList } = actionDispatch(useDispatch());
@@ -50,7 +50,7 @@ const WishList = () => {
           ?.filter((item) => item.product_data.product_collection !== "service")
           .map((ele) => {
             return (
-              <ShoppingCart
+              <ProductCart
                 className="shopping_cart"
                 key={ele._id}
                 cartData={ele.product_data}
@@ -78,4 +78,4 @@ const WishList = () => {
   );
 };
 
-export default WishList;
+export default Wishlist;

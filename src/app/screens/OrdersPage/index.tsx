@@ -7,9 +7,8 @@ import {
   Stack,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import "../../scss/orders.scss";
+import "../../../scss/orders.scss";
 import {
-  CreditCard,
   FavoriteBorder,
   ListAltOutlined,
   PinDropOutlined,
@@ -17,7 +16,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { WishCont } from "../../context/Wishlist";
 import { MakeOrderCont } from "../../context/MakeOrder";
-import WishList from "./wishList";
+import Wishlist from "./wishlist";
 
 // REDUX
 import { useDispatch } from "react-redux";
@@ -92,7 +91,6 @@ const OrderPage = () => {
   const sideList = [
     { id: 0, icon: <ListAltOutlined />, title: "My Orders" },
     { id: 1, icon: <PinDropOutlined />, title: "My Address" },
-    { id: 2, icon: <CreditCard />, title: "My Account" },
     { id: 3, icon: <FavoriteBorder />, title: "Wishlist" },
   ];
   const topBtn = [
@@ -188,7 +186,7 @@ const OrderPage = () => {
               </Box>
             </Stack>
           )}
-          {side === 3 && <WishList />}
+          {side === 3 && <Wishlist />}
         </Box>
       </Stack>
     </Container>

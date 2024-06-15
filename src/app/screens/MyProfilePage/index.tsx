@@ -116,7 +116,7 @@ export function MyProfile() {
             <Box className="menu" onClick={() => navigate("/orders")}>
               <span>Orders</span>
             </Box>
-            <Box className="menu" onClick={() => navigate("/wishlist")}>
+            <Box className="menu" onClick={() => navigate("/orders")}>
               <span>Wishlist</span>
             </Box>
           </div>

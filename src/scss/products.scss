@@ -170,35 +170,12 @@
 
           .price_line {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             margin-bottom: 20px;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-
-            img {
-              width: 12px;
-              height: 12px;
-              flex-shrink: 0;
-              fill: #2e524a;
-              align-items: center;
-            }
-
-            .line1 {
-              width: 150px;
-              height: 3px;
-              flex-shrink: 0;
-              background: #2e524a;
-              align-items: center;
-            }
-
-            .line2 {
-              width: 80px;
-              height: 1px;
-              flex-shrink: 0;
-              background: #2e524a;
-              align-items: center;
-            }
+            margin-top: 20px;
           }
 
           .price_sum_filter {
@@ -209,7 +186,7 @@
             justify-content: center;
 
             .price {
-              width: 165px;
+              width: 100%;
               height: 100%;
               display: flex;
               margin-right: 20px;
@@ -218,33 +195,8 @@
                 color: #000;
                 font-family: "Open Sans", sans-serif;
                 font-size: 16px;
-                font-style: bold;
-                font-weight: 700;
-                line-height: 22.4px;
-              }
-            }
-
-            .filter {
-              width: 65px;
-              height: 100%;
-              display: flex;
-              margin-left: 20px;
-              border: 1px solid grey;
-              justify-content: center;
-              align-items: center;
-              border-radius: 10px;
-              cursor: pointer;
-
-              &:hover {
-                background-color: #fdd22b;
-              }
-
-              div {
-                color: #000;
-                font-family: "Open Sans", sans-serif;
-                font-size: 16px;
-                font-style: bold;
-                font-weight: 700;
+                font-style: normal;
+                font-weight: 600;
                 line-height: 22.4px;
               }
             }
@@ -792,7 +744,7 @@
                     }
                   }
 
-                  .product_review {
+                  .product_reviews {
                     width: 100%;
                     height: 20px;
                     display: flex;
@@ -1105,7 +1057,7 @@
                 }
               }
 
-              .product_review {
+              .product_reviews {
                 width: 100%;
                 height: 20px;
                 display: flex;
