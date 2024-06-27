@@ -61,12 +61,10 @@ const ProductCart = ({ cartData }: any) => {
   const { trendProducts } = useSelector(trendProductsRetriever);
   console.log("trendProducts>>>", trendProducts);
 
-  const ratingValue =
-    (product_rating ? product_rating : 0) /
-    (product_reviews > 0 ? product_reviews : 1);
+  const ratingValue = 4;
 
   // const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
-  // const [price, setPrice] = useState<number[]>([0, 12000]);
+  // const [price, setPrice] = useState<number[]>([0, 9900]);
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
@@ -127,9 +125,11 @@ const ProductCart = ({ cartData }: any) => {
   return (
     <div className="product_box" onClick={() => navigate(`/products/${_id}`)}>
       <Box className="sale_product">
-        <div className="sale_badge">
-          <p className="sale">-{product_discount}%</p>
-        </div>
+        {product_discount > 0 && (
+          <div className="sale_badge">
+            <p className="sale">-{product_discount}%</p>
+          </div>
+        )}
         <img src={`${serverApi}/${product_images[0]}`} alt="coffee photo" />
         <Favorite
           className="like_btn"
@@ -153,10 +153,16 @@ const ProductCart = ({ cartData }: any) => {
 
           <Box className="pro_basket">
             <div className="price">
-              <span className="discounted">
-                ₩ {product_price - product_price * (product_discount / 100)}
-              </span>
-              <span className="original">₩ {product_price}</span>
+              {product_discount > 0 ? (
+                <>
+                  <span className="discounted">
+                    ₩ {product_price - product_price * (product_discount / 100)}
+                  </span>
+                  <span className="original">₩ {product_price}</span>
+                </>
+              ) : (
+                <span className="discounted">₩ {product_price}</span>
+              )}
             </div>
           </Box>
 
@@ -168,7 +174,8 @@ const ProductCart = ({ cartData }: any) => {
               precision={0.5}
               readOnly
             />
-            <p className="text">({product_reviews})</p>
+            <p className="text">(4)</p>
+            {/* <p className="text">({product_reviews})</p> */}
             <div className="rating_2">
               <Box className="rating_2">
                 <Box className="like">

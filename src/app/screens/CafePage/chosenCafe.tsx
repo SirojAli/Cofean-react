@@ -95,7 +95,7 @@ export function ChosenCafe(props: any) {
       limit: 20,
       search: "",
       product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
-      price: [0, 12000],
+      price: [0, 9900],
       cafe_mb_id: cafe_id || "",
     });
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
@@ -135,12 +135,6 @@ export function ChosenCafe(props: any) {
   }, [targetProducts]);
 
   /** HANDLERS */
-  // const chosenCafeHandler = (id: string) => {
-  //   setChosenCafeId(id);
-  //   targetProductSearchObj.cafe_mb_id = id;
-  //   setTargetProductSearchObj({ ...targetProductSearchObj });
-  //   navigate(`/cafes/${id}`);
-  // };
   const chosenCafeHandler = (id: string) => {
     setChosenCafeId(id);
     setTargetProductSearchObj((prevState) => ({

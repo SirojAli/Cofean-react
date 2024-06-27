@@ -2,44 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Checkbox, Container, Radio, Stack } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import "../../../scss/cafe.scss";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { CssVarsProvider } from "@mui/joy/styles";
-import Card from "@mui/joy/Card";
-import CardOverflow from "@mui/joy/CardOverflow";
-import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
-import Favorite from "@mui/icons-material/Favorite";
-import Typography from "@mui/joy/Typography";
-import Link from "@mui/joy/Link";
-import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
-import CallIcon from "@mui/icons-material/Call";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import Rating from "@mui/material/Rating";
-import Phone from "@mui/icons-material/Phone";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-
 import "../../../scss/products.scss";
 import Facebook from "@mui/icons-material/Facebook";
 import Instagram from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import assert from "assert";
-import { verifiedMemberData } from "../../apiServices/verify";
-import { Definer } from "../../../lib/definer";
-import MemberApiService from "../../apiServices/memberApiService";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  sweetErrorHandling,
-  sweetTopSmallSuccessAlert,
-} from "../../../lib/sweetAlert";
 import Slider, { SliderThumb } from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import CoffeeIcon from "@mui/icons-material/Coffee";
@@ -137,29 +111,26 @@ export function AllProducts(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
-
   const { setAllProducts } = actionDispatch(useDispatch());
   const { allProducts } = useSelector(allProductsRetriever);
-  const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
-  const [price, setPrice] = useState<number[]>([0, 12000]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [category, setCategory] = useState<string>("all");
+  const [sortedItem, setSortedItem] = useState<number>(0);
+  const [chosenTag, setChosenTag] = useState<string>("");
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 9900]);
+  const [price, setPrice] = useState<number[]>([0, 9900]);
+  const [filterProducts, setFilterProducts] = useState<Product[]>([]);
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
-  const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [sortedItem, setSortedItem] = useState(0);
   const [bestsellers, setBestSellers] = useState<Product[]>([]);
-  const [chosenTag, setChosenTag] = useState("");
-
   const [searchProductsObj, setSearchProductsObj] = useState<ProductSearchObj>({
     order: "product_views",
     page: 1,
     limit: 20,
     search: "",
     product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
-    price: [0, 12000],
+    price: [0, 9900],
   });
 
   // Product Likes
@@ -179,99 +150,43 @@ export function AllProducts(props: any) {
     });
   }, [allProducts]);
 
-  useEffect(() => {
-    if (searchValue.trim() === "") {
-      setFilteredProducts(allProducts);
-    } else {
-      const filtered = allProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [allProducts, searchValue]);
-
+  // Fetch products when searchProductsObj changes
   useEffect(() => {
     const productService = new ProductApiService();
     productService
       .getTargetProducts(searchProductsObj)
       .then((data) => setAllProducts(data))
       .catch((err) => console.log(err));
-  }, [searchProductsObj, price]);
+  }, [searchProductsObj]);
+
+  // Filter products based on price when price state changes
+  useEffect(() => {
+    const filteredProducts = allProducts.filter((product) => {
+      const productPrice = product.product_price;
+      return productPrice >= price[0] && productPrice <= price[1];
+    });
+    setFilterProducts(filteredProducts);
+  }, [allProducts, price]);
 
   /** HANDLERS */
-  const chosenProductHandler = (id: string) => {
-    navigate(`/products/${id}`);
-  };
-
-  const productHandler = (category: string) => {
-    searchProductsObj.page = 1;
-    switch (category) {
-      case "New":
-        searchProductsObj.order = "createdAt";
-        break;
-      case "Popular":
-        searchProductsObj.order = "product_likes";
-        break;
-      case "Best":
-        searchProductsObj.order = "product_views";
-        break;
-      case "Sale":
-        searchProductsObj.order = "product_discount";
-        break;
-      case "Featured":
-        searchProductsObj.order = "product_rating";
-        break;
-      default:
-        searchProductsObj.order = "product_likes";
-    }
-    setSearchProductsObj({ ...searchProductsObj });
-  };
-
-  const paginationHandler = (event: any, value: number) => {
-    searchProductsObj.page = value;
-    setSearchProductsObj({ ...searchProductsObj });
-  };
-
-  const productCollectionHandler = (collection: string[]) => {
-    searchProductsObj.page = 1;
-    searchProductsObj.product_collection = collection;
-    setSearchProductsObj({ ...searchProductsObj });
-  };
-
-  const filterProductHandler = (order: string) => {
-    searchProductsObj.page = 1;
-    searchProductsObj.order = order;
-    setSearchProductsObj({ ...searchProductsObj });
-  };
-
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
-
-  const categoryHandler = (category: string) => {
-    setSelectedCategory(category);
-    let filteredProducts: Product[] = [];
-
-    if (category === "All Products") {
-      filteredProducts = allProducts;
-    } else {
-      filteredProducts = allProducts.filter((product) =>
-        product.product_collection.includes(category.toLowerCase())
-      );
-    }
-
-    setFilteredProducts(filteredProducts);
+  const categoryHandler = (selectedCategory: string) => {
+    const productCollection =
+      selectedCategory === "all"
+        ? ["coffee", "smoothie", "tea", "food", "goods"]
+        : [selectedCategory.toLowerCase()];
+    setSearchProductsObj({
+      ...searchProductsObj,
+      product_collection: productCollection,
+      page: 1,
+    });
+    setCategory(selectedCategory);
   };
-
-  const priceHandler = (event: Event, value: number | number[]) => {
-    if (Array.isArray(value)) {
-      setSliderValue(value); //
-      setPrice(value.map((val) => Math.floor((val / 50) * 12000)));
-    }
-  };
-
-  const sortItemHandler = (index: any) => {
+  const sortItemHandler = (index: number) => {
     let sortedProducts: Product[] = [];
+
     switch (index) {
       case 0:
         sortedProducts = [...allProducts].sort(
@@ -302,14 +217,16 @@ export function AllProducts(props: any) {
       default:
         break;
     }
-    setAllProducts(sortedProducts);
-    setSortedItem(index === sortedItem ? null : index);
-  };
 
+    setAllProducts(sortedProducts);
+    setSortedItem(index === sortedItem ? -1 : index);
+  };
+  const chosenProductHandler = (id: string) => {
+    navigate(`/products/${id}`);
+  };
   const chosenTagHandler = (tag: string) => {
     setChosenTag(tag);
     let filteredProducts: Product[] = [];
-
     if (tag === "") {
       filteredProducts = allProducts;
     } else {
@@ -317,10 +234,33 @@ export function AllProducts(props: any) {
         product.product_name.toLowerCase().includes(tag.toLowerCase())
       );
     }
-
-    setFilteredProducts(filteredProducts);
+    setFilterProducts(filteredProducts);
   };
-  const formatPrice = (price: number) => `₩ ${price.toLocaleString()}`;
+  const priceHandler = (event: Event, newValue: number | number[]) => {
+    const newPrices = Array.isArray(newValue) ? newValue : [0, newValue];
+    setSliderValue(newPrices); // Ensure sliderValue is updated
+    setPrice(newPrices); // Update the price state as well
+  };
+  const paginationHandler = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setSearchProductsObj({
+      ...searchProductsObj,
+      page: value,
+    });
+  };
+
+  useEffect(() => {
+    if (searchValue.trim() === "") {
+      setFilterProducts(allProducts);
+    } else {
+      const filtered = allProducts.filter((product) =>
+        product.product_name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilterProducts(filtered);
+    }
+  }, [allProducts, searchValue]);
 
   return (
     <div className="all_products">
@@ -356,18 +296,16 @@ export function AllProducts(props: any) {
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "All Products" ? "#ffa500" : "",
+                    backgroundColor: category === "all" ? "#ffa500" : "",
                   }}
-                  onClick={() => categoryHandler("All Products")}
+                  onClick={() => categoryHandler("all")}
                 >
                   All Products
                 </div>
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "Coffee" ? "#ffa500" : "",
+                    backgroundColor: category === "Coffee" ? "#ffa500" : "",
                   }}
                   onClick={() => categoryHandler("Coffee")}
                 >
@@ -376,8 +314,7 @@ export function AllProducts(props: any) {
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "Smoothie" ? "#ffa500" : "",
+                    backgroundColor: category === "Smoothie" ? "#ffa500" : "",
                   }}
                   onClick={() => categoryHandler("Smoothie")}
                 >
@@ -386,8 +323,7 @@ export function AllProducts(props: any) {
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "Tea" ? "#ffa500" : "",
+                    backgroundColor: category === "Tea" ? "#ffa500" : "",
                   }}
                   onClick={() => categoryHandler("Tea")}
                 >
@@ -396,8 +332,7 @@ export function AllProducts(props: any) {
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "Food" ? "#ffa500" : "",
+                    backgroundColor: category === "Food" ? "#ffa500" : "",
                   }}
                   onClick={() => categoryHandler("Food")}
                 >
@@ -406,8 +341,7 @@ export function AllProducts(props: any) {
                 <div
                   className="category_item"
                   style={{
-                    backgroundColor:
-                      selectedCategory === "Goods" ? "#ffa500" : "",
+                    backgroundColor: category === "Goods" ? "#ffa500" : "",
                   }}
                   onClick={() => categoryHandler("Goods")}
                 >
@@ -429,22 +363,15 @@ export function AllProducts(props: any) {
                   valueLabelDisplay="auto"
                   value={sliderValue}
                   onChange={priceHandler}
-                  max={50}
                   min={0}
-                  step={1}
-                  valueLabelFormat={(value) => `${value}`}
+                  max={9900}
+                  step={100}
+                  valueLabelFormat={(value) => `${value.toLocaleString()}`}
                   slots={{ thumb: AirbnbThumbComponent }}
                   getAriaLabel={(index) =>
                     index === 0 ? "Minimum price" : "Maximum price"
                   }
                 />
-              </Box>
-              <Box className="price_sum_filter">
-                <Box className="price">
-                  <div>
-                    {formatPrice(price[0])} - {formatPrice(price[1])}
-                  </div>
-                </Box>
               </Box>
             </Box>
 
@@ -688,7 +615,7 @@ export function AllProducts(props: any) {
                 </div>
               </div>
               <Box className="product_boxes">
-                {allProducts.map((ele) => {
+                {filterProducts.map((ele) => {
                   return (
                     <ProductCart
                       className="product_box"
