@@ -26,7 +26,7 @@ export interface CafePageState {
   allCafes: Cafe[];
   chosenCafe: Cafe | null;
   randomCafes: Cafe[];
-  cafeProducts: Product[];
+  targetProducts: Product[];
 }
 
 /** PRODUCT PAGE */

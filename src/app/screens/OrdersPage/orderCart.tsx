@@ -13,6 +13,7 @@ import OrderApiService from "../../apiServices/orderApiService";
 import { MakeOrderCont } from "../../context/MakeOrder";
 import assert from "assert";
 import { Definer } from "../../../lib/definer";
+import "../../../scss/account.scss";
 
 const OrderCart = ({ order, setOrderRebuild }: any) => {
   /*INITIALIZATIONS*/

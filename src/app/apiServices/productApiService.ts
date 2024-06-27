@@ -10,66 +10,23 @@ class ProductApiService {
   constructor() {
     this.path = serverApi;
   }
-
-  async getCafeProducts(data: ProductSearchObj): Promise<Product[]> {
-    try {
-      const url = `/products`;
-      // const url = `/cafes/${data.cafe_mb_id}/products`;
-      console.log("Request URL>>> ", url);
-      console.log("Request Data>>> ", data);
-
-      const result = await axios.post(this.path + url, data, {
-        withCredentials: true,
-      });
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data.state != "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const cafe_products: Product[] = result.data.data;
-      return cafe_products;
-    } catch (err: any) {
-      console.log(`ERROR getCafeProducts>>> ${err.message}`);
-      throw err;
-    }
-  }
-
-  async getSaleProducts(data: ProductSearchObj): Promise<Product[]> {
+  async getTargetProducts(data: ProductSearchObj): Promise<Product[]> {
     try {
       const url = `/products`,
         result = await axios.post(this.path + url, data, {
           withCredentials: true,
         });
+      console.log("API Response Raw:", result); // Log raw API response
       assert.ok(result, Definer.general_err1);
 
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
+      console.log("API Response Processed >>>", result.data.state);
 
-      const sale_products: Product[] = result.data.data;
-      return sale_products;
+      const products: Product[] = result.data.data;
+      return products;
     } catch (err: any) {
-      console.log(`ERROR >>> getSaleProducts ${err.message}`);
-      throw err;
-    }
-  }
-
-  async getAllProducts(data: ProductSearchObj): Promise<Product[]> {
-    try {
-      const url = `/products`,
-        result = await axios.post(this.path + url, data, {
-          withCredentials: true,
-        });
-      assert.ok(result, Definer.general_err1);
-
-      assert.ok(result?.data, Definer.general_err1);
-      assert.ok(result?.data?.state !== "fail", result?.data?.message);
-      console.log("state>>>", result.data.state);
-
-      const all_products: Product[] = result.data.data;
-      return all_products;
-    } catch (err: any) {
-      console.log(`ERROR >>> getAllProducts ${err.message}`);
+      console.log(`ERROR >>> getTargetProducts ${err.message}`);
       throw err;
     }
   }

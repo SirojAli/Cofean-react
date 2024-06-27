@@ -9,7 +9,6 @@ export interface Product {
   product_status: string;
   product_price: number;
   product_discount: number;
-  product_left_count: number;
   product_size: number;
   product_volume: number;
   product_description: string;

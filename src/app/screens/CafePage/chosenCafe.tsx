@@ -25,11 +25,11 @@ import { Cafe } from "../../../types/user";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setChosenCafe, setRandomCafes, setCafeProducts } from "./slice";
+import { setChosenCafe, setRandomCafes, setTargetProducts } from "./slice";
 import {
   retrieveChosenCafe,
   retrieveRandomCafes,
-  retrieveCafeProducts,
+  retrieveTargetProducts,
 } from "./selector";
 import { ProductSearchObj } from "../../../types/others";
 import CafeApiService from "../../apiServices/cafeApiService";
@@ -43,12 +43,14 @@ import {
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
 import { serverApi } from "../../../lib/config";
+import ProductCart from "../../components/productCart";
+import { CategoryCont } from "../../context/Category";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
   setChosenCafe: (data: Cafe) => dispatch(setChosenCafe(data)),
   setRandomCafes: (data: Cafe[]) => dispatch(setRandomCafes(data)),
-  setCafeProducts: (data: Product[]) => dispatch(setCafeProducts(data)),
+  setTargetProducts: (data: Product[]) => dispatch(setTargetProducts(data)),
 });
 
 // REDUX SELECTOR
@@ -64,10 +66,10 @@ const randomCafesRetriever = createSelector(
     randomCafes,
   })
 );
-const cafeProductsRetriever = createSelector(
-  retrieveCafeProducts,
-  (cafeProducts) => ({
-    cafeProducts,
+const targetProductsRetriever = createSelector(
+  retrieveTargetProducts,
+  (targetProducts) => ({
+    targetProducts,
   })
 );
 
@@ -75,31 +77,27 @@ export function ChosenCafe(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
+  const dispatch = useDispatch();
   let { cafe_id } = useParams<{ cafe_id: string }>();
 
-  const { setChosenCafe, setRandomCafes, setCafeProducts } = actionDispatch(
+  const { setChosenCafe, setRandomCafes, setTargetProducts } = actionDispatch(
     useDispatch()
   );
   const { chosenCafe } = useSelector(chosenCafeRetriever);
   const { randomCafes } = useSelector(randomCafesRetriever);
-  const { cafeProducts } = useSelector(cafeProductsRetriever);
-
-  const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
-  const [likedProducts, setLikedProducts] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const { targetProducts } = useSelector(targetProductsRetriever);
 
   const [chosenCafeId, setChosenCafeId] = useState<string>(cafe_id || "");
-  const [cafeProductsObj, setCafeProductsObj] = useState<ProductSearchObj>({
-    page: 1,
-    limit: 20,
-    order: "product_likes",
-    cafe_mb_id: cafe_id,
-    product_collection: ["coffee", "smoothie", "tea", "food", "card"],
-    search: "",
-    price: [0, 1000],
-  });
-
+  const [targetProductSearchObj, setTargetProductSearchObj] =
+    useState<ProductSearchObj>({
+      order: "product_views",
+      page: 1,
+      limit: 20,
+      search: "",
+      product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
+      price: [0, 12000],
+      cafe_mb_id: cafe_id || "",
+    });
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
 
   useEffect(() => {
@@ -118,99 +116,65 @@ export function ChosenCafe(props: any) {
 
     // from products
     const productService = new ProductApiService();
-    console.log("Requesting cafe products with>>> ", cafeProductsObj);
+    console.log("Requesting cafe products with>>> ", targetProductSearchObj);
     productService
-      .getCafeProducts(cafeProductsObj)
+      .getTargetProducts(targetProductSearchObj)
       .then((data) => {
-        console.log("Received products data>>> ", data);
-        setCafeProducts(data);
+        console.log("API Response:", data);
+        if (Array.isArray(data)) {
+          dispatch(setTargetProducts(data));
+        } else {
+          console.error("API response is not an array:", data);
+        }
       })
-      .catch((err) => console.log(err));
-  }, [setChosenCafeId, productRebuild, cafeProductsObj]);
+      .catch((err) => console.error("API Error:", err));
+  }, [chosenCafeId, productRebuild, targetProductSearchObj]);
 
-  // For Like Logic
   useEffect(() => {
-    cafeProducts.forEach((pro: Product) => {
-      refs.current[pro._id] = pro.product_likes;
-      setLikeCounts((prevCounts) => ({
-        ...prevCounts,
-        [pro._id]: pro.product_likes,
-      }));
-      if (pro.me_liked && pro.me_liked[0]?.my_favorite) {
-        setLikedProducts((prevLikedProducts) => [
-          ...prevLikedProducts,
-          pro._id,
-        ]);
-      }
-    });
-  }, [cafeProducts]);
-
-  // Filter products based on searchValue
-  useEffect(() => {
-    if (searchValue.trim() === "") {
-      setFilteredProducts(cafeProducts);
-    } else {
-      const filtered = cafeProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [cafeProducts, searchValue]);
+    console.log("Redux state targetProducts:", targetProducts);
+  }, [targetProducts]);
 
   /** HANDLERS */
+  // const chosenCafeHandler = (id: string) => {
+  //   setChosenCafeId(id);
+  //   targetProductSearchObj.cafe_mb_id = id;
+  //   setTargetProductSearchObj({ ...targetProductSearchObj });
+  //   navigate(`/cafes/${id}`);
+  // };
   const chosenCafeHandler = (id: string) => {
     setChosenCafeId(id);
-    cafeProductsObj.cafe_mb_id = id;
-    setCafeProductsObj({ ...cafeProductsObj });
+    setTargetProductSearchObj((prevState) => ({
+      ...prevState,
+      cafe_mb_id: id,
+    }));
     navigate(`/cafes/${id}`);
   };
 
+  // searchCollectionHandler
   const productCollectionHandler = (collection: string[]) => {
-    cafeProductsObj.page = 1;
-    cafeProductsObj.product_collection = collection;
-    setCafeProductsObj({ ...cafeProductsObj });
+    targetProductSearchObj.page = 1;
+    targetProductSearchObj.product_collection = collection;
+    setTargetProductSearchObj({ ...targetProductSearchObj });
   };
 
+  // searchOrderHandler
   const filterProductHandler = (order: string) => {
-    cafeProductsObj.page = 1;
-    cafeProductsObj.order = order;
-    setCafeProductsObj({ ...cafeProductsObj });
+    targetProductSearchObj.page = 1;
+    targetProductSearchObj.order = order;
+    setTargetProductSearchObj({ ...targetProductSearchObj });
   };
 
-  const chosenProductHandler = (id: string) => {
-    navigate(`/products/${id}`);
-  };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
-
-  const targetLikeHandler = async (id: string) => {
+  const targetLikeHandler = async (e: any) => {
     try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
       const memberService = new MemberApiService();
-      const data = { like_ref_id: id, group_type: "product" };
+      const data = { like_ref_id: e.target.id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, "An error occurred while processing the like.");
-
-      // Update like count
-      setLikeCounts((prevCounts) => ({
-        ...prevCounts,
-        [id]:
-          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
-      }));
-
-      // Update liked products
-      if (like_result.like_status > 0) {
-        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
-      } else {
-        setLikedProducts((prevLikedProducts) =>
-          prevLikedProducts.filter((productId) => productId !== id)
-        );
-      }
-
+      assert.ok(like_result, Definer.general_err1);
       await sweetTopSmallSuccessAlert("success", 700, false);
+      setProductRebuild(new Date());
     } catch (err: any) {
-      console.log("targetLikeHandler, ERROR>>>", err);
+      console.log("targetLikeHandler, ERROR >>>", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -231,8 +195,8 @@ export function ChosenCafe(props: any) {
                   className="search_input"
                   name="SearchProduct"
                   placeholder="Search Product"
-                  value={searchValue}
-                  onChange={handleSearch}
+                  // value={searchValue}
+                  // onChange={handleSearch}
                 />
                 <Button className="search_btn" type="submit">
                   <SearchIcon />
@@ -300,7 +264,7 @@ export function ChosenCafe(props: any) {
               <Button
                 className="filter_btn"
                 variant="contained"
-                onClick={() => productCollectionHandler(["card"])}
+                onClick={() => productCollectionHandler(["goods"])}
               >
                 Goods
               </Button>
@@ -342,109 +306,13 @@ export function ChosenCafe(props: any) {
             </Stack>
 
             <Stack className="cafe_all_products">
-              {filteredProducts.map((pro: Product) => {
-                const image_path = `${serverApi}/${pro.product_images[0]}`;
-
-                return (
-                  <Box
-                    className="product_box"
-                    onClick={() => chosenProductHandler(pro._id)}
-                    key={pro._id}
-                  >
-                    <div className="sale_product">
-                      <div className="sale_badge">
-                        <p className="sale">-{pro.product_discount}%</p>
-                      </div>
-                      <img src={image_path} alt={pro.product_name} />
-                      <Favorite
-                        className="like_btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          targetLikeHandler(pro._id);
-                        }}
-                        style={{
-                          fill: likedProducts.includes(pro._id)
-                            ? "red"
-                            : "white",
-                          padding: "5px",
-                          cursor: "pointer",
-                        }}
-                      />
-
-                      <Box className="product_info">
-                        <Box className="pro_name">
-                          <span>{pro.product_name}</span>
-                          <div className="basket">
-                            <img src="icons/basket.svg" alt="basket" />
-                          </div>
-                        </Box>
-
-                        <Box className="pro_basket">
-                          <div className="price">
-                            <span className="discounted">
-                              ₩{" "}
-                              {pro.product_price -
-                                pro.product_price *
-                                  (pro.product_discount / 100)}
-                            </span>
-                            <span className="original">
-                              ₩ {pro.product_price}
-                            </span>
-                          </div>
-                        </Box>
-
-                        <Box className="product_reviews">
-                          <Rating
-                            className="rating"
-                            name="rating"
-                            defaultValue={5}
-                            precision={0.5}
-                            readOnly
-                          />
-                          <p className="text">({pro.product_reviews})</p>
-                          <div className="rating_2">
-                            <Box className="rating_2">
-                              <Box className="like">
-                                <div className="like_cnt">
-                                  {likeCounts[pro._id] !== undefined
-                                    ? likeCounts[pro._id]
-                                    : pro.product_likes}
-                                </div>
-                                <div className="like_img">
-                                  <FavoriteIcon
-                                    style={{
-                                      width: "15px",
-                                      height: "15px",
-                                      color: "#666666",
-                                      marginTop: "8px",
-                                    }}
-                                  />
-                                </div>
-                              </Box>
-                              <div className="dvr"></div>
-                              <Box className="view">
-                                <div className="view_cnt">
-                                  {pro.product_views}
-                                </div>
-                                <div className="view_img">
-                                  <VisibilityIcon
-                                    style={{
-                                      width: "15px",
-                                      height: "15px",
-                                      color: "#666666",
-                                      marginTop: "8px",
-                                    }}
-                                  />
-                                </div>
-                              </Box>
-                            </Box>
-                          </div>
-                        </Box>
-                      </Box>
-                    </div>
-                  </Box>
-                );
-              })}
+              {targetProducts.length > 0 ? (
+                targetProducts.map((ele) => (
+                  <ProductCart cartData={ele} key={ele._id} />
+                ))
+              ) : (
+                <p>No products available</p>
+              )}
             </Stack>
           </Stack>
         </Stack>

@@ -90,10 +90,12 @@ export function Navbar(props: any) {
     navigate("/");
   };
 
-  const wishlistHandler = () => {
-    setSide[1](3);
-    navigate("/orders");
-  };
+  // const orderHandler = () => {
+  //   navigate("/orders");
+  // };
+  // const wishlistHandler = () => {
+  //   navigate("/wishlist");
+  // };
 
   return (
     <>
@@ -212,7 +214,7 @@ export function Navbar(props: any) {
                     <MenuItem
                       onClick={() => {
                         closeHandler();
-                        navigate("/my-account");
+                        navigate("/profile");
                       }}
                       className="drop_menu"
                       sx={{
@@ -234,8 +236,8 @@ export function Navbar(props: any) {
 
                     <MenuItem
                       onClick={() => {
-                        closeHandler();
-                        navigate("/my-account");
+                        // closeHandler();
+                        navigate("/orders");
                       }}
                       className="drop_menu"
                       sx={{
@@ -257,7 +259,7 @@ export function Navbar(props: any) {
 
                     <MenuItem
                       onClick={() => {
-                        wishlistHandler();
+                        navigate("/wishlist");
                       }}
                       className="drop_menu"
                       sx={{
@@ -281,7 +283,6 @@ export function Navbar(props: any) {
                       onClick={() => {
                         closeHandler();
                         logoutHandler();
-                        // navigate("/login");
                       }}
                       className="drop_menu"
                       sx={{

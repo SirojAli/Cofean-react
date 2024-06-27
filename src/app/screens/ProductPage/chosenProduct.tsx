@@ -51,7 +51,6 @@ import {
   sweetFailureProvider,
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
-import { ProductSearchObj } from "../../../types/others";
 import CafeApiService from "../../apiServices/cafeApiService";
 import ProductApiService from "../../apiServices/productApiService";
 import { Collections } from "@mui/icons-material";

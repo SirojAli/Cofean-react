@@ -14,7 +14,7 @@ export const retrieveRandomCafes = createSelector(
   selectCafePage,
   (CafePage) => CafePage.randomCafes
 );
-export const retrieveCafeProducts = createSelector(
+export const retrieveTargetProducts = createSelector(
   selectCafePage,
-  (CafePage) => CafePage.cafeProducts
+  (CafePage) => CafePage.targetProducts
 );

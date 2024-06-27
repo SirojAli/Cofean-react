@@ -258,7 +258,7 @@ export function BlogPage() {
                 {verifiedMemberData._id === user._id && (
                   <Settings
                     className="setting_icon"
-                    onClick={() => navigate("/my-account")}
+                    onClick={() => navigate("/profile")}
                   />
                 )}
                 {user._id === verifiedMemberData._id ? (

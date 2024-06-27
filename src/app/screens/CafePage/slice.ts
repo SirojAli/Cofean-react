@@ -5,7 +5,7 @@ const initialState: CafePageState = {
   allCafes: [],
   chosenCafe: null,
   randomCafes: [],
-  cafeProducts: [],
+  targetProducts: [],
 };
 
 const CafePageSlice = createSlice({
@@ -21,13 +21,13 @@ const CafePageSlice = createSlice({
     setRandomCafes: (state, action) => {
       state.randomCafes = action.payload;
     },
-    setCafeProducts: (state, action) => {
-      state.cafeProducts = action.payload;
+    setTargetProducts: (state, action) => {
+      state.targetProducts = action.payload;
     },
   },
 });
 
-export const { setAllCafes, setChosenCafe, setRandomCafes, setCafeProducts } =
+export const { setAllCafes, setChosenCafe, setRandomCafes, setTargetProducts } =
   CafePageSlice.actions;
 
 const CafePageReducer = CafePageSlice.reducer;

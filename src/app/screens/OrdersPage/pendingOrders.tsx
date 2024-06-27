@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { retrievePendingOrders } from "./selector";
 import { Order } from "../../../types/order";
 import OrderCart from "./orderCart";
+import "../../../scss/account.scss";
+
 // REDUX SELECTOR
 const pendingOrdersRetriever = createSelector(
   retrievePendingOrders,

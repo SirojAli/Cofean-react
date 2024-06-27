@@ -15,10 +15,10 @@ export interface ProductSearchObj {
   page: number;
   limit: number;
   order: string;
-  cafe_mb_id?: string;
   product_collection?: string[];
   search: string;
   price: number[];
+  cafe_mb_id?: string;
 }
 
 export interface ReviewSearchObj {

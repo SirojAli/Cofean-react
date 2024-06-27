@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../css/App.css";
 import "../css/navbar.css";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import {
   BrowserRouter as Router,
   Route,
@@ -19,17 +18,13 @@ import { ChosenCafe } from "./screens/CafePage/chosenCafe";
 import { Product } from "./screens/ProductPage";
 import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 import { BlogPage } from "./screens/BlogPage";
-import { MyProfile } from "./screens/MyProfilePage";
 import { Help } from "./screens/HelpPage";
-import { Member } from "../types/user";
-import OrdersPage from "./screens/OrdersPage";
+import OrderPage from "./screens/OrdersPage";
+import { MyProfile } from "./screens/ProfilePage";
+import Wishlist from "./screens/OrdersPage/wishlist";
 
 function App() {
   /** INITIALIZATIONS */
-  const [path, setPath] = useState();
-  const main_path = window.location.pathname;
-  console.log("main_path >>", main_path);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -47,8 +42,9 @@ function App() {
           <Route path="/blogs" element={<BlogPage />} />
           <Route path="/help" element={<Help />} />
 
-          <Route path="/my-account" element={<MyProfile />} />
-          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/profile" element={<MyProfile />} />
+          <Route path="/orders" element={<OrderPage />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />
       </Routes>

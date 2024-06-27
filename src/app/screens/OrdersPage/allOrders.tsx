@@ -5,6 +5,8 @@ import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { retrieveAllOrders } from "./selector";
 import { Order } from "../../../types/order";
+import "../../../scss/account.scss";
+
 // REDUX SELECTOR
 const allOrdersRetriever = createSelector(retrieveAllOrders, (allOrders) => ({
   allOrders,

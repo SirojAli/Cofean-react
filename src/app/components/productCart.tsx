@@ -1,4 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Dispatch } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Checkbox, Container, Radio, Stack } from "@mui/material";
 import "../../scss/cafe.scss";
 import Favorite from "@mui/icons-material/Favorite";
@@ -16,6 +19,23 @@ import {
 } from "../../lib/sweetAlert";
 import { serverApi } from "../../lib/config";
 import { Product } from "../../types/product";
+import { verifiedMemberData } from "../apiServices/verify";
+import { Definer } from "../../lib/definer";
+import { setTrendProducts } from "../screens/HomePage/slice";
+import { retrieveTrendProducts } from "../screens/HomePage/selector";
+
+// REDUX SLICE
+const actionDispatch = (dispatch: Dispatch) => ({
+  setTrendProducts: (data: Product[]) => dispatch(setTrendProducts(data)),
+});
+
+// REDUX SELECTOR
+const trendProductsRetriever = createSelector(
+  retrieveTrendProducts,
+  (trendProducts) => ({
+    trendProducts,
+  })
+);
 
 const ProductCart = ({ cartData }: any) => {
   /*INITIALIZATIONS*/
@@ -37,34 +57,49 @@ const ProductCart = ({ cartData }: any) => {
   const refs: any = useRef([]);
   const setAddToCart = ProductCartCont();
 
+  const { setTrendProducts } = actionDispatch(useDispatch());
+  const { trendProducts } = useSelector(trendProductsRetriever);
+  console.log("trendProducts>>>", trendProducts);
+
   const ratingValue =
     (product_rating ? product_rating : 0) /
     (product_reviews > 0 ? product_reviews : 1);
 
-  const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
-  const [price, setPrice] = useState<number[]>([0, 12000]);
+  // const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
+  // const [price, setPrice] = useState<number[]>([0, 12000]);
 
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
-  const [selectedCategory, setSelectedCategory] = useState("All Products");
-  const [sortedItem, setSortedItem] = useState(0);
-  const [bestsellers, setBestSellers] = useState<Product[]>([]);
-  const [chosenTag, setChosenTag] = useState("");
+  useEffect(() => {
+    // Fetch initial like counts
+    trendProducts.forEach((pro: Product) => {
+      refs.current[pro._id] = pro.product_likes;
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [pro._id]: pro.product_likes,
+      }));
+      if (pro.me_liked && pro.me_liked[0]?.my_favorite) {
+        setLikedProducts((prevLikedProducts) => [
+          ...prevLikedProducts,
+          pro._id,
+        ]);
+      }
+    });
+  }, [trendProducts]);
 
   /*HANDLERS*/
   const addToCartHandler = () => {
     setAddToCart[1]([cartData, 1, new Date()]);
   };
 
-  const targetLikeHandler = async (id: string) => {
+  const likeHandler = async (e: any, id: string) => {
     try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
       const memberService = new MemberApiService();
       const data = { like_ref_id: id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, "An error occurred while processing the like.");
+      assert.ok(like_result, Definer.general_err1);
 
       // Update like count
       setLikeCounts((prevCounts) => ({
@@ -84,7 +119,7 @@ const ProductCart = ({ cartData }: any) => {
 
       await sweetTopSmallSuccessAlert("success", 700, false);
     } catch (err: any) {
-      console.log("targetLikeHandler, ERROR:::", err);
+      console.log("likeHandler, ERROR:::", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -100,7 +135,7 @@ const ProductCart = ({ cartData }: any) => {
           className="like_btn"
           onClick={(e) => {
             e.stopPropagation();
-            targetLikeHandler(_id);
+            likeHandler(e, _id);
           }}
           style={{
             fill: likedProducts.includes(_id) ? "red" : "white",

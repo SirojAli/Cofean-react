@@ -57,6 +57,7 @@ import { Collections } from "@mui/icons-material";
 import { serverApi } from "../../../lib/config";
 import { Product } from "../../../types/product";
 import ProductCart from "../../components/productCart";
+import { CategoryCont } from "../../context/Category";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -136,7 +137,6 @@ export function AllProducts(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const refs: any = useRef([]);
-  // let { product_id } = useParams<{ cafe_id: string }>();
 
   const { setAllProducts } = actionDispatch(useDispatch());
   const { allProducts } = useSelector(allProductsRetriever);
@@ -154,11 +154,11 @@ export function AllProducts(props: any) {
   const [chosenTag, setChosenTag] = useState("");
 
   const [searchProductsObj, setSearchProductsObj] = useState<ProductSearchObj>({
-    page: 1,
-    limit: 12,
     order: "product_views",
-    product_collection: ["all"],
+    page: 1,
+    limit: 20,
     search: "",
+    product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
     price: [0, 12000],
   });
 
@@ -193,7 +193,7 @@ export function AllProducts(props: any) {
   useEffect(() => {
     const productService = new ProductApiService();
     productService
-      .getAllProducts(searchProductsObj)
+      .getTargetProducts(searchProductsObj)
       .then((data) => setAllProducts(data))
       .catch((err) => console.log(err));
   }, [searchProductsObj, price]);

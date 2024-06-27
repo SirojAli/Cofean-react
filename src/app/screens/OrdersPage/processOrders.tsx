@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { retrieveProcessOrders } from "./selector";
 import OrderCart from "./orderCart";
 import { Order } from "../../../types/order";
+import "../../../scss/account.scss";
+
 // REDUX SELECTOR
 const processOrdersRetriever = createSelector(
   retrieveProcessOrders,
