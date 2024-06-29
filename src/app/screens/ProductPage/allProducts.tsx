@@ -24,7 +24,7 @@ import { createSelector } from "reselect";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAllProducts } from "./slice";
 import { retrieveAllProducts } from "./selector";
-import { ProductSearchObj } from "../../../types/others";
+import { ProductSearchObj } from "../../../types/product";
 import CafeApiService from "../../apiServices/cafeApiService";
 import ProductApiService from "../../apiServices/productApiService";
 import { Collections } from "@mui/icons-material";

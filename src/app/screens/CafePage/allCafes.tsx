@@ -22,7 +22,7 @@ import {
 } from "../../../lib/sweetAlert";
 import { serverApi } from "../../../lib/config";
 import { Cafe } from "../../../types/user";
-import { CafeSearchObj } from "../../../types/others";
+import { CafeSearchObj } from "../../../types/user";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";

@@ -31,7 +31,7 @@ import {
   retrieveRandomCafes,
   retrieveTargetProducts,
 } from "./selector";
-import { ProductSearchObj } from "../../../types/others";
+import { ProductSearchObj } from "../../../types/product";
 import CafeApiService from "../../apiServices/cafeApiService";
 import ProductApiService from "../../apiServices/productApiService";
 import { Collections, Favorite } from "@mui/icons-material";
@@ -45,6 +45,7 @@ import {
 import { serverApi } from "../../../lib/config";
 import ProductCart from "../../components/productCart";
 import { CategoryCont } from "../../context/Category";
+import { ProductCartCont } from "../../context/ProductCart";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -75,6 +76,7 @@ const targetProductsRetriever = createSelector(
 
 export function ChosenCafe(props: any) {
   /** INITIALIZATIONS */
+
   const navigate = useNavigate();
   const refs: any = useRef([]);
   const dispatch = useDispatch();
@@ -134,6 +136,11 @@ export function ChosenCafe(props: any) {
     console.log("Redux state targetProducts:", targetProducts);
   }, [targetProducts]);
 
+  const setAddToCart = ProductCartCont();
+  const ratingValue = 4;
+  const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
+  const [likedProducts, setLikedProducts] = useState<string[]>([]);
+
   /** HANDLERS */
   const chosenCafeHandler = (id: string) => {
     setChosenCafeId(id);
@@ -169,6 +176,41 @@ export function ChosenCafe(props: any) {
       setProductRebuild(new Date());
     } catch (err: any) {
       console.log("targetLikeHandler, ERROR >>>", err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  // const addToCartHandler = () => {
+  //   setAddToCart[1]([cartData, 1, new Date()]);
+  // };
+
+  const likeHandler = async (e: any, id: string) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+      const memberService = new MemberApiService();
+      const data = { like_ref_id: id, group_type: "product" };
+      const like_result: any = await memberService.memberLikeTarget(data);
+      assert.ok(like_result, Definer.general_err1);
+
+      // Update like count
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]:
+          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
+      }));
+
+      // Update liked products
+      if (like_result.like_status > 0) {
+        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
+      } else {
+        setLikedProducts((prevLikedProducts) =>
+          prevLikedProducts.filter((productId) => productId !== id)
+        );
+      }
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+    } catch (err: any) {
+      console.log("likeHandler, ERROR:::", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -302,7 +344,115 @@ export function ChosenCafe(props: any) {
             <Stack className="cafe_all_products">
               {targetProducts.length > 0 ? (
                 targetProducts.map((ele) => (
-                  <ProductCart cartData={ele} key={ele._id} />
+                  <div
+                    className="product_box"
+                    onClick={() => navigate(`/products/${ele._id}`)}
+                  >
+                    <Box className="sale_product">
+                      {ele.product_discount > 0 && (
+                        <div className="sale_badge">
+                          <p className="sale">-{ele.product_discount}%</p>
+                        </div>
+                      )}
+                      <img
+                        src={`${serverApi}/${ele.product_images[0]}`}
+                        alt="coffee photo"
+                      />
+                      <Favorite
+                        className="like_btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          likeHandler(e, ele._id);
+                        }}
+                        style={{
+                          fill: likedProducts.includes(ele._id)
+                            ? "red"
+                            : "white",
+                          padding: "5px",
+                          cursor: "pointer",
+                        }}
+                      />
+                      <Box className="product_info">
+                        <Box className="pro_name">
+                          <span>{ele.product_name}</span>
+                          <div className="basket">
+                            <img src="/icons/basket.svg" alt="" />
+                          </div>
+                        </Box>
+
+                        <Box className="pro_basket">
+                          <div className="price">
+                            {ele.product_discount > 0 ? (
+                              <>
+                                <span className="discounted">
+                                  ₩{" "}
+                                  {ele.product_price -
+                                    ele.product_price *
+                                      (ele.product_discount / 100)}
+                                </span>
+                                <span className="original">
+                                  ₩ {ele.product_price}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="discounted">
+                                ₩ {ele.product_price}
+                              </span>
+                            )}
+                          </div>
+                        </Box>
+
+                        <Box className="product_reviews">
+                          <Rating
+                            className="rating"
+                            name="rating"
+                            value={ratingValue}
+                            precision={0.5}
+                            readOnly
+                          />
+                          <p className="text">(4)</p>
+                          {/* <p className="text">({product_reviews})</p> */}
+                          <div className="rating_2">
+                            <Box className="rating_2">
+                              <Box className="like">
+                                <div className="like_cnt">
+                                  {likeCounts[ele._id] !== undefined
+                                    ? likeCounts[ele._id]
+                                    : ele.product_likes}
+                                </div>
+                                <div className="like_img">
+                                  <FavoriteIcon
+                                    style={{
+                                      width: "15px",
+                                      height: "15px",
+                                      color: "#666666",
+                                      marginTop: "5px",
+                                    }}
+                                  />{" "}
+                                </div>
+                              </Box>
+                              <div className="dvr"></div>
+                              <Box className="view">
+                                <div className="view_cnt">
+                                  {ele.product_views}
+                                </div>
+                                <div className="view_img">
+                                  <VisibilityIcon
+                                    style={{
+                                      width: "15px",
+                                      height: "15px",
+                                      color: "#666666",
+                                      marginTop: "5px",
+                                    }}
+                                  />{" "}
+                                </div>
+                              </Box>
+                            </Box>
+                          </div>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </div>
                 ))
               ) : (
                 <p>No products available</p>

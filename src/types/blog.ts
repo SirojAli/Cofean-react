@@ -1,4 +1,4 @@
-import { MeLiked } from "./others";
+import { MeLiked } from "./like";
 import { Member } from "./user";
 
 export interface BlogInput {

@@ -7,26 +7,14 @@ import {
   Stack,
 } from "@mui/material";
 import { Menu, MenuItem } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import SettingsIcon from "@mui/icons-material/Settings";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import React, { useState, useEffect } from "react";
 import { Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Footer } from "../footer/footer";
 import "../../../scss/navbar.scss";
-import {
-  Search,
-  ArrowUpward,
-  Person,
-  Logout,
-  FavoriteBorder,
-  ListAlt,
-  MenuOutlined,
-  KeyboardArrowRight,
-} from "@mui/icons-material";
+import { Search, ArrowUpward, Logout } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import { WishCont } from "../../context/Wishlist";
 import { verifiedMemberData } from "../../apiServices/verify";
 import MemberApiService from "../../apiServices/memberApiService";
 import {
@@ -38,7 +26,6 @@ import { serverApi } from "../../../lib/config";
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
   const navigate = useNavigate();
-  const setSide = WishCont();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -85,17 +72,8 @@ export function Navbar(props: any) {
       console.log(err);
       await sweetFailureProvider("Logout failed");
     }
-
-    // Navigate to the homepage ("/")
     navigate("/");
   };
-
-  // const orderHandler = () => {
-  //   navigate("/orders");
-  // };
-  // const wishlistHandler = () => {
-  //   navigate("/wishlist");
-  // };
 
   return (
     <>
@@ -254,28 +232,6 @@ export function Navbar(props: any) {
                         }}
                       >
                         My Orders
-                      </p>
-                    </MenuItem>
-
-                    <MenuItem
-                      onClick={() => {
-                        navigate("/wishlist");
-                      }}
-                      className="drop_menu"
-                      sx={{
-                        width: "150px",
-                        height: "40px",
-                      }}
-                    >
-                      <FavoriteBorder sx={{ fill: "#444444" }} />
-                      <p
-                        style={{
-                          marginLeft: "8px",
-                          fontSize: "16px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        Wishlist
                       </p>
                     </MenuItem>
 

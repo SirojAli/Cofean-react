@@ -205,7 +205,7 @@ export function ChosenProduct() {
                       />
                     }
                   />
-                  <span className="title">Add to Wishlist</span>
+                  {/* <span className="title">Add to Wishlist</span> */}
                 </div>
               </Box>
 

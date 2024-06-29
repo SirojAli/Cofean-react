@@ -1,17 +1,4 @@
-export interface Member_data {
-  createdAt: string;
-  mb_email: string;
-  mb_image?: string;
-  mb_follow_cnt: number;
-  mb_nick: string;
-  mb_password: string;
-  mb_point: number;
-  mb_status: string;
-  mb_subscriber_cnt: number;
-  mb_type: string;
-  updatedAt: Date;
-  _id: string;
-}
+import { Member_data } from "./user";
 
 export interface Review {
   _id: string;
@@ -24,4 +11,18 @@ export interface Review {
   product_rating?: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ReviewSearchObj {
+  page: number;
+  limit: number;
+  review_ref_id: string;
+}
+
+export interface CreateReviewObj {
+  review_ref_id: string;
+  group_type: string;
+  title: string;
+  content?: string;
+  product_rating?: number;
 }

@@ -3,7 +3,7 @@ import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Member, MemberUpdateData } from "../../types/user";
-import { MemberLiken } from "../../types/others";
+import { MemberLiken } from "../../types/like";
 
 class MemberApiService {
   private readonly path: string;
@@ -69,7 +69,7 @@ class MemberApiService {
   // LIKE PROCESS
   public async memberLikeTarget(data: any): Promise<any> {
     try {
-      const url = "/member-liken"; // wishlist
+      const url = "/member-liken";
       const result = await axios.post(this.path + url, data, {
         withCredentials: true,
       });

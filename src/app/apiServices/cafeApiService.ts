@@ -3,7 +3,7 @@ import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Cafe } from "../../types/user";
-import { CafeSearchObj } from "../../types/others";
+import { CafeSearchObj } from "../../types/user";
 
 class CafeApiService {
   private readonly path: string;

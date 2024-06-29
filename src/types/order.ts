@@ -1,7 +1,7 @@
 import { Product } from "./product";
 import { Member } from "./user";
 
-export interface order_items {
+export interface OrderItems {
   _id: string;
   item_quantity: number;
   item_price: number;
@@ -18,16 +18,6 @@ export interface Order {
   mb_id: string;
   createdAt: Date;
   updatedAt: Date;
-  order_items: any[];
+  order_items: OrderItems[];
   product_data: Product[];
-}
-
-export interface Like {
-  _id: string;
-  like_ref_id: string;
-  like_group: string;
-  mb_id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  product_data: Product;
 }

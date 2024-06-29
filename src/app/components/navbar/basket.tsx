@@ -8,7 +8,6 @@ import { serverApi } from "../../../lib/config";
 import { ProductCartCont } from "../..//context/ProductCart";
 import { MakeOrderCont } from "../../context/MakeOrder";
 import { useNavigate } from "react-router-dom";
-import { WishCont } from "../../context/Wishlist";
 import { verifiedMemberData } from "../../apiServices/verify";
 import { Definer } from "../../../lib/definer";
 import OrderApiService from "../../apiServices/orderApiService";
@@ -24,7 +23,6 @@ const Basket = () => {
   const [basketOpen, setBasketOpen] = useState<boolean>(false);
   const [addToCart] = ProductCartCont();
   const orders = MakeOrderCont();
-  const setSide = WishCont();
   const onAdd = (product: any, quantity: number) => {
     const exist: any = cartItems.find(
       (item: CartItem) => item._id === product._id
@@ -103,7 +101,6 @@ const Basket = () => {
       await order.createOrder(cartItems);
       onDeleteAll();
       orders[1](1);
-      setSide[1](0);
       navigate("/orders");
       onDeleteAll();
       setBasketOpen(false);

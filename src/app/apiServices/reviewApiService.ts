@@ -3,7 +3,7 @@ import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
 import { Review } from "../../types/review";
-import { CreateReviewObj, ReviewSearchObj } from "../../types/others";
+import { CreateReviewObj, ReviewSearchObj } from "../../types/review";
 
 class ReviewApiService {
   private readonly path: string;

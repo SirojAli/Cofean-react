@@ -39,7 +39,7 @@ class OrderApiService {
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-      const orders: any = result.data.data;
+      const orders: Order[] = result.data.data;
       return orders;
     } catch (err: any) {
       console.log(`ERROR >>> getMyOrders ${err.message}`);

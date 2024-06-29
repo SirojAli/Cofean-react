@@ -19,9 +19,8 @@ import { Product } from "./screens/ProductPage";
 import { ChosenProduct } from "./screens/ProductPage/chosenProduct";
 import { BlogPage } from "./screens/BlogPage";
 import { Help } from "./screens/HelpPage";
-import OrderPage from "./screens/OrdersPage";
+import { OrdersPage } from "./screens/OrdersPage";
 import { MyProfile } from "./screens/ProfilePage";
-import Wishlist from "./screens/OrdersPage/wishlist";
 
 function App() {
   /** INITIALIZATIONS */
@@ -43,8 +42,7 @@ function App() {
           <Route path="/help" element={<Help />} />
 
           <Route path="/profile" element={<MyProfile />} />
-          <Route path="/orders" element={<OrderPage />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/orders" element={<OrdersPage />} />
         </Route>
         <Route path="*" element={<h1>404 Not Founded</h1>} />
       </Routes>

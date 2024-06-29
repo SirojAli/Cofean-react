@@ -2,7 +2,7 @@ import axios from "axios";
 import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
-import { ProductSearchObj } from "../../types/others";
+import { ProductSearchObj } from "../../types/product";
 import { Product } from "../../types/product";
 
 class ProductApiService {

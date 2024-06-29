@@ -30,10 +30,7 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
         setClassColor("status status_delivered");
         setStatus("Delivered");
         break;
-      case "CANCELLED":
-        setClassColor("status status_cancelled");
-        setStatus("Cancelled");
-        break;
+
       default:
         setClassColor("status status_process");
         setStatus("Process");
@@ -59,23 +56,7 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
       sweetErrorHandling(err).then();
     }
   };
-  const cancelHandler = async (e: any) => {
-    try {
-      const order_id = e.target.value;
-      const data = { order_id: order_id, order_status: "CANCELLED" };
-      if (!verifiedMemberData) {
-        sweetFailureProvider("Please login first", true);
-      }
 
-      const orderService = new OrderApiService();
-      await orderService.updateOrderStatus(data);
-      await sweetTopSmallSuccessAlert("Order cancelled", 700, false);
-      setOrders[1](4);
-      setOrderRebuild(new Date());
-    } catch (err) {
-      console.log("payHandler, ERROR:", err);
-    }
-  };
   return (
     <Box key={order._id} className="order_box">
       <Box className="order_header">
@@ -143,25 +124,10 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
           <Button value={order._id} onClick={payHandler} className="pay_btn">
             Pay
           </Button>
-          <Button
-            value={order._id}
-            onClick={cancelHandler}
-            className="pay_btn cancel_btn"
-          >
-            Cancel
-          </Button>
         </Box>
       )}
       {order.order_status === "PROCESS" && (
-        <Box className="order_btn_wrap">
-          <Button
-            value={order._id}
-            onClick={cancelHandler}
-            className="pay_btn cancel_btn"
-          >
-            Cancel
-          </Button>
-        </Box>
+        <Box className="order_btn_wrap"></Box>
       )}
     </Box>
   );

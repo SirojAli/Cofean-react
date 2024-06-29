@@ -1,4 +1,4 @@
-import { MeLiked } from "./others";
+import { MeLiked } from "./like";
 import { Cafe } from "./user";
 
 export interface Product {
@@ -28,4 +28,14 @@ export interface Product {
   createdAt: Date;
   updatedAt: Date;
   me_liked: MeLiked[];
+}
+
+export interface ProductSearchObj {
+  page: number;
+  limit: number;
+  order: string;
+  product_collection?: string[];
+  search: string;
+  price: number[];
+  cafe_mb_id?: string;
 }
