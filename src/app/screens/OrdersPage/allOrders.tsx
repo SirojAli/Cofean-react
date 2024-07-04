@@ -1,30 +1,26 @@
 import { Stack } from "@mui/material";
 import React from "react";
+import OrderCart from "./orderCart";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
-import { retrievePendingOrders } from "./selector";
-import OrderCart from "./orderCart";
+import { retrieveAllOrders } from "./selector";
 import { Order } from "../../../types/order";
 
 // REDUX SELECTOR
-const pendingOrdersRetriever = createSelector(
-  retrievePendingOrders,
-  (pendingOrders) => ({
-    pendingOrders,
-  })
-);
-const PendingOrders = ({ setOrderRebuild }: any) => {
+const allOrdersRetriever = createSelector(retrieveAllOrders, (allOrders) => ({
+  allOrders,
+}));
+const AllOrders = ({ setOrderRebuild }: any) => {
   /*INITIALIZATION*/
-  const { pendingOrders } = useSelector(pendingOrdersRetriever);
-
+  const { allOrders } = useSelector(allOrdersRetriever);
   return (
     <Stack className="orders_wrap">
-      {pendingOrders?.map((order: Order) => {
+      {allOrders?.map((order: Order) => {
         return (
           <OrderCart
+            key={order._id}
             order={order}
             setOrderRebuild={setOrderRebuild}
-            key={order._id}
           />
         );
       })}
@@ -32,4 +28,4 @@ const PendingOrders = ({ setOrderRebuild }: any) => {
   );
 };
 
-export default PendingOrders;
+export default AllOrders;

@@ -50,8 +50,8 @@ export interface BlogPageState {
 
 /*ORDERS PAGE*/
 export interface OrdersPageState {
-  // allOrders: Order[];
+  allOrders: Order[];
   pendingOrders: Order[];
   processOrders: Order[];
-  finishedOrders: Order[];
+  deliveredOrders: Order[];
 }

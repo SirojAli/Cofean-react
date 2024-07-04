@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Button, Container, Stack } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
+import AllOrders from "./allOrders";
 import PendingOrders from "./pendingOrders";
 import ProcessOrders from "./processOrders";
-import FinishedOrders from "./finishedOrders";
+import DeliveredOrders from "./deliveredOrders";
 import OrderApiService from "../../apiServices/orderApiService";
 import { Member } from "../../../types/user";
 import { Order } from "../../../types/order";
@@ -16,137 +17,117 @@ import { verifiedMemberData } from "../../apiServices/verify";
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setFinishedOrders, setPendingOrders, setProcessOrders } from "./slice";
 import {
+  setAllOrders,
+  setPendingOrders,
+  setProcessOrders,
+  setDeliveredOrders,
+} from "./slice";
+import {
+  retrieveAllOrders,
   retrievePendingOrders,
   retrieveProcessOrders,
-  retrieveFinishedOrders,
+  retrieveDeliveredOrders,
 } from "./selector";
+import { useLocation, useNavigate } from "react-router-dom";
+import { MakeOrderCont } from "../../context/MakeOrder";
+import { WishCont } from "../../context/Wishlist";
+import "../../../scss/orders.scss";
 
 // REDUX SLICE
 const actionDispatch = (dispatch: Dispatch) => ({
+  setAllOrders: (data: Order[]) => dispatch(setAllOrders(data)),
   setPendingOrders: (data: Order[]) => dispatch(setPendingOrders(data)),
   setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
-  setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
+  setDeliveredOrders: (data: Order[]) => dispatch(setDeliveredOrders(data)),
 });
 
 export function OrdersPage(props: any) {
   /** INITIALIZATIONS **/
   const [value, setValue] = useState("1");
-  const { setPendingOrders, setProcessOrders, setFinishedOrders } =
-    actionDispatch(useDispatch());
+  const pathname = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const pendingOrders = useSelector(retrievePendingOrders);
-  const processOrders = useSelector(retrieveProcessOrders);
-  const finishedOrders = useSelector(retrieveFinishedOrders);
+  const {
+    setAllOrders,
+    setPendingOrders,
+    setProcessOrders,
+    setDeliveredOrders,
+  } = actionDispatch(useDispatch());
+
+  const [orderRebuild, setOrderRebuild] = useState<Date>(new Date());
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]);
+
   useEffect(() => {
     const orderService = new OrderApiService();
-
+    orderService
+      .getMyOrders("all")
+      .then((data) => setAllOrders(data))
+      .catch((err) => console.log(err));
     orderService
       .getMyOrders("pending")
       .then((data) => setPendingOrders(data))
       .catch((err) => console.log(err));
-
     orderService
       .getMyOrders("process")
       .then((data) => setProcessOrders(data))
       .catch((err) => console.log(err));
-
     orderService
-      .getMyOrders("finished")
-      .then((data) => setFinishedOrders(data))
+      .getMyOrders("delivered")
+      .then((data) => setDeliveredOrders(data))
       .catch((err) => console.log(err));
-  }, [dispatch, props.orderRebuild]);
+  }, [orderRebuild]);
 
+  const [side, setSide] = WishCont() || [0, () => {}];
+  const [orderBtn, setOrderBtn] = MakeOrderCont() || [0, () => {}];
+
+  const topBtn = [
+    { id: 0, title: "All Orders" },
+    { id: 1, title: "Pending" },
+    { id: 2, title: "Process" },
+    { id: 3, title: "Delivered" },
+  ];
   /**HANDLERS**/
   const handleChange = (event: any, newValue: string) => {
     setValue(newValue);
   };
 
   return (
-    <div className="order_page">
-      <Container
-        maxWidth="lg"
-        style={{ display: "flex", flexDirection: "row" }}
-        sx={{ mt: "50px", mb: "50px" }}
-      >
-        {/* 1/2 Stack: ORDER LEFT */}
-        <Stack className={"order_left"}>
-          <TabContext value={value}>
-            <Box className={"order_nav_frame"}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <TabList
-                  onChange={handleChange}
-                  aria-label="basic tabs example"
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Tab label="Buyurtmalarim" value={"1"} />
-                  <Tab label="Jarayon" value={"2"} />
-                  <Tab label="Yakunlangan" value={"3"} />
-                </TabList>
-              </Box>
-            </Box>
-            <Stack className={"order_main_content"}>
-              <PendingOrders setOrderRebuild={props.setOrderRebuild} />
-              <ProcessOrders setOrderRebuild={props.setOrderRebuild} />
-              <FinishedOrders />
-            </Stack>
-          </TabContext>
-        </Stack>
-
-        {/* 2/2 Stack: ORDER RIGHT */}
-        <Stack className={"order_right"}>
-          <Box className={"order_info_box"}>
-            <Box
-              display={"flex"}
-              flexDirection={"column"}
-              alignItems={"center"}
-            >
-              <div className={"order_user_img"}>
-                <img src={"/auth/profile_picture.jpg"} />
-              </div>
-              <span className={"order_user_name"}>
-                {verifiedMemberData?.mb_nick}
-              </span>
-              <span className={"order_user_prof"}>
-                {verifiedMemberData?.mb_type ?? "Foydalanuvchi"}
-              </span>
-            </Box>
-            <Box className={"line"}></Box>
-            <Box
-              style={{ border: "1px solid #A1A1A1" }}
-              width={"100%"}
-              height={"2px"}
-              sx={{ mt: "40px", mb: "8px" }}
-            ></Box>
-            <Box className={"order_user_address"}>
-              <div style={{ display: "flex" }}>
-                <LocationOnIcon />
-              </div>
-              <div>
-                {verifiedMemberData?.mb_address ?? "Manzil kiritlmagan"}
-              </div>
-            </Box>
-          </Box>
-          <Box className={"payment_box"}>
-            <form className={"payment_form"}>
-              <input type="text" placeholder="1122 3344 5566 7788" />
-              <Box className={"form_divider"}>
-                <input type="text" placeholder="07/24" />
-                <input type="text" placeholder="CVV: 010" />
-              </Box>
-              <input type="text" placeholder="Maria" />
-            </form>
-            <Box className={"card_types"}>
-              <img className={"card"} src="/others/western_union.svg" />
-              <img className={"card"} src="/others/master_card.svg" />
-              <img className={"card"} src="/others/paypal.svg" />
-              <img className={"card"} src="/others/visa.svg" />
-            </Box>
-          </Box>
-        </Stack>
-      </Container>
-    </div>
+    <Container className="orders_container">
+      <Box className="mainbar">
+        <Box
+          sx={side === 0 ? { opacity: "1" } : { opacity: "0" }}
+          className="top_btn_wrap"
+        >
+          {topBtn.map(({ id, title }) => {
+            return (
+              <Button
+                key={id}
+                className={
+                  orderBtn === id ? "top_btn top_btn_active" : "top_btn"
+                }
+                onClick={() => setOrderBtn(id)}
+              >
+                {title}
+              </Button>
+            );
+          })}
+        </Box>
+        {side === 0 && orderBtn === 0 && (
+          <AllOrders setOrderRebuild={setOrderRebuild} />
+        )}
+        {side === 0 && orderBtn === 1 && (
+          <PendingOrders setOrderRebuild={setOrderRebuild} />
+        )}
+        {side === 0 && orderBtn === 2 && <ProcessOrders ld={setOrderRebuild} />}
+        {side === 0 && orderBtn === 3 && <DeliveredOrders />}
+      </Box>
+    </Container>
   );
 }

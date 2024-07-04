@@ -13,7 +13,7 @@ import OrderApiService from "../../apiServices/orderApiService";
 import { MakeOrderCont } from "../../context/MakeOrder";
 import assert from "assert";
 import { Definer } from "../../../lib/definer";
-import "../../../scss/account.scss";
+import "../../../scss/orders.scss";
 
 const OrderCart = ({ order, setOrderRebuild }: any) => {
   /*INITIALIZATIONS*/
@@ -26,7 +26,7 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
         setClassColor("status status_pending");
         setStatus("Pending");
         break;
-      case "FINISHED":
+      case "DELIVERED":
         setClassColor("status status_delivered");
         setStatus("Delivered");
         break;
@@ -57,6 +57,24 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
     }
   };
 
+  // const cancelHandler = async (e: any) => {
+  //   try {
+  //     const order_id = e.target.value;
+  //     const data = { order_id: order_id, order_status: "CANCELLED" };
+  //     if (!verifiedMemberData) {
+  //       sweetFailureProvider("Please login first", true);
+  //     }
+
+  //     const orderService = new OrderApiService();
+  //     await orderService.updateOrderStatus(data);
+  //     await sweetTopSmallSuccessAlert("Order cancelled", 700, false);
+  //     setOrders[1](4);
+  //     setOrderRebuild(new Date());
+  //   } catch (err) {
+  //     console.log("payHandler, ERROR >>>", err);
+  //   }
+  // };
+
   return (
     <Box key={order._id} className="order_box">
       <Box className="order_header">
@@ -76,9 +94,7 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
           </p>
         </Box>
         <Box className="header_right_box">
-          <h3 className="bold_head">
-            &#8361; {order.order_total_amount + order.order_delivery_cost}{" "}
-          </h3>
+          <h3 className="bold_head">&#8361; {order.order_total_amount} </h3>
           <p>Total amount</p>
         </Box>
       </Box>
@@ -127,7 +143,15 @@ const OrderCart = ({ order, setOrderRebuild }: any) => {
         </Box>
       )}
       {order.order_status === "PROCESS" && (
-        <Box className="order_btn_wrap"></Box>
+        <Box className="order_btn_wrap">
+          {/* <Button
+            value={order._id}
+            onClick={cancelHandler}
+            className="pay_btn cancel_btn"
+          >
+            Cancel
+          </Button> */}
+        </Box>
       )}
     </Box>
   );

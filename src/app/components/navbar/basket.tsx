@@ -23,6 +23,7 @@ const Basket = () => {
   const [basketOpen, setBasketOpen] = useState<boolean>(false);
   const [addToCart] = ProductCartCont();
   const orders = MakeOrderCont();
+
   const onAdd = (product: any, quantity: number) => {
     const exist: any = cartItems.find(
       (item: CartItem) => item._id === product._id

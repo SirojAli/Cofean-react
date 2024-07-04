@@ -22,12 +22,21 @@ import {
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
 import { serverApi } from "../../../lib/config";
+import { CartItem } from "../../../types/others";
+import { ProductCartCont } from "../../context/ProductCart";
+import { MakeOrderCont } from "../../context/MakeOrder";
 
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const cartJson: any = localStorage.getItem("cart_data");
+  const current_cart = JSON.parse(cartJson) ?? [];
+  const [cartItems, setCartItems] = useState<CartItem[]>(current_cart);
+  const [basketOpen, setBasketOpen] = useState<boolean>(false);
+  const [addToCart] = ProductCartCont();
+  const orders = MakeOrderCont();
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -42,7 +51,6 @@ export function Navbar(props: any) {
 
   const isScrolled = scrollPosition >= 100;
   const isTopScroll = scrollPosition >= 300;
-
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   /*HANDLERS*/
@@ -73,6 +81,67 @@ export function Navbar(props: any) {
       await sweetFailureProvider("Logout failed");
     }
     navigate("/");
+  };
+
+  const onAdd = (product: any, quantity: number) => {
+    const exist: any = cartItems.find(
+      (item: CartItem) => item._id === product._id
+    );
+    if (exist) {
+      const cart_updated = cartItems.map((item: CartItem) =>
+        item._id === product._id
+          ? {
+              ...exist,
+              quantity: exist.quantity + 1,
+            }
+          : item
+      );
+      setCartItems(cart_updated);
+      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+    } else {
+      const new_item: CartItem = {
+        _id: product._id,
+        quantity: quantity,
+        name: product.product_name,
+        price: product.product_price,
+        discount: product.product_discount,
+        image: product.product_images[0],
+      };
+      const cart_updated = [...cartItems, { ...new_item }];
+      setCartItems(cart_updated);
+      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+    }
+  };
+  const onRemove = (item: CartItem) => {
+    const item_data: any = cartItems.find(
+      (ele: CartItem) => ele._id === item._id
+    );
+    if (item_data.quantity === 1) {
+      const cart_updated = cartItems.filter(
+        (ele: CartItem) => ele._id !== item._id
+      );
+      setCartItems(cart_updated);
+      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+    } else {
+      const cart_updated = cartItems.map((ele: CartItem) =>
+        ele._id === item._id
+          ? { ...item_data, quantity: item_data.quantity - 1 }
+          : ele
+      );
+      setCartItems(cart_updated);
+      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+    }
+  };
+  const onDelete = (item: CartItem) => {
+    const cart_updated = cartItems.filter(
+      (ele: CartItem) => ele._id !== item._id
+    );
+    setCartItems(cart_updated);
+    localStorage.setItem("cart_data", JSON.stringify(cart_updated));
+  };
+  const onDeleteAll = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart_data");
   };
 
   return (

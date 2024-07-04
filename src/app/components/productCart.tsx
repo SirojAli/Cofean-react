@@ -52,7 +52,6 @@ const ProductCart = ({ cartData }: any) => {
     me_liked,
   } = cartData;
 
-  const [cartChange, setCartChange] = useState<number>(-1);
   const navigate = useNavigate();
   const refs: any = useRef([]);
   const setAddToCart = ProductCartCont();
@@ -146,8 +145,13 @@ const ProductCart = ({ cartData }: any) => {
         <Box className="product_info">
           <Box className="pro_name">
             <span>{product_name}</span>
-            <div className="basket">
-              <img src="icons/basket.svg" alt="" />
+            <div
+              className="basket"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <img onClick={addToCartHandler} src="icons/basket.svg" alt="" />
             </div>
           </Box>
 

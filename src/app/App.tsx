@@ -24,6 +24,7 @@ import { MyProfile } from "./screens/ProfilePage";
 
 function App() {
   /** INITIALIZATIONS */
+
   return (
     <BrowserRouter>
       <Routes>
