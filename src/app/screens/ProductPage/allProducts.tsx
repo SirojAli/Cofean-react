@@ -13,10 +13,26 @@ import Instagram from "@mui/icons-material/Instagram";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Slider, { SliderThumb } from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import CoffeeIcon from "@mui/icons-material/Coffee";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import Favorite from "@mui/icons-material/Favorite";
+import assert from "assert";
+import { verifiedMemberData } from "../../apiServices/verify";
+import { Definer } from "../../../lib/definer";
+import MemberApiService from "../../apiServices/memberApiService";
+import {
+  sweetErrorHandling,
+  sweetTopSmallSuccessAlert,
+} from "../../../lib/sweetAlert";
+import ProductApiService from "../../apiServices/productApiService";
+import { serverApi } from "../../../lib/config";
+import { Product } from "../../../types/product";
+import { Collections } from "@mui/icons-material";
+import CafeApiService from "../../apiServices/cafeApiService";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
@@ -25,13 +41,6 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { setAllProducts } from "./slice";
 import { retrieveAllProducts } from "./selector";
 import { ProductSearchObj } from "../../../types/product";
-import CafeApiService from "../../apiServices/cafeApiService";
-import ProductApiService from "../../apiServices/productApiService";
-import { Collections } from "@mui/icons-material";
-import { serverApi } from "../../../lib/config";
-import { Product } from "../../../types/product";
-import ProductCart from "../../components/productCart";
-import { CategoryCont } from "../../context/Category";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -121,6 +130,7 @@ export function AllProducts(props: any) {
   const [price, setPrice] = useState<number[]>([0, 9900]);
   const [filterProducts, setFilterProducts] = useState<Product[]>([]);
 
+  const ratingValue = 4;
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
   const [bestsellers, setBestSellers] = useState<Product[]>([]);
@@ -238,8 +248,8 @@ export function AllProducts(props: any) {
   };
   const priceHandler = (event: Event, newValue: number | number[]) => {
     const newPrices = Array.isArray(newValue) ? newValue : [0, newValue];
-    setSliderValue(newPrices); // Ensure sliderValue is updated
-    setPrice(newPrices); // Update the price state as well
+    setSliderValue(newPrices);
+    setPrice(newPrices);
   };
   const paginationHandler = (
     event: React.ChangeEvent<unknown>,
@@ -249,6 +259,37 @@ export function AllProducts(props: any) {
       ...searchProductsObj,
       page: value,
     });
+  };
+
+  const likeHandler = async (e: any, id: string) => {
+    try {
+      assert.ok(verifiedMemberData, Definer.auth_err1);
+      const memberService = new MemberApiService();
+      const data = { like_ref_id: id, group_type: "product" };
+      const like_result: any = await memberService.memberLikeTarget(data);
+      assert.ok(like_result, Definer.general_err1);
+
+      // Update like count
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]:
+          like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
+      }));
+
+      // Update liked products
+      if (like_result.like_status > 0) {
+        setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
+      } else {
+        setLikedProducts((prevLikedProducts) =>
+          prevLikedProducts.filter((productId) => productId !== id)
+        );
+      }
+
+      await sweetTopSmallSuccessAlert("success", 700, false);
+    } catch (err: any) {
+      console.log("likeHandler, ERROR >>>", err);
+      sweetErrorHandling(err).then();
+    }
   };
 
   useEffect(() => {
@@ -615,13 +656,123 @@ export function AllProducts(props: any) {
                 </div>
               </div>
               <Box className="product_boxes">
-                {filterProducts.map((ele) => {
+                {allProducts.map((pro: Product) => {
                   return (
-                    <ProductCart
-                      className="product_box"
-                      key={ele._id}
-                      cartData={ele}
-                    />
+                    <div
+                      className={"product_box"}
+                      onClick={() => navigate(`/products/${pro._id}`)}
+                    >
+                      <Box className="sale_product">
+                        {pro.product_discount > 0 && (
+                          <div className="sale_badge">
+                            <p className="sale">-{pro.product_discount}%</p>
+                          </div>
+                        )}
+                        <img
+                          src={`${serverApi}/${pro.product_images[0]}`}
+                          alt="coffee photo"
+                        />
+                        <Favorite
+                          className="like_btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            likeHandler(e, pro._id);
+                          }}
+                          style={{
+                            fill: likedProducts.includes(pro._id)
+                              ? "red"
+                              : "white",
+                            padding: "5px",
+                            cursor: "pointer",
+                          }}
+                        />
+                        <Box className="product_info">
+                          <Box className="pro_name">
+                            <span>{pro.product_name}</span>
+                            <div
+                              className="basket"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                props.onAdd(pro);
+                              }}
+                            >
+                              <img src="icons/basket.svg" alt="" />
+                            </div>
+                          </Box>
+
+                          <Box className="pro_basket">
+                            <div className="price">
+                              {pro.product_discount > 0 ? (
+                                <>
+                                  <span className="discounted">
+                                    ₩{" "}
+                                    {pro.product_price -
+                                      pro.product_price *
+                                        (pro.product_discount / 100)}
+                                  </span>
+                                  <span className="original">
+                                    ₩ {pro.product_price}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="discounted">
+                                  ₩ {pro.product_price}
+                                </span>
+                              )}
+                            </div>
+                          </Box>
+
+                          <Box className="product_reviews">
+                            <Rating
+                              className="rating"
+                              name="rating"
+                              value={ratingValue}
+                              precision={0.5}
+                              readOnly
+                            />
+                            <p className="text">(4)</p>
+                            {/* <p className="text">({product_reviews})</p> */}
+                            <div className="rating_2">
+                              <Box className="rating_2">
+                                <Box className="like">
+                                  <div className="like_cnt">
+                                    {likeCounts[pro._id] !== undefined
+                                      ? likeCounts[pro._id]
+                                      : pro.product_likes}
+                                  </div>
+                                  <div className="like_img">
+                                    <FavoriteIcon
+                                      style={{
+                                        width: "15px",
+                                        height: "15px",
+                                        color: "#666666",
+                                        marginTop: "5px",
+                                      }}
+                                    />{" "}
+                                  </div>
+                                </Box>
+                                <div className="dvr"></div>
+                                <Box className="view">
+                                  <div className="view_cnt">
+                                    {pro.product_views}
+                                  </div>
+                                  <div className="view_img">
+                                    <VisibilityIcon
+                                      style={{
+                                        width: "15px",
+                                        height: "15px",
+                                        color: "#666666",
+                                        marginTop: "5px",
+                                      }}
+                                    />{" "}
+                                  </div>
+                                </Box>
+                              </Box>
+                            </div>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </div>
                   );
                 })}
               </Box>

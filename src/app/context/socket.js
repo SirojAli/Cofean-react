@@ -1,6 +1,5 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 import io from "socket.io-client";
-import { serverApi } from "../../lib/config";
-
+import { serverApi } from "../lib/config";
 export const socket = io(serverApi);
 export const SocketContext = createContext();

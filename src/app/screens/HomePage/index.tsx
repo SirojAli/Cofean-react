@@ -6,14 +6,14 @@ import { Video } from "./video";
 import { SaleProducts } from "./saleProducts";
 import "../../../scss/home.scss";
 
-export function Homepage() {
+export function Homepage(props: any) {
   return (
     <div className="homepage">
       <Header />
       <TopCafes />
-      <TrendProducts />
+      <TrendProducts onAdd={props.onAdd} />
       <Video />
-      <SaleProducts />
+      <SaleProducts onAdd={props.onAdd} />
     </div>
   );
 }

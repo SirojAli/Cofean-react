@@ -23,20 +23,17 @@ import {
 } from "../../../lib/sweetAlert";
 import { serverApi } from "../../../lib/config";
 import { CartItem } from "../../../types/others";
-import { ProductCartCont } from "../../context/ProductCart";
+import { ShoppingCartCont } from "../../context/ShoppingCart";
 import { MakeOrderCont } from "../../context/MakeOrder";
+import Basket from "./basket";
 
 export function Navbar(props: any) {
   /*INITIALIZATIONS*/
+  const [path, setPath] = useState();
   const navigate = useNavigate();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const cartJson: any = localStorage.getItem("cart_data");
-  const current_cart = JSON.parse(cartJson) ?? [];
-  const [cartItems, setCartItems] = useState<CartItem[]>(current_cart);
-  const [basketOpen, setBasketOpen] = useState<boolean>(false);
-  const [addToCart] = ProductCartCont();
-  const orders = MakeOrderCont();
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -83,66 +80,15 @@ export function Navbar(props: any) {
     navigate("/");
   };
 
-  const onAdd = (product: any, quantity: number) => {
-    const exist: any = cartItems.find(
-      (item: CartItem) => item._id === product._id
-    );
-    if (exist) {
-      const cart_updated = cartItems.map((item: CartItem) =>
-        item._id === product._id
-          ? {
-              ...exist,
-              quantity: exist.quantity + 1,
-            }
-          : item
-      );
-      setCartItems(cart_updated);
-      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
-    } else {
-      const new_item: CartItem = {
-        _id: product._id,
-        quantity: quantity,
-        name: product.product_name,
-        price: product.product_price,
-        discount: product.product_discount,
-        image: product.product_images[0],
-      };
-      const cart_updated = [...cartItems, { ...new_item }];
-      setCartItems(cart_updated);
-      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
-    }
-  };
-  const onRemove = (item: CartItem) => {
-    const item_data: any = cartItems.find(
-      (ele: CartItem) => ele._id === item._id
-    );
-    if (item_data.quantity === 1) {
-      const cart_updated = cartItems.filter(
-        (ele: CartItem) => ele._id !== item._id
-      );
-      setCartItems(cart_updated);
-      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
-    } else {
-      const cart_updated = cartItems.map((ele: CartItem) =>
-        ele._id === item._id
-          ? { ...item_data, quantity: item_data.quantity - 1 }
-          : ele
-      );
-      setCartItems(cart_updated);
-      localStorage.setItem("cart_data", JSON.stringify(cart_updated));
-    }
-  };
-  const onDelete = (item: CartItem) => {
-    const cart_updated = cartItems.filter(
-      (ele: CartItem) => ele._id !== item._id
-    );
-    setCartItems(cart_updated);
-    localStorage.setItem("cart_data", JSON.stringify(cart_updated));
-  };
-  const onDeleteAll = () => {
-    setCartItems([]);
-    localStorage.removeItem("cart_data");
-  };
+  const {
+    cartItems = [],
+    onAdd,
+    onRemove,
+    onDelete,
+    onDeleteAll,
+    setOrderRebuild,
+  } = props;
+  console.log(cartItems);
 
   return (
     <>
@@ -151,7 +97,7 @@ export function Navbar(props: any) {
           <div className="navbar_left">
             <Box className="navbar_logo">
               <img src="/images/navbar/logo1.png" alt="" />
-              <Box onClick={props.setPath}>
+              <Box>
                 <NavLink style={{ textDecoration: "none" }} to="/">
                   <p>COFEAN</p>
                 </NavLink>
@@ -161,27 +107,27 @@ export function Navbar(props: any) {
 
           <div className="navbar_middle">
             <div className="navbar_menu">
-              <Box className="menu_page" onClick={props.setPath}>
+              <Box className="menu_page">
                 <NavLink className="menu" to="/">
                   <span>Home</span>
                 </NavLink>
               </Box>
-              <Box className="menu_page" onClick={props.setPath}>
+              <Box className="menu_page">
                 <NavLink className="menu" to="/cafes">
                   <span>Brands</span>
                 </NavLink>
               </Box>
-              <Box className="menu_page" onClick={props.setPath}>
+              <Box className="menu_page">
                 <NavLink className="menu" to="/products">
                   <span>Products</span>
                 </NavLink>
               </Box>
-              <Box className="menu_page" onClick={props.setPath}>
+              <Box className="menu_page">
                 <NavLink className="menu" to="/blogs">
                   <span>Blog</span>
                 </NavLink>
               </Box>
-              <Box className="menu_page" onClick={props.setPath}>
+              <Box className="menu_page">
                 <NavLink className="menu" to="/help">
                   <span>Help</span>
                 </NavLink>
@@ -192,25 +138,23 @@ export function Navbar(props: any) {
           <div className="navbar_right">
             <div className="navbar_icons">
               <Box
-                className="icon_search"
+                className="icons"
                 onClick={() => {
                   closeHandler();
                   navigate("/products");
                 }}
               >
-                <Search
-                  style={{
-                    height: "28px",
-                    width: "28px",
-                  }}
-                />
+                <Search className="icon" />
               </Box>
-              <Box className="icon_cart" onClick={props.setPath}>
-                <ShoppingCartIcon
-                  style={{
-                    height: "28px",
-                    width: "28px",
-                  }}
+              <Box className="icons">
+                <Basket
+                  className="icon"
+                  cartItems={cartItems}
+                  onAdd={onAdd}
+                  onRemove={onRemove}
+                  onDelete={onDelete}
+                  onDeleteAll={onDeleteAll}
+                  setOrderRebuild={setOrderRebuild}
                 />
               </Box>
 
@@ -332,12 +276,12 @@ export function Navbar(props: any) {
 
               {!verifiedMemberData && (
                 <Box className="auth_mb">
-                  <Box className="navbar_signup" onClick={props.setPath}>
+                  <Box className="navbar_signup">
                     <NavLink className="menu" to="/signup">
                       <span>Signup</span>
                     </NavLink>
                   </Box>
-                  <Box className="navbar_login" onClick={props.setPath}>
+                  <Box className="navbar_login">
                     <NavLink className="menu" to="/login">
                       <span>Login</span>
                     </NavLink>

@@ -84,7 +84,7 @@ const chosenProductRetriever = createSelector(
   })
 );
 
-export function ChosenProduct() {
+export function ChosenProduct(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const { product_id } = useParams<{ product_id: string }>();
@@ -328,7 +328,12 @@ export function ChosenProduct() {
                     <p>+</p>
                   </div>
 
-                  <Button className="cart">
+                  <Button
+                    className="cart"
+                    onClick={(e) => {
+                      props.onAdd(chosenProduct);
+                    }}
+                  >
                     <p>Add to cart</p>
                     <ShoppingCartIcon style={{ color: "black" }} />
                   </Button>

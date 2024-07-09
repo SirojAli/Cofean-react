@@ -4,13 +4,13 @@ import { AllProducts } from "./allProducts";
 
 import "../../../scss/products.scss";
 
-export function Product() {
+export function ProductPage(props: any) {
   /** INITIALIZATIONS */
 
   return (
     <div>
       <Header />
-      <AllProducts />
+      <AllProducts onAdd={props.onAdd} />
     </div>
   );
 }

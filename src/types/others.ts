@@ -1,10 +1,10 @@
 export interface CartItem {
   _id: string;
-  quantity: number;
   name: string;
-  price: number;
-  discount: number;
   image: string;
+  price: number;
+  quantity: number;
+  discount: number;
 }
 
 export interface ChatMsg {

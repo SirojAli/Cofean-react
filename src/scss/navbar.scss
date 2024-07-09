@@ -117,18 +117,9 @@
         flex-direction: row;
         align-items: center;
 
-        .icon_search {
-          width: 50px;
-          height: 50px;
-          padding: 5px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          margin-right: 20px;
-          margin-top: 5px;
-        }
+        // YourComponent.scss
 
-        .icon_cart {
+        .icons {
           width: 50px;
           height: 50px;
           padding: 5px;
@@ -137,6 +128,13 @@
           align-items: center;
           margin-right: 20px;
           margin-top: 5px;
+
+          // Specific styling for the icon inside .icons
+          .icon {
+            height: 28px;
+            width: 28px;
+            color: #000000;
+          }
         }
 
         .icon_user {

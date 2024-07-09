@@ -43,9 +43,6 @@ import {
   sweetTopSmallSuccessAlert,
 } from "../../../lib/sweetAlert";
 import { serverApi } from "../../../lib/config";
-import ProductCart from "../../components/productCart";
-import { CategoryCont } from "../../context/Category";
-import { ProductCartCont } from "../../context/ProductCart";
 
 //** REDUX SLICE */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -76,7 +73,6 @@ const targetProductsRetriever = createSelector(
 
 export function ChosenCafe(props: any) {
   /** INITIALIZATIONS */
-
   const navigate = useNavigate();
   const refs: any = useRef([]);
   const dispatch = useDispatch();
@@ -103,20 +99,17 @@ export function ChosenCafe(props: any) {
   const [productRebuild, setProductRebuild] = useState<Date>(new Date());
 
   useEffect(() => {
-    // TODO: Retrieve Cafe and Products Data
-    // from cafe
+    // data from cafe
     const cafeService = new CafeApiService();
     cafeService
       .getChosenCafe(chosenCafeId)
       .then((data) => setChosenCafe(data))
       .catch((err) => console.log(err));
-
     cafeService
       .getCafes({ page: 1, limit: 10, order: "random" })
       .then((data) => setRandomCafes(data))
       .catch((err) => console.log(err));
-
-    // from products
+    // data from products
     const productService = new ProductApiService();
     console.log("Requesting cafe products with>>> ", targetProductSearchObj);
     productService
@@ -136,7 +129,6 @@ export function ChosenCafe(props: any) {
     console.log("Redux state targetProducts:", targetProducts);
   }, [targetProducts]);
 
-  const setAddToCart = ProductCartCont();
   const ratingValue = 4;
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
@@ -150,40 +142,18 @@ export function ChosenCafe(props: any) {
     }));
     navigate(`/cafes/${id}`);
   };
-
   // searchCollectionHandler
   const productCollectionHandler = (collection: string[]) => {
     targetProductSearchObj.page = 1;
     targetProductSearchObj.product_collection = collection;
     setTargetProductSearchObj({ ...targetProductSearchObj });
   };
-
   // searchOrderHandler
   const filterProductHandler = (order: string) => {
     targetProductSearchObj.page = 1;
     targetProductSearchObj.order = order;
     setTargetProductSearchObj({ ...targetProductSearchObj });
   };
-
-  const targetLikeHandler = async (e: any) => {
-    try {
-      assert.ok(verifiedMemberData, Definer.auth_err1);
-      const memberService = new MemberApiService();
-      const data = { like_ref_id: e.target.id, group_type: "product" };
-      const like_result: any = await memberService.memberLikeTarget(data);
-      assert.ok(like_result, Definer.general_err1);
-      await sweetTopSmallSuccessAlert("success", 700, false);
-      setProductRebuild(new Date());
-    } catch (err: any) {
-      console.log("targetLikeHandler, ERROR >>>", err);
-      sweetErrorHandling(err).then();
-    }
-  };
-
-  // const addToCartHandler = () => {
-  //   setAddToCart[1]([cartData, 1, new Date()]);
-  // };
-
   const likeHandler = async (e: any, id: string) => {
     try {
       assert.ok(verifiedMemberData, Definer.auth_err1);
@@ -257,18 +227,18 @@ export function ChosenCafe(props: any) {
                 prevEl: ".cafe-prev",
               }}
             >
-              {randomCafes.map((ele: Cafe) => {
-                const image_path = `${serverApi}/${ele.mb_image}`;
+              {randomCafes.map((cafe: Cafe) => {
+                const image_path = `${serverApi}/${cafe.mb_image}`;
 
                 return (
                   <SwiperSlide
-                    onClick={() => chosenCafeHandler(ele._id)}
+                    onClick={() => chosenCafeHandler(cafe._id)}
                     style={{ cursor: "pointer" }}
-                    key={ele._id}
+                    key={cafe._id}
                     className={"cafe_avatar"}
                   >
-                    <img src={image_path} alt={ele.mb_nick} />
-                    <span>{ele.mb_nick}</span>
+                    <img src={image_path} alt={cafe.mb_nick} />
+                    <span>{cafe.mb_nick}</span>
                   </SwiperSlide>
                 );
               })}
@@ -343,29 +313,29 @@ export function ChosenCafe(props: any) {
 
             <Stack className="cafe_all_products">
               {targetProducts.length > 0 ? (
-                targetProducts.map((ele) => (
+                targetProducts.map((pro) => (
                   <div
                     className="product_box"
-                    onClick={() => navigate(`/products/${ele._id}`)}
+                    onClick={() => navigate(`/products/${pro._id}`)}
                   >
                     <Box className="sale_product">
-                      {ele.product_discount > 0 && (
+                      {pro.product_discount > 0 && (
                         <div className="sale_badge">
-                          <p className="sale">-{ele.product_discount}%</p>
+                          <p className="sale">-{pro.product_discount}%</p>
                         </div>
                       )}
                       <img
-                        src={`${serverApi}/${ele.product_images[0]}`}
+                        src={`${serverApi}/${pro.product_images[0]}`}
                         alt="coffee photo"
                       />
                       <Favorite
                         className="like_btn"
                         onClick={(e) => {
                           e.stopPropagation();
-                          likeHandler(e, ele._id);
+                          likeHandler(e, pro._id);
                         }}
                         style={{
-                          fill: likedProducts.includes(ele._id)
+                          fill: likedProducts.includes(pro._id)
                             ? "red"
                             : "white",
                           padding: "5px",
@@ -374,29 +344,35 @@ export function ChosenCafe(props: any) {
                       />
                       <Box className="product_info">
                         <Box className="pro_name">
-                          <span>{ele.product_name}</span>
-                          <div className="basket">
+                          <span>{pro.product_name}</span>
+                          <div
+                            className="basket"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              props.onAdd(pro);
+                            }}
+                          >
                             <img src="/icons/basket.svg" alt="" />
                           </div>
                         </Box>
 
                         <Box className="pro_basket">
                           <div className="price">
-                            {ele.product_discount > 0 ? (
+                            {pro.product_discount > 0 ? (
                               <>
                                 <span className="discounted">
                                   ₩{" "}
-                                  {ele.product_price -
-                                    ele.product_price *
-                                      (ele.product_discount / 100)}
+                                  {pro.product_price -
+                                    pro.product_price *
+                                      (pro.product_discount / 100)}
                                 </span>
                                 <span className="original">
-                                  ₩ {ele.product_price}
+                                  ₩ {pro.product_price}
                                 </span>
                               </>
                             ) : (
                               <span className="discounted">
-                                ₩ {ele.product_price}
+                                ₩ {pro.product_price}
                               </span>
                             )}
                           </div>
@@ -416,9 +392,9 @@ export function ChosenCafe(props: any) {
                             <Box className="rating_2">
                               <Box className="like">
                                 <div className="like_cnt">
-                                  {likeCounts[ele._id] !== undefined
-                                    ? likeCounts[ele._id]
-                                    : ele.product_likes}
+                                  {likeCounts[pro._id] !== undefined
+                                    ? likeCounts[pro._id]
+                                    : pro.product_likes}
                                 </div>
                                 <div className="like_img">
                                   <FavoriteIcon
@@ -434,7 +410,7 @@ export function ChosenCafe(props: any) {
                               <div className="dvr"></div>
                               <Box className="view">
                                 <div className="view_cnt">
-                                  {ele.product_views}
+                                  {pro.product_views}
                                 </div>
                                 <div className="view_img">
                                   <VisibilityIcon
