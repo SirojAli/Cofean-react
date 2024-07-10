@@ -63,5 +63,21 @@ class OrderApiService {
       throw err;
     }
   }
+
+  // async deleteOrder(orderId: string) {
+  //   try {
+  //     const url = `/orders/${orderId}`,
+  //       result = await axios.delete(this.path + url, {
+  //         withCredentials: true,
+  //       });
+  //     assert.ok(result?.data, Definer.general_err1);
+  //     assert.ok(result?.data?.state !== "fail", result?.data?.message);
+  //     console.log("state>>>", result.data.state);
+  //     return true;
+  //   } catch (err: any) {
+  //     console.log(`ERROR >>> deleteOrder ${err.message}`);
+  //     throw err;
+  //   }
+  // }
 }
 export default OrderApiService;

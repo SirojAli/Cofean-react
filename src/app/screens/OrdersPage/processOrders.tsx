@@ -39,7 +39,7 @@ export function ProcessOrders(props: any) {
   /*HANDLERS*/
   const payOrderHandler = async (order_id: any) => {
     try {
-      const data = { order_id: order_id, order_status: "FINISHED" };
+      const data = { order_id: order_id, order_status: "DELIVERED" };
       let confirmation = window.confirm("Do you want to complete your order?");
       if (confirmation) {
         const orderService = new OrderApiService();
@@ -48,7 +48,7 @@ export function ProcessOrders(props: any) {
         props.moveToDeliver();
       }
     } catch (err) {
-      console.log("processOrderHandler, ERROR:", err);
+      console.log("processOrderHandler, ERROR >>>", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -127,7 +127,7 @@ export function ProcessOrders(props: any) {
               <Button
                 value={order._id}
                 onClick={() => payOrderHandler(order._id)}
-                className="pay_btn"
+                className="comp_btn"
               >
                 Complete Payment
               </Button>

@@ -179,7 +179,7 @@ export function PendingOrders(props: any) {
               <Button
                 value={order._id}
                 onClick={() => cancelOrderHandler(order._id)}
-                className="pay_btn cancel_btn"
+                className="cancel_btn"
               >
                 Cancel
               </Button>

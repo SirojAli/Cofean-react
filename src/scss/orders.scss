@@ -209,13 +209,29 @@
           .order_btn_wrap {
             display: flex;
             flex-direction: row;
-            gap: 10px;
+            gap: 20px;
 
             .pay_btn {
               text-transform: capitalize;
               font-weight: 600;
               color: #ffffff;
               background: #fc9823;
+              margin-top: 10px;
+            }
+
+            .cancel_btn {
+              text-transform: capitalize;
+              font-weight: 600;
+              color: #ffffff;
+              background: #d9534f;
+              margin-top: 10px;
+            }
+
+            .comp_btn {
+              text-transform: capitalize;
+              font-weight: 600;
+              color: #ffffff;
+              background: #4caf50;
               margin-top: 10px;
             }
           }
