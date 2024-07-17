@@ -123,7 +123,7 @@ export function Help() {
 
   return (
     <div className="help_page">
-      <Header />
+      {/* <Header /> */}
       <Container className="help_page_box">
         <TabContext value={value}>
           <Box className="help_menu">

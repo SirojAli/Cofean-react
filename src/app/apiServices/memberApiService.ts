@@ -2,7 +2,7 @@ import axios from "axios";
 import assert from "assert";
 import { serverApi } from "../../lib/config";
 import { Definer } from "../../lib/definer";
-import { Member, MemberUpdateData } from "../../types/user";
+import { Member } from "../../types/user";
 import { MemberLiken } from "../../types/like";
 
 class MemberApiService {
@@ -19,7 +19,6 @@ class MemberApiService {
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-
       const member: Member = result.data.data;
       localStorage.setItem("member_data", JSON.stringify(member));
       return member;
@@ -37,7 +36,6 @@ class MemberApiService {
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-
       const member: Member = result.data.data;
       localStorage.setItem("member_data", JSON.stringify(member));
       return member;
@@ -56,7 +54,6 @@ class MemberApiService {
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-
       const logout_result = result.data.state;
       // console.log("logout_result>>>", logout_result);
       return logout_result === "success";
@@ -74,11 +71,9 @@ class MemberApiService {
         withCredentials: true,
       });
       console.log("like result >>>", result);
-
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data.state != "fail", result?.data?.message);
       console.log("state >>>", result.data.data);
-
       const like_result: MemberLiken = result.data.data;
       return like_result;
     } catch (err: any) {
@@ -93,11 +88,9 @@ class MemberApiService {
       const result = await axios.get(this.path + url, {
         withCredentials: true,
       });
-
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-
       const member: Member = result.data.data;
       return member;
     } catch (err: any) {
@@ -107,15 +100,15 @@ class MemberApiService {
   }
 
   // // UPDATE MEMBER
-  public async updateMemberData(data: MemberUpdateData) {
+  public async updateMemberData(data: any) {
     try {
       let formData = new FormData();
       formData.append("mb_nick", data.mb_nick || "");
+      formData.append("mb_email", data.mb_email || "");
       formData.append("mb_phone", data.mb_phone || "");
       formData.append("mb_address", data.mb_address || "");
       formData.append("mb_description", data.mb_description || "");
       formData.append("mb_image", data.mb_image || "");
-
       const result = await axios(`${this.path}/member/update`, {
         method: "POST",
         data: formData,
@@ -124,11 +117,9 @@ class MemberApiService {
           "Content-Type": "multipart/form-data",
         },
       });
-
       assert.ok(result?.data, Definer.general_err1);
       assert.ok(result?.data?.state !== "fail", result?.data?.message);
       console.log("state>>>", result.data.state);
-
       const member: Member = result.data.data;
       localStorage.setItem("member_data", JSON.stringify(member));
       return member;

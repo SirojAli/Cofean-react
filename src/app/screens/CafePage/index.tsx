@@ -9,7 +9,7 @@ export function Cafe() {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <AllCafes />
     </div>
   );

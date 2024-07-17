@@ -103,9 +103,7 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
     },
   },
 }));
-
 interface AirbnbThumbComponentProps extends React.HTMLAttributes<unknown> {}
-
 function AirbnbThumbComponent(props: AirbnbThumbComponentProps) {
   const { children, ...other } = props;
   return (
@@ -137,9 +135,9 @@ export function AllProducts(props: any) {
   const [searchProductsObj, setSearchProductsObj] = useState<ProductSearchObj>({
     order: "product_views",
     page: 1,
-    limit: 20,
+    limit: 21,
     search: "",
-    product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
+    product_collection: ["coffee", "smoothie", "tea", "food"],
     price: [0, 9900],
   });
 
@@ -185,7 +183,7 @@ export function AllProducts(props: any) {
   const categoryHandler = (selectedCategory: string) => {
     const productCollection =
       selectedCategory === "all"
-        ? ["coffee", "smoothie", "tea", "food", "goods"]
+        ? ["coffee", "smoothie", "tea", "food"]
         : [selectedCategory.toLowerCase()];
     setSearchProductsObj({
       ...searchProductsObj,
@@ -246,11 +244,13 @@ export function AllProducts(props: any) {
     }
     setFilterProducts(filteredProducts);
   };
+
   const priceHandler = (event: Event, newValue: number | number[]) => {
     const newPrices = Array.isArray(newValue) ? newValue : [0, newValue];
     setSliderValue(newPrices);
     setPrice(newPrices);
   };
+
   const paginationHandler = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -268,14 +268,12 @@ export function AllProducts(props: any) {
       const data = { like_ref_id: id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
       assert.ok(like_result, Definer.general_err1);
-
       // Update like count
       setLikeCounts((prevCounts) => ({
         ...prevCounts,
         [id]:
           like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
       }));
-
       // Update liked products
       if (like_result.like_status > 0) {
         setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
@@ -378,15 +376,6 @@ export function AllProducts(props: any) {
                   onClick={() => categoryHandler("Food")}
                 >
                   Food
-                </div>
-                <div
-                  className="category_item"
-                  style={{
-                    backgroundColor: category === "Goods" ? "#ffa500" : "",
-                  }}
-                  onClick={() => categoryHandler("Goods")}
-                >
-                  Goods
                 </div>
               </Box>
             </Box>
@@ -500,7 +489,7 @@ export function AllProducts(props: any) {
               </Box>
             </Box>
 
-            <Box className="bestseller_box">
+            {/* <Box className="bestseller_box">
               <div className="best_title">Best Sellers</div>
               <div className="best_boxes">
                 {bestsellers.map((pro: Product) => {
@@ -528,7 +517,7 @@ export function AllProducts(props: any) {
                   );
                 })}
               </div>
-            </Box>
+            </Box> */}
 
             <Box className="tag_box">
               <div className="tag_title">Tags</div>
@@ -730,8 +719,8 @@ export function AllProducts(props: any) {
                               precision={0.5}
                               readOnly
                             />
-                            <p className="text">(4)</p>
-                            {/* <p className="text">({product_reviews})</p> */}
+                            {/* <p className="text">(4)</p> */}
+                            <p className="text">({pro.product_reviews})</p>
                             <div className="rating_2">
                               <Box className="rating_2">
                                 <Box className="like">

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Container,
@@ -49,6 +50,9 @@ export function Navbar(props: any) {
   const isScrolled = scrollPosition >= 100;
   const isTopScroll = scrollPosition >= 300;
   const [anchorEl, setAnchorEl] = React.useState(null);
+  // const user_image = verifiedMemberData?.mb_image
+  //   ? `${serverApi}/${verifiedMemberData?.mb_image}`
+  //   : "/icons/default_user.svg";
 
   /*HANDLERS*/
   const topHandler = () => {
@@ -166,29 +170,28 @@ export function Navbar(props: any) {
                     aria-haspopup="true"
                     onClick={clickHandler}
                   >
-                    {verifiedMemberData.mb_image ? (
-                      <img
-                        src={`${serverApi}/${verifiedMemberData.mb_image}`}
-                        alt="Profile"
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src="/auth/profile_photo.svg"
-                        alt="Default Profile"
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          borderRadius: "50%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    )}
+                    <img
+                      src={verifiedMemberData.mb_image}
+                      // src={"/icons/profile_picture.jpg"}
+                      alt="Profile"
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                    />
+                    {/* <Avatar
+                      className="post_avatar"
+                      alt="user"
+                      src={"/icons/default_user.svg"}
+                      style={{
+                        height: "30px",
+                        width: "30px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                      }}
+                    /> */}
                   </Button>
                   <Menu
                     className="dropdown-menu"

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Container, TextField } from "@mui/material";
-import { Input } from "antd";
+import { Avatar, Input } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifiedMemberData } from "../../apiServices/verify";
 import assert from "assert";
@@ -11,11 +11,23 @@ import {
 } from "../../../lib/sweetAlert";
 import MemberApiService from "../../apiServices/memberApiService";
 import "../../../scss/account.scss";
+import { AddAPhoto } from "@mui/icons-material";
 
 export function MyProfile() {
   /** INITIALIZATIONS */
+  const pathname = useLocation();
   const navigate = useNavigate();
   const [file, setFile] = useState(verifiedMemberData?.mb_image);
+
+  const scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+  useEffect(() => {
+    scrollTop();
+  }, [pathname]);
   const [memberUpdate, setMemberUpdate] = useState<any>({
     mb_nick: "",
     mb_email: "",
@@ -179,19 +191,24 @@ export function MyProfile() {
 
           <Box className="info_box_img">
             <span className="span">Picture</span>
-            <div className="account_img_box">
-              <Box className="acc_img">
-                <img src="/icons/user-profile-icon.svg" />
-              </Box>
-              <Box className="upload_img">
-                <div className="change" onChange={imageHandler}>
-                  <span>Change Photo</span>
-                </div>
-              </Box>
-            </div>
+            <Box className="upload_img">
+              <img
+                src={file || "/icons/user-profile-icon.svg"}
+                alt="user profile"
+              />
+              <Button
+                className="add_img_btn"
+                // onChange={imageHandler}
+                component="label"
+                style={{ minWidth: "0" }}
+              >
+                <span>Change Photo</span>
+                <input type="file" hidden onChange={imageHandler} />
+              </Button>
+            </Box>
           </Box>
 
-          <Box className="card_info">
+          {/* <Box className="card_info">
             <span className="span">Account</span>
             <div className="card_info_boxes">
               <TextField
@@ -248,7 +265,7 @@ export function MyProfile() {
                 <img className="card" src="/icons/samsung1.svg" />
               </div>
             </div>
-          </Box>
+          </Box> */}
         </div>
         <Button className="save_btn" onClick={submitHandler}>
           <span>Save the Changes</span>

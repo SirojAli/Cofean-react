@@ -23,6 +23,7 @@
   width: 100%;
   height: 100%;
   background-color: #fff;
+  margin-top: 100px;
 
   .cafe_box {
     width: 1320px;
@@ -340,7 +341,7 @@
 .chosen_cafe {
   width: 1320px;
   height: auto;
-  // border: 1px solid red;
+  // border: 1px solid green;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -512,6 +513,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        // border: 1px solid black;
 
         .filter_btn {
           background-color: #ffa500;
@@ -527,11 +529,13 @@
       // border: 1px solid black;
 
       .filter_box2 {
-        margin-top: 60px;
-        width: 50px;
-        height: 350px; //  auto
+        margin-top: 40px;
+        width: 60px;
+        height: 400px; //  auto
         display: flex;
         flex-direction: column;
+        // border: 1px solid black;
+        // padding: 5px;
 
         .filter_2 {
           display: flex;
@@ -541,31 +545,31 @@
           -ms-transform: rotate(-90deg);
           -o-transform: rotate(-90deg);
           -webkit-transform: rotate(-90deg);
+          // gap: 20px;
 
           .filter_btn {
             background-color: #ffa500;
             min-width: auto;
-            margin-right: 10px;
+            margin-right: 25px;
           }
         }
       }
 
       .cafe_all_products {
-        width: 100%; // Change from 1320px to 100%
+        width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         flex-wrap: wrap;
-        border: 1px solid red;
         margin: 40px 10px;
+        gap: 25px;
+        // border: 1px solid black;
 
         .product_box {
-          width: calc(33.33% - 20px); // Adjusted width
-          margin-bottom: 20px;
-          // border: 1px solid red;
+          width: calc(25% - 20px);
+          margin-bottom: 30px;
           display: flex;
-          flex-direction: row;
-          justify-content: center;
+          flex-direction: column;
+          //  border: 1px solid red;
 
           .sale_product {
             width: 290px;
@@ -644,7 +648,7 @@
             .product_info {
               width: 100%;
               height: 115px;
-              padding: 5px;
+              padding: 2px;
               display: flex;
               flex-direction: column;
               background-color: #f4f4f4;
@@ -660,17 +664,17 @@
                 // border: 1px solid red;
 
                 span {
-                  width: 80%;
+                  width: 85%;
                   font-family: "Roboto", sans-serif;
-                  font-size: 27px;
+                  font-size: 22px;
                   font-style: normal;
-                  font-weight: 600;
-                  line-height: 28px;
+                  font-weight: 500;
+                  line-height: 26px;
                   // border: 1px solid red;
                 }
 
                 .basket {
-                  width: 20%;
+                  width: 15%;
                   border: 1px solid black;
                   border-radius: 10px;
                   padding: 5px;
@@ -679,6 +683,7 @@
                   justify-content: center;
                   align-items: center;
                   margin-right: 5px;
+                  // border: 1px solid green;
 
                   img {
                     width: 30px;

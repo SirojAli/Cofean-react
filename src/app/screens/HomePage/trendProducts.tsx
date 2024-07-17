@@ -197,8 +197,8 @@ export function TrendProducts(props: any) {
                       precision={0.5}
                       readOnly
                     />
-                    <p className="text">(4)</p>
-                    {/* <p className="text">({product_reviews})</p> */}
+                    {/* <p className="text">(4)</p> */}
+                    <p className="text">({pro.product_reviews})</p>
                     <div className="rating_2">
                       <Box className="rating_2">
                         <Box className="like">

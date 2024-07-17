@@ -65,7 +65,7 @@ const Reviews = ({ blogId, setBlogRebuild }: any) => {
       await reviewService.createReview({
         review_ref_id: blogId,
         group_type: "blog",
-        title: textValue,
+        content: textValue,
       });
       await sweetTopSmallSuccessAlert("success", 700, false);
       setTextValue("");

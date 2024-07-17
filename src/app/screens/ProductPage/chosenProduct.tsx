@@ -57,6 +57,7 @@ import { Collections } from "@mui/icons-material";
 import { serverApi } from "../../../lib/config";
 import { Product } from "../../../types/product";
 import ReactImageMagnify from "react-image-magnify";
+import Moment from "react-moment";
 
 // REDUX
 import { useDispatch, useSelector } from "react-redux";
@@ -83,19 +84,28 @@ const chosenProductRetriever = createSelector(
     chosenProduct,
   })
 );
+const productReviewsRetriever = createSelector(
+  retrieveProductReviews,
+  (productReviews) => ({
+    productReviews,
+  })
+);
 
 export function ChosenProduct(props: any) {
   /** INITIALIZATIONS */
   const navigate = useNavigate();
   const { product_id } = useParams<{ product_id: string }>();
   const { setChosenProduct } = actionDispatch(useDispatch());
+  const { setProductReviews } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
+  const { productReviews } = useSelector(productReviewsRetriever);
 
-  const [rating, setRating] = useState(0);
-  const [value, setValue] = useState(0);
-  const [title, setTitle] = useState("");
+  const [rating, setRating] = useState<any>(0.5);
   const [content, setContent] = useState("");
   const review_text = useRef<any>();
+  const [textValue, setTextValue] = useState("");
+  const [open, setOpen] = useState(false);
+  const reviewsList = productReviews.slice().reverse();
 
   const productRelatedProcess = async () => {
     try {
@@ -129,11 +139,30 @@ export function ChosenProduct(props: any) {
     reviewService
       .getTargetReviews({
         page: 1,
-        limit: 20,
+        limit: 5,
         review_ref_id: product_id || "",
       })
       .then((data) => setProductReviews(data))
       .catch((err) => console.log(err));
+  }, [product_id, setProductReviews]);
+
+  const fetchReviews = async () => {
+    try {
+      const reviewService = new ReviewApiService();
+      const data = await reviewService.getTargetReviews({
+        page: 1,
+        limit: 5,
+        review_ref_id: product_id || "",
+      });
+      setProductReviews(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    productRelatedProcess();
+    fetchReviews();
   }, [product_id]);
 
   /** HANDLERS */
@@ -143,22 +172,32 @@ export function ChosenProduct(props: any) {
 
   const submitHandler = async () => {
     try {
+      // Handle user authentication and input validation
       const reviewService = new ReviewApiService();
       const result = await reviewService.createReview({
         review_ref_id: product_id || "",
         group_type: "product",
-        title: title, // Capture the title value
-        content: content, // Capture the review content value
+        content: content,
         product_rating: rating,
       });
-      console.log("state>>>", result.state);
-      // After successful submission, navigate to the product page
-      navigate(`/products/${product_id}`);
-    } catch (error: any) {
-      console.error("ERROR >>> createReviews", error.message);
-      throw error;
+      // Display success message
+      await sweetTopSmallSuccessAlert("success", 700, false);
+      setContent("");
+      setRating(0);
+      fetchReviews();
+    } catch (err) {
+      console.log(err);
+      // Handle and display error messages
+      sweetFailureProvider(
+        content === "" ? Definer.input_err1 : Definer.auth_err1
+      );
     }
   };
+
+  useEffect(() => {
+    productRelatedProcess();
+    fetchReviews();
+  }, [product_id]);
 
   return (
     <div>
@@ -183,30 +222,6 @@ export function ChosenProduct(props: any) {
                     },
                   }}
                 />
-                <div
-                  className="wish"
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "15px",
-                    zIndex: "1",
-                  }}
-                >
-                  <Checkbox
-                    className="icon"
-                    icon={
-                      <FavoriteBorder
-                        style={{ width: "30px", height: "30px" }}
-                      />
-                    }
-                    checkedIcon={
-                      <FavoriteIcon
-                        style={{ color: "red", width: "30px", height: "30px" }}
-                      />
-                    }
-                  />
-                  {/* <span className="title">Add to Wishlist</span> */}
-                </div>
               </Box>
 
               <Box className="info_box">
@@ -322,12 +337,6 @@ export function ChosenProduct(props: any) {
                 </div>
 
                 <div className="cart_wish">
-                  <div className="count">
-                    <p>-</p>
-                    <p>1</p>
-                    <p>+</p>
-                  </div>
-
                   <Button
                     className="cart"
                     onClick={(e) => {
@@ -436,15 +445,14 @@ export function ChosenProduct(props: any) {
                   </Box>
                   <div className="divider_rating"></div>
                 </div>
+              </div>
 
+              <div className="submit_review">
                 <div className="write_review">
                   <div className="write_review_div">
                     <p>Write a Review</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="submit_review">
                 <Box className="rate">
                   <div className="rating_text">
                     <span className="rating_name">Rating</span>
@@ -452,31 +460,17 @@ export function ChosenProduct(props: any) {
                   </div>
                   <div className="rating_box">
                     <Rating
-                      className="rating"
-                      name="rating"
-                      defaultValue={0}
-                      precision={0.5}
+                      name="simple-controlled"
+                      value={rating}
+                      onChange={(event, newValue) => {
+                        if (newValue) {
+                          setRating(newValue);
+                        }
+                      }}
                     />
                   </div>
                 </Box>
-                <Box className="title_review">
-                  <div className="title">
-                    <span className="title_name">Title of Review</span>
-                    <span className="star">*</span>
-                  </div>
-                  <div className="title_form">
-                    <TextField
-                      type="text"
-                      variant="outlined"
-                      color="primary"
-                      label="Give a title for your review"
-                      fullWidth
-                      InputProps={{ style: { height: "50px" } }}
-                      value={title} // Add value prop
-                      onChange={(e) => setTitle(e.target.value)} // Add onChange handler
-                    />
-                  </div>
-                </Box>
+
                 <div className="review_text">
                   <span className="review_name">Content of Review</span>
                   <TextField
@@ -502,111 +496,43 @@ export function ChosenProduct(props: any) {
                   </Box>
                 </div>
                 <div className="comment_box">
-                  <Box className="comment">
-                    <div className="info">
-                      <Box className="user_img">
-                        <img src="/icons/default_user.svg" />
+                  {productReviews.map((review) => {
+                    const auth = review?.member_data;
+                    const image_path = auth?.mb_image
+                      ? `${serverApi}/${auth?.mb_image}`
+                      : "/icons/user_avatar.jpg";
+                    return (
+                      <Box key={review._id} className="comment">
+                        <div className="info">
+                          <Box className="user_img">
+                            <img src={image_path} />
+                          </Box>
+                          <div className="star_name">
+                            <Box className="name">
+                              <span>{auth?.mb_nick}</span>
+                            </Box>
+                            <Box className="star">
+                              <Rating
+                                className="rating"
+                                name="rating"
+                                defaultValue={review.product_rating}
+                                precision={0.5}
+                                readOnly
+                              />
+                            </Box>
+                          </div>
+                          <Box className="date">
+                            <Moment fromNow>{review.createdAt}</Moment>
+                          </Box>
+                        </div>
+                        <div className="commented">
+                          <Box className="c_text">
+                            <span>{review.content}</span>
+                          </Box>
+                        </div>
                       </Box>
-                      <div className="star_name">
-                        <Box className="name">
-                          <span>Sirojiddin Samadov</span>
-                        </Box>
-                        <Box className="star">
-                          <Rating
-                            className="rating"
-                            name="rating"
-                            defaultValue={5}
-                            precision={0.5}
-                            readOnly
-                          />
-                        </Box>
-                      </div>
-                      <Box className="date">
-                        <span>07/07/2024</span>
-                      </Box>
-                    </div>
-                    <div className="commented">
-                      <Box className="c_title">
-                        <span>Delicious!</span>
-                      </Box>
-                      <Box className="c_text">
-                        <span>
-                          Highly recommend. Has a beautiful leafy flavor to it.
-                          Sometime it’s almost floral. Highly recommend. Has a
-                          beautiful leafy flavor to it. Sometime it’s almost
-                          floral. Highly recommend.
-                        </span>
-                      </Box>
-                    </div>
-                  </Box>
-
-                  <Box className="comment">
-                    <div className="info">
-                      <Box className="user_img">
-                        <img src="/icons/default_user.svg" />
-                      </Box>
-                      <div className="star_name">
-                        <Box className="name">
-                          <span>David Believer</span>
-                        </Box>
-                        <Box className="star">
-                          <Rating
-                            className="rating"
-                            name="rating"
-                            defaultValue={5}
-                            precision={0.5}
-                            readOnly
-                          />
-                        </Box>
-                      </div>
-                      <Box className="date">
-                        <span>12/12/2024</span>
-                      </Box>
-                    </div>
-                    <div className="commented">
-                      <Box className="c_title">
-                        <span>Wonderful flavor!</span>
-                      </Box>
-                      <Box className="c_text">
-                        <span>
-                          I just wish you had it in larger quantities!
-                        </span>
-                      </Box>
-                    </div>
-                  </Box>
-
-                  <Box className="comment">
-                    <div className="info">
-                      <Box className="user_img">
-                        <img src="/icons/default_user.svg" />
-                      </Box>
-                      <div className="star_name">
-                        <Box className="name">
-                          <span>Shon Azizov</span>
-                        </Box>
-                        <Box className="star">
-                          <Rating
-                            className="rating"
-                            name="rating"
-                            defaultValue={1}
-                            precision={0.5}
-                            readOnly
-                          />
-                        </Box>
-                      </div>
-                      <Box className="date">
-                        <span>17/07/2024</span>
-                      </Box>
-                    </div>
-                    <div className="commented">
-                      <Box className="c_title">
-                        <span>Not good!</span>
-                      </Box>
-                      <Box className="c_text">
-                        <span>I was disappointed in the flavors</span>
-                      </Box>
-                    </div>
-                  </Box>
+                    );
+                  })}
                 </div>
               </div>
             </div>

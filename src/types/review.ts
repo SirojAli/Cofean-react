@@ -6,7 +6,6 @@ export interface Review {
   member_data?: Member_data;
   review_ref_id: string;
   review_group: string;
-  title: string;
   content: string;
   product_rating?: number;
   createdAt: Date;
@@ -22,7 +21,6 @@ export interface ReviewSearchObj {
 export interface CreateReviewObj {
   review_ref_id: string;
   group_type: string;
-  title: string;
-  content?: string;
+  content: string;
   product_rating?: number;
 }

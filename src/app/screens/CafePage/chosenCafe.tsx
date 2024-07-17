@@ -92,7 +92,7 @@ export function ChosenCafe(props: any) {
       page: 1,
       limit: 20,
       search: "",
-      product_collection: ["coffee", "smoothie", "tea", "food", "goods"],
+      product_collection: ["coffee", "smoothie", "tea", "food"],
       price: [0, 9900],
       cafe_mb_id: cafe_id || "",
     });
@@ -133,6 +133,23 @@ export function ChosenCafe(props: any) {
   const [likeCounts, setLikeCounts] = useState<{ [key: string]: number }>({});
   const [likedProducts, setLikedProducts] = useState<string[]>([]);
 
+  // Product Likes
+  useEffect(() => {
+    targetProducts.forEach((pro: Product) => {
+      refs.current[pro._id] = pro.product_likes;
+      setLikeCounts((prevCounts) => ({
+        ...prevCounts,
+        [pro._id]: pro.product_likes,
+      }));
+      if (pro.me_liked && pro.me_liked[0]?.my_favorite) {
+        setLikedProducts((prevLikedProducts) => [
+          ...prevLikedProducts,
+          pro._id,
+        ]);
+      }
+    });
+  }, [targetProducts]);
+
   /** HANDLERS */
   const chosenCafeHandler = (id: string) => {
     setChosenCafeId(id);
@@ -161,14 +178,12 @@ export function ChosenCafe(props: any) {
       const data = { like_ref_id: id, group_type: "product" };
       const like_result: any = await memberService.memberLikeTarget(data);
       assert.ok(like_result, Definer.general_err1);
-
       // Update like count
       setLikeCounts((prevCounts) => ({
         ...prevCounts,
         [id]:
           like_result.like_status > 0 ? prevCounts[id] + 1 : prevCounts[id] - 1,
       }));
-
       // Update liked products
       if (like_result.like_status > 0) {
         setLikedProducts((prevLikedProducts) => [...prevLikedProducts, id]);
@@ -180,7 +195,7 @@ export function ChosenCafe(props: any) {
 
       await sweetTopSmallSuccessAlert("success", 700, false);
     } catch (err: any) {
-      console.log("likeHandler, ERROR:::", err);
+      console.log("likeHandler, ERROR >>>", err);
       sweetErrorHandling(err).then();
     }
   };
@@ -254,11 +269,9 @@ export function ChosenCafe(props: any) {
               <Button
                 className="filter_btn"
                 variant="contained"
-                onClick={() =>
-                  productCollectionHandler(["coffee", "smoothie", "tea"])
-                }
+                onClick={() => productCollectionHandler(["coffee"])}
               >
-                Drink
+                Coffee
               </Button>
               <Button
                 className="filter_btn"
@@ -270,9 +283,9 @@ export function ChosenCafe(props: any) {
               <Button
                 className="filter_btn"
                 variant="contained"
-                onClick={() => productCollectionHandler(["goods"])}
+                onClick={() => productCollectionHandler(["smoothie", "tea"])}
               >
-                Goods
+                Beverage
               </Button>
             </div>
           </Stack>
@@ -292,7 +305,7 @@ export function ChosenCafe(props: any) {
                   variant="contained"
                   onClick={() => filterProductHandler("product_discount")}
                 >
-                  Price
+                  Sale
                 </Button>
                 <Button
                   className="filter_btn"
@@ -386,8 +399,8 @@ export function ChosenCafe(props: any) {
                             precision={0.5}
                             readOnly
                           />
-                          <p className="text">(4)</p>
-                          {/* <p className="text">({product_reviews})</p> */}
+                          {/* <p className="text">(4)</p> */}
+                          <p className="text">({pro.product_reviews})</p>
                           <div className="rating_2">
                             <Box className="rating_2">
                               <Box className="like">

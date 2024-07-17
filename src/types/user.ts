@@ -4,6 +4,7 @@ import { MeLiked } from "./like";
 export interface Cafe {
   _id: string;
   mb_nick: string;
+  mb_email: string;
   mb_phone: string;
   mb_password: string;
   mb_type: string;
@@ -32,6 +33,7 @@ export interface CafeSearchObj {
 export interface Member {
   _id: string;
   mb_nick: string;
+  mb_email: string;
   mb_phone: string;
   mb_password: string;
   mb_type: string;
@@ -64,12 +66,4 @@ export interface Member_data {
   mb_type: string;
   updatedAt: Date;
   _id: string;
-}
-
-export interface MemberUpdateData {
-  mb_nick?: string | null;
-  mb_phone?: string | null;
-  mb_address?: string | null;
-  mb_description?: string | null;
-  mb_image?: string | null;
 }
