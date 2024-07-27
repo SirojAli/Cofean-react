@@ -90,7 +90,7 @@ export function ChosenCafe(props: any) {
     useState<ProductSearchObj>({
       order: "product_views",
       page: 1,
-      limit: 20,
+      limit: 32,
       search: "",
       product_collection: ["coffee", "smoothie", "tea", "food"],
       price: [0, 9900],

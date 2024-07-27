@@ -57,7 +57,7 @@ export function AllCafes() {
 
   const [allCafesObj, setAllCafesObj] = useState<CafeSearchObj>({
     page: 1,
-    limit: 12,
+    limit: 16,
     order: "mb_point",
   });
 
@@ -122,20 +122,20 @@ export function AllCafes() {
     setAllCafesObj({ ...allCafesObj });
   };
 
-  const paginationHandler = async (_: any, value: any) => {
-    try {
-      setAllCafesObj((prev) => ({ ...prev, page: value }));
+  // const paginationHandler = async (_: any, value: any) => {
+  //   try {
+  //     setAllCafesObj((prev) => ({ ...prev, page: value }));
 
-      const cafeService = new CafeApiService();
-      const data = await cafeService.getCafes({
-        ...allCafesObj,
-        page: value,
-      });
-      setAllCafes(data);
-    } catch (error) {
-      console.error("Pagination Error>>>", error);
-    }
-  };
+  //     const cafeService = new CafeApiService();
+  //     const data = await cafeService.getCafes({
+  //       ...allCafesObj,
+  //       page: value,
+  //     });
+  //     setAllCafes(data);
+  //   } catch (error) {
+  //     console.error("Pagination Error>>>", error);
+  //   }
+  // };
 
   const targetLikeHandler = async (e: any, id: string) => {
     try {
@@ -300,7 +300,7 @@ export function AllCafes() {
           </div>
         </div>
 
-        <Stack className="pagination" spacing={2}>
+        {/* <Stack className="pagination" spacing={2}>
           <Pagination
             count={3}
             page={allCafesObj.page}
@@ -310,7 +310,7 @@ export function AllCafes() {
             boundaryCount={1}
             siblingCount={0}
           />
-        </Stack>
+        </Stack> */}
       </Container>
     </div>
   );
