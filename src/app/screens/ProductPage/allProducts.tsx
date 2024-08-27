@@ -103,6 +103,7 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
     },
   },
 }));
+
 interface AirbnbThumbComponentProps extends React.HTMLAttributes<unknown> {}
 function AirbnbThumbComponent(props: AirbnbThumbComponentProps) {
   const { children, ...other } = props;
@@ -168,18 +169,29 @@ export function AllProducts(props: any) {
   }, [searchProductsObj]);
 
   // Filter products based on price when price state changes
+  // useEffect(() => {
+  //   const filteredProducts = allProducts.filter((product) => {
+  //     const productPrice = product.product_price;
+  //     return productPrice >= price[0] && productPrice <= price[1];
+  //   });
+  //   setFilterProducts(filteredProducts);
+  // }, [allProducts, price]);
+  // Update filtered products based on price range
   useEffect(() => {
-    const filteredProducts = allProducts.filter((product) => {
-      const productPrice = product.product_price;
-      return productPrice >= price[0] && productPrice <= price[1];
-    });
-    setFilterProducts(filteredProducts);
-  }, [allProducts, price]);
+    setFilterProducts(
+      allProducts.filter(
+        (product) =>
+          product.product_price >= sliderValue[0] &&
+          product.product_price <= sliderValue[1]
+      )
+    );
+  }, [allProducts, sliderValue]);
 
   /** HANDLERS */
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
   const categoryHandler = (selectedCategory: string) => {
     const productCollection =
       selectedCategory === "all"
@@ -192,6 +204,7 @@ export function AllProducts(props: any) {
     });
     setCategory(selectedCategory);
   };
+
   const sortItemHandler = (index: number) => {
     let sortedProducts: Product[] = [];
 
@@ -229,9 +242,12 @@ export function AllProducts(props: any) {
     setAllProducts(sortedProducts);
     setSortedItem(index === sortedItem ? -1 : index);
   };
+
   const chosenProductHandler = (id: string) => {
-    navigate(`/products/${id}`);
+    const productId = "66a500815af6e41d57913c89";
+    navigate(`/products/${productId}`);
   };
+
   const chosenTagHandler = (tag: string) => {
     setChosenTag(tag);
     let filteredProducts: Product[] = [];
@@ -245,10 +261,21 @@ export function AllProducts(props: any) {
     setFilterProducts(filteredProducts);
   };
 
+  // const priceHandler = (event: Event, newValue: number | number[]) => {
+  //   const newPrices = Array.isArray(newValue) ? newValue : [0, newValue];
+  //   setSliderValue(newPrices);
+  //   setPrice(newPrices);
+  // };
   const priceHandler = (event: Event, newValue: number | number[]) => {
     const newPrices = Array.isArray(newValue) ? newValue : [0, newValue];
     setSliderValue(newPrices);
     setPrice(newPrices);
+
+    setSearchProductsObj({
+      ...searchProductsObj,
+      price: newPrices, // Update the search object to include the new price range
+      page: 1, // Reset pagination
+    });
   };
 
   const paginationHandler = (
@@ -290,16 +317,31 @@ export function AllProducts(props: any) {
     }
   };
 
+  // useEffect(() => {
+  //   if (searchValue.trim() === "") {
+  //     setFilterProducts(allProducts);
+  //   } else {
+  //     const filtered = allProducts.filter((product) =>
+  //       product.product_name.toLowerCase().includes(searchValue.toLowerCase())
+  //     );
+  //     setFilterProducts(filtered);
+  //   }
+  // }, [allProducts, searchValue]);
   useEffect(() => {
-    if (searchValue.trim() === "") {
-      setFilterProducts(allProducts);
-    } else {
-      const filtered = allProducts.filter((product) =>
-        product.product_name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      setFilterProducts(filtered);
-    }
-  }, [allProducts, searchValue]);
+    const filtered = allProducts.filter((product) => {
+      const productPrice = product.product_price;
+      const isWithinPriceRange =
+        productPrice >= price[0] && productPrice <= price[1];
+
+      const isInSearch = searchValue
+        ? product.product_name.toLowerCase().includes(searchValue.toLowerCase())
+        : true;
+
+      return isWithinPriceRange && isInSearch;
+    });
+
+    setFilterProducts(filtered);
+  }, [allProducts, price, searchValue]);
 
   return (
     <div className="all_products">
@@ -634,7 +676,7 @@ export function AllProducts(props: any) {
                     </div>
                     <Button
                       className="sale_btn"
-                      onClick={() => chosenTagHandler("Latte")}
+                      onClick={(id) => chosenProductHandler("Latte")}
                     >
                       <p>SHOP NOW</p>
                     </Button>
@@ -645,7 +687,7 @@ export function AllProducts(props: any) {
                 </div>
               </div>
               <Box className="product_boxes">
-                {allProducts.map((pro: Product) => {
+                {filterProducts.map((pro: Product) => {
                   return (
                     <div
                       className={"product_box"}
@@ -769,7 +811,9 @@ export function AllProducts(props: any) {
 
             <Stack className="pagination_box" spacing={2}>
               <Pagination
-                count={3}
+                count={
+                  searchProductsObj.page >= 3 ? searchProductsObj.page + 1 : 3
+                }
                 page={searchProductsObj.page}
                 variant="outlined"
                 shape="rounded"

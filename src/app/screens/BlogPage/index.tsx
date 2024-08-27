@@ -128,7 +128,7 @@ export function BlogPage() {
   }, [user]);
 
   /*HANDLERS*/
-  const handlePaginationChange = (event: any, value: number) => {
+  const paginationHandler = (event: any, value: number) => {
     searchBlogObject.page = value;
     setSearchBlogObject({ ...searchBlogObject });
     scrollTop();
@@ -393,7 +393,7 @@ export function BlogPage() {
                   {...item}
                 />
               )}
-              onChange={handlePaginationChange}
+              onChange={paginationHandler}
             />
           </Stack>
         </Stack>
