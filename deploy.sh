@@ -9,6 +9,7 @@ npm i yarn -g
 yarn
 yarn run build
 pm2 start "yarn run start:prod" --name=COFEAN-REACT
+# pm2 start yarn --name=COFEAN-REACT -- start:prod
 
 
 # DEVELOPMENT
