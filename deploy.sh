@@ -2,6 +2,7 @@
 # IF YOU WANT TO USE ONE OF THEM (production), COMMENT OTHER (development).
 
 # PRODUCTION
+git checkout master
 git reset --hard
 git pull origin master
 
